@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Paste — Lightweight, privacy-first clipboard manager for macOS & iOS. Menu bar app, iOS app, custom keyboard extension. Optional iCloud sync.">
+  <meta name="theme-color" content="#0f1419">
+  <title>Paste — Clipboard manager for macOS & iOS</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --bg-elevated: #141a22;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8eaed;
+      --text-muted: #9aa4af;
+      --accent: #f0a030;
+      --accent-dim: rgba(240, 160, 48, 0.18);
+      --green: #3fb950;
+      --wechat: #07c160;
+      --wechat-soft: rgba(7, 193, 96, 0.12);
+      --wechat-ring: rgba(7, 193, 96, 0.35);
+      --alipay: #1677ff;
+      --alipay-soft: rgba(22, 119, 255, 0.12);
+      --alipay-ring: rgba(22, 119, 255, 0.35);
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max: 920px;
+      --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: "DM Sans", system-ui, sans-serif;
+      font-optical-sizing: auto;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+      font-size: 1rem;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .glow {
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 55vw;
+      max-width: 640px;
+      height: 55vh;
+      background: radial-gradient(ellipse, var(--accent-dim) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:focus-visible {
+      outline: none;
+      border-radius: 4px;
+      box-shadow: var(--focus-ring);
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    header {
+      padding: 1.5rem 0 3.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .logo-app-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .logo a {
+      color: inherit;
+    }
+
+    .logo a:hover {
+      text-decoration: none;
+      color: var(--accent);
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.35rem 1.15rem;
+      flex-wrap: wrap;
+      font-size: 0.9375rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      padding: 0.35rem 0.15rem;
+      border-radius: 6px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links a.nav-highlight {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .nav-links .nav-sep {
+      color: var(--border);
+      user-select: none;
+      padding: 0 0.1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin: 0 0 1rem;
+      max-width: 20ch;
+    }
+
+    .hero p.lead {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 38rem;
+      margin: 0 0 1.75rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 1.35rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn {
+        transition: none;
+      }
+    }
+
+    .btn:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0c0f14;
+    }
+
+    .btn-primary:hover {
+      text-decoration: none;
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .btn-ghost {
+      background: var(--bg-elevated);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      text-decoration: none;
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.35rem 0.6rem;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    section {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    h2 {
+      font-size: 1.375rem;
+      font-weight: 700;
+      margin: 0 0 0.65rem;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .section-lead {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 40rem;
+      margin: 0 0 1.75rem;
+      line-height: 1.6;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.5rem 1.35rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card {
+        transition: none;
+      }
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.0625rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .card h3 .icon-svg {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      color: var(--accent);
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+    }
+
+    .card .meta {
+      margin-top: 0.85rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.75rem;
+      color: var(--green);
+      letter-spacing: 0.01em;
+    }
+
+    ul.features {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.96875rem;
+      max-width: 48rem;
+    }
+
+    ul.features li {
+      margin-bottom: 0.65rem;
+    }
+
+    ul.features li:last-child {
+      margin-bottom: 0;
+    }
+
+    ul.features strong {
+      color: var(--text);
+    }
+
+    .req {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8125rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem 1.35rem;
+      overflow-x: auto;
+    }
+
+    .req dt {
+      color: var(--accent);
+      margin-top: 0.85rem;
+      font-weight: 500;
+    }
+
+    .req dt:first-child {
+      margin-top: 0;
+    }
+
+    .req dd {
+      margin: 0.35rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Sponsor: branded frames, aligned with QR card aesthetics */
+    #sponsor {
+      padding-bottom: 4rem;
+    }
+
+    .sponsor-showcase {
+      margin-top: 0.25rem;
+    }
+
+    .sponsor-cards {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(1.25rem, 4vw, 2.25rem);
+      align-items: start;
+    }
+
+    @media (max-width: 720px) {
+      .sponsor-cards {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+    }
+
+    .sponsor-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .sponsor-card__frame {
+      width: 100%;
+      max-width: 220px;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      background: var(--bg-elevated);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 20px 50px -12px rgba(0, 0, 0, 0.55);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sponsor-card__frame {
+        transition: none;
+      }
+    }
+
+    .sponsor-card__frame:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.08) inset,
+        0 28px 60px -12px rgba(0, 0, 0, 0.6);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sponsor-card__frame:hover {
+        transform: none;
+      }
+    }
+
+    .sponsor-card--wechat .sponsor-card__frame {
+      border: 1px solid var(--wechat-ring);
+      background: linear-gradient(165deg, var(--wechat-soft) 0%, var(--bg-elevated) 45%);
+    }
+
+    .sponsor-card--alipay .sponsor-card__frame {
+      border: 1px solid var(--alipay-ring);
+      background: linear-gradient(165deg, var(--alipay-soft) 0%, var(--bg-elevated) 45%);
+    }
+
+    .sponsor-card--oa .sponsor-card__frame {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(165deg, rgba(255, 255, 255, 0.06) 0%, var(--bg-elevated) 50%);
+    }
+
+    .sponsor-card__frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      vertical-align: middle;
+    }
+
+    .sponsor-card__label {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .sponsor-card--wechat .sponsor-card__label {
+      color: rgba(125, 220, 170, 0.95);
+    }
+
+    .sponsor-card--alipay .sponsor-card__label {
+      color: rgba(130, 180, 255, 0.95);
+    }
+
+    .sponsor-card--oa .sponsor-card__label {
+      color: var(--text-muted);
+    }
+
+    .sponsor-card__hint {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    footer {
+      padding: 2.25rem 0 3rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem 0.85rem;
+    }
+
+    footer a {
+      color: var(--text-muted);
+    }
+
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    footer .footer-site {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    footer .footer-site:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .lang-note {
+      margin-top: 1.15rem;
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      max-width: 36rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <nav class="nav" aria-label="Primary">
+        <div class="logo">
+          <img class="logo-app-icon" src="app-icon-nav.png" width="64" height="64" alt="" decoding="async" aria-hidden="true">
+          <span><a href="https://gxlself.com" rel="noopener">gxlself</a><span>/</span>Paste</span>
+        </div>
+        <div class="nav-links">
+          <a href="#platforms">Platforms</a>
+          <a href="#features">Features</a>
+          <a href="#get-started">Get started</a>
+          <a href="https://github.com/gxlself/Paste/releases" rel="noopener">Download</a>
+          <span class="nav-sep" aria-hidden="true">·</span>
+          <a class="nav-highlight" href="https://gxlself.com" rel="noopener">gxlself.com</a>
+          <a href="https://github.com/gxlself/paste" rel="noopener">GitHub</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <span class="badge">MIT · Swift · SwiftUI</span>
+        <h1>Clipboard manager for macOS &amp; iOS</h1>
+        <p class="lead">Lightweight and privacy-first. Menu bar history on Mac, browse &amp; pin on iPhone, paste from a custom keyboard — optional iCloud sync across devices.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/gxlself/Paste/releases" rel="noopener">Download for macOS</a>
+          <a class="btn btn-ghost" href="https://github.com/gxlself/paste" rel="noopener">Star on GitHub</a>
+          <a class="btn btn-ghost" href="https://testflight.apple.com/join/2UKC5P27" rel="noopener">iOS TestFlight</a>
+          <a class="btn btn-ghost" href="https://gxlself.com" rel="noopener">Author site</a>
+          <a class="btn btn-ghost" href="https://github.com/gxlself/paste/issues" rel="noopener">Issues</a>
+        </div>
+        <p class="lang-note">If Paste is helpful, a star on GitHub is appreciated. If TestFlight is full or not accepting testers, email <a href="mailto:gxlself@gmail.com">gxlself@gmail.com</a>.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="platforms" aria-labelledby="platforms-heading">
+      <div class="wrap">
+        <h2 id="platforms-heading">Three deliverables, one project</h2>
+        <p class="section-lead">One Xcode project ships the Mac menu bar app, the iOS companion, and the custom keyboard extension.</p>
+        <div class="grid-3">
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              Paste (macOS)
+            </h3>
+            <p>Menu bar app: clipboard history, global hotkeys, overlay panel, Paste Stack, Pinboards, optional iCloud sync.</p>
+            <p class="meta">macOS 13+ · ⌘⇧V default</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
+                <path d="M12 18h.01"/>
+              </svg>
+              Paste-iOS
+            </h3>
+            <p>Browse the same history on iPhone/iPad: pinboards, filters, categories, multi-select, scanner &amp; quick new text.</p>
+            <p class="meta">iOS 16+ · App Group</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M10 8h4M6 12h12M6 16h8"/>
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+              </svg>
+              Paste-Keyboard
+            </h3>
+            <p>Custom keyboard: pick a saved clip and insert in Mail, Notes, etc. without leaving the app. Full Access required.</p>
+            <p class="meta">Shares DB with iOS app</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" aria-labelledby="features-heading">
+      <div class="wrap">
+        <h2 id="features-heading">Highlights</h2>
+        <ul class="features">
+          <li><strong>macOS:</strong> Text, RTF, images, file paths · SHA-256 dedup · excluded apps · retention &amp; timeline · search, regex, custom types · Assisted Paste (Accessibility)</li>
+          <li><strong>Sync:</strong> iOS app ↔ keyboard via App Group; macOS ↔ iOS via optional iCloud (same Apple ID)</li>
+          <li><strong>Privacy:</strong> Local-first; iCloud opt-in; no analytics or third-party SDKs in the described setup</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="get-started" aria-labelledby="get-started-heading">
+      <div class="wrap">
+        <h2 id="get-started-heading">Get started</h2>
+        <dl class="req">
+          <dt>Download (macOS)</dt>
+          <dd>Latest build: <a href="https://github.com/gxlself/Paste/releases">GitHub Releases</a> — download <strong>Paste-*-macos.zip</strong>, unzip, drag <strong>Paste</strong> into <strong>Applications</strong>. First launch: if blocked, right-click Paste → <strong>Open</strong> (or allow in System Settings → Privacy &amp; Security).</dd>
+          <dt>Clone &amp; open</dt>
+          <dd><code style="color:var(--text)">git clone https://github.com/gxlself/paste.git && cd paste && open Paste.xcodeproj</code></dd>
+          <dt>macOS (from source)</dt>
+          <dd>Select <strong>Paste</strong> scheme → My Mac → ⌘R. Grant Accessibility if using Assisted Paste / hotkeys.</dd>
+          <dt>iOS + keyboard</dt>
+          <dd>See <a href="https://github.com/gxlself/paste/blob/main/SETUP.md">SETUP.md</a> for signing &amp; App Group <code>group.gxlself.paste-tool</code>.</dd>
+          <dt>Release builds</dt>
+          <dd>macOS: <a href="https://github.com/gxlself/paste/blob/main/docs/RELEASE_MACOS.md">RELEASE_MACOS.md</a> · iOS: <a href="https://github.com/gxlself/paste/blob/main/docs/RELEASE_IOS.md">RELEASE_IOS.md</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="sponsor" class="sponsor-showcase" aria-labelledby="sponsor-heading">
+      <div class="wrap">
+        <h2 id="sponsor-heading">Sponsor &amp; follow</h2>
+        <p class="section-lead">If Paste saves you time, tips are welcome. Scan to follow the WeChat official account for updates.</p>
+        <ul class="sponsor-cards" role="list">
+          <li class="sponsor-card sponsor-card--wechat">
+            <div class="sponsor-card__frame">
+              <img src="sponsor/wechat-pay-tip.png" width="192" height="192" alt="WeChat Pay tip QR code" loading="lazy" decoding="async">
+            </div>
+            <span class="sponsor-card__label">WeChat Pay</span>
+            <span class="sponsor-card__hint">微信支付</span>
+          </li>
+          <li class="sponsor-card sponsor-card--alipay">
+            <div class="sponsor-card__frame">
+              <img src="sponsor/alipay-tip.png" width="192" height="192" alt="Alipay tip QR code" loading="lazy" decoding="async">
+            </div>
+            <span class="sponsor-card__label">Alipay</span>
+            <span class="sponsor-card__hint">支付宝</span>
+          </li>
+          <li class="sponsor-card sponsor-card--oa">
+            <div class="sponsor-card__frame">
+              <img src="sponsor/wechat-official-account.png" width="192" height="192" alt="WeChat official account QR code" loading="lazy" decoding="async">
+            </div>
+            <span class="sponsor-card__label">WeChat 公众号</span>
+            <span class="sponsor-card__hint">Updates &amp; news</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-row">
+        <a href="https://gxlself.com" class="footer-site" rel="noopener">gxlself.com</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/gxlself/paste/blob/main/LICENSE">MIT License</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/gxlself/paste">gxlself/paste</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/gxlself/Paste/releases">Releases</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
