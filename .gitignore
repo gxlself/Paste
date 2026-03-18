@@ -20,6 +20,9 @@ build/
 *.perspectivev3
 !default.perspectivev3
 
+# Local release zips (use GitHub Releases for distribution)
+dist/
+
 # Build artifacts
 *.ipa
 *.dSYM.zip
