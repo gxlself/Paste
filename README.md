@@ -123,6 +123,25 @@ If Paste is helpful to you, please [**star the repository on GitHub**](https://g
 
 ---
 
+## Documentation site (`docs/`)
+
+Static pages for this open-source project. Open **`docs/index.html`** in a browser; styles in **`docs/site.css`**.
+
+| Page | Role |
+|------|------|
+| [index.html](docs/index.html) | Home, platforms, highlights, sponsor |
+| [features.html](docs/features.html) | Feature tour (KEEP / SEARCH / ORGANIZE / sync / privacy) |
+| [everyone.html](docs/everyone.html) | General audience |
+| [developers.html](docs/developers.html) | Developers |
+| [designers.html](docs/designers.html) | Designers |
+| [sales-support.html](docs/sales-support.html) | Sales & support |
+| [use-cases.html](docs/use-cases.html) | Use-case hub |
+| [help.html](docs/help.html) | Help & FAQ |
+| [updates.html](docs/updates.html) | What's new → Releases |
+| [contact.html](docs/contact.html) | Contact |
+
+---
+
 ## System Requirements
 
 - **macOS app (`Paste`)**: macOS 13.0 Ventura or later

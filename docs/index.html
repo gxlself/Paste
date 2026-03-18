@@ -12,563 +12,35 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0c0f14;
-      --bg-elevated: #141a22;
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #e8eaed;
-      --text-muted: #9aa4af;
-      --accent: #f0a030;
-      --accent-dim: rgba(240, 160, 48, 0.18);
-      --green: #3fb950;
-      --wechat: #07c160;
-      --wechat-soft: rgba(7, 193, 96, 0.12);
-      --wechat-ring: rgba(7, 193, 96, 0.35);
-      --alipay: #1677ff;
-      --alipay-soft: rgba(22, 119, 255, 0.12);
-      --alipay-ring: rgba(22, 119, 255, 0.35);
-      --radius: 12px;
-      --radius-lg: 16px;
-      --max: 920px;
-      --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-    }
-
-    body {
-      margin: 0;
-      font-family: "DM Sans", system-ui, sans-serif;
-      font-optical-sizing: auto;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      min-height: 100vh;
-      font-size: 1rem;
-    }
-
-    .noise {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      z-index: 0;
-    }
-
-    .glow {
-      position: fixed;
-      top: -20%;
-      right: -10%;
-      width: 55vw;
-      max-width: 640px;
-      height: 55vh;
-      background: radial-gradient(ellipse, var(--accent-dim) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    header, main, footer {
-      position: relative;
-      z-index: 1;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    a:focus-visible {
-      outline: none;
-      border-radius: 4px;
-      box-shadow: var(--focus-ring);
-    }
-
-    .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.25rem;
-    }
-
-    header {
-      padding: 1.5rem 0 3.25rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 3.5rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-family: "JetBrains Mono", monospace;
-      font-weight: 500;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .logo-app-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-    }
-
-    .logo a {
-      color: inherit;
-    }
-
-    .logo a:hover {
-      text-decoration: none;
-      color: var(--accent);
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 0.35rem 1.15rem;
-      flex-wrap: wrap;
-      font-size: 0.9375rem;
-      align-items: center;
-    }
-
-    .nav-links a {
-      color: var(--text-muted);
-      padding: 0.35rem 0.15rem;
-      border-radius: 6px;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-links a.nav-highlight {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .nav-links .nav-sep {
-      color: var(--border);
-      user-select: none;
-      padding: 0 0.1rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 2.75rem);
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      margin: 0 0 1rem;
-      max-width: 20ch;
-    }
-
-    .hero p.lead {
-      font-size: 1.125rem;
-      color: var(--text-muted);
-      max-width: 38rem;
-      margin: 0 0 1.75rem;
-    }
-
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 0 1.35rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      font-size: 0.9375rem;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .btn {
-        transition: none;
-      }
-    }
-
-    .btn:focus-visible {
-      box-shadow: var(--focus-ring);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #0c0f14;
-    }
-
-    .btn-primary:hover {
-      text-decoration: none;
-      box-shadow: 0 0 0 3px var(--accent-dim);
-    }
-
-    .btn-ghost {
-      background: var(--bg-elevated);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-ghost:hover {
-      text-decoration: none;
-      border-color: rgba(255, 255, 255, 0.18);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .badge {
-      display: inline-block;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      padding: 0.35rem 0.6rem;
-      border-radius: 8px;
-      background: var(--accent-dim);
-      color: var(--accent);
-      margin-bottom: 1rem;
-      letter-spacing: 0.02em;
-    }
-
-    section {
-      padding: 3.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    section:last-of-type {
-      border-bottom: none;
-    }
-
-    h2 {
-      font-size: 1.375rem;
-      font-weight: 700;
-      margin: 0 0 0.65rem;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-    }
-
-    .section-lead {
-      color: var(--text-muted);
-      font-size: 1rem;
-      max-width: 40rem;
-      margin: 0 0 1.75rem;
-      line-height: 1.6;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem 1.5rem 1.35rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card {
-        transition: none;
-      }
-    }
-
-    .card:hover {
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .card h3 {
-      margin: 0 0 0.6rem;
-      font-size: 1.0625rem;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-
-    .card h3 .icon-svg {
-      flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      color: var(--accent);
-    }
-
-    .card p {
-      margin: 0;
-      font-size: 0.9375rem;
-      color: var(--text-muted);
-    }
-
-    .card .meta {
-      margin-top: 0.85rem;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.75rem;
-      color: var(--green);
-      letter-spacing: 0.01em;
-    }
-
-    ul.features {
-      margin: 0;
-      padding-left: 1.25rem;
-      color: var(--text-muted);
-      font-size: 0.96875rem;
-      max-width: 48rem;
-    }
-
-    ul.features li {
-      margin-bottom: 0.65rem;
-    }
-
-    ul.features li:last-child {
-      margin-bottom: 0;
-    }
-
-    ul.features strong {
-      color: var(--text);
-    }
-
-    .req {
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.8125rem;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.15rem 1.35rem;
-      overflow-x: auto;
-    }
-
-    .req dt {
-      color: var(--accent);
-      margin-top: 0.85rem;
-      font-weight: 500;
-    }
-
-    .req dt:first-child {
-      margin-top: 0;
-    }
-
-    .req dd {
-      margin: 0.35rem 0 0;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
-
-    /* Sponsor: branded frames, aligned with QR card aesthetics */
-    #sponsor {
-      padding-bottom: 4rem;
-    }
-
-    .sponsor-showcase {
-      margin-top: 0.25rem;
-    }
-
-    .sponsor-cards {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(1.25rem, 4vw, 2.25rem);
-      align-items: start;
-    }
-
-    @media (max-width: 720px) {
-      .sponsor-cards {
-        grid-template-columns: 1fr;
-        max-width: 280px;
-        margin: 0 auto;
-      }
-    }
-
-    .sponsor-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .sponsor-card__frame {
-      width: 100%;
-      max-width: 220px;
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      background: var(--bg-elevated);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.06) inset,
-        0 20px 50px -12px rgba(0, 0, 0, 0.55);
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .sponsor-card__frame {
-        transition: none;
-      }
-    }
-
-    .sponsor-card__frame:hover {
-      transform: translateY(-3px);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.08) inset,
-        0 28px 60px -12px rgba(0, 0, 0, 0.6);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .sponsor-card__frame:hover {
-        transform: none;
-      }
-    }
-
-    .sponsor-card--wechat .sponsor-card__frame {
-      border: 1px solid var(--wechat-ring);
-      background: linear-gradient(165deg, var(--wechat-soft) 0%, var(--bg-elevated) 45%);
-    }
-
-    .sponsor-card--alipay .sponsor-card__frame {
-      border: 1px solid var(--alipay-ring);
-      background: linear-gradient(165deg, var(--alipay-soft) 0%, var(--bg-elevated) 45%);
-    }
-
-    .sponsor-card--oa .sponsor-card__frame {
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: linear-gradient(165deg, rgba(255, 255, 255, 0.06) 0%, var(--bg-elevated) 50%);
-    }
-
-    .sponsor-card__frame img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      vertical-align: middle;
-    }
-
-    .sponsor-card__label {
-      display: block;
-      margin-top: 1rem;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .sponsor-card--wechat .sponsor-card__label {
-      color: rgba(125, 220, 170, 0.95);
-    }
-
-    .sponsor-card--alipay .sponsor-card__label {
-      color: rgba(130, 180, 255, 0.95);
-    }
-
-    .sponsor-card--oa .sponsor-card__label {
-      color: var(--text-muted);
-    }
-
-    .sponsor-card__hint {
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      margin-top: 0.25rem;
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    footer {
-      padding: 2.25rem 0 3rem;
-      color: var(--text-muted);
-      font-size: 0.875rem;
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
-
-    footer .footer-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem 0.85rem;
-    }
-
-    footer a {
-      color: var(--text-muted);
-    }
-
-    footer a:hover {
-      color: var(--accent);
-    }
-
-    footer .footer-site {
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    footer .footer-site:hover {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .lang-note {
-      margin-top: 1.15rem;
-      font-size: 0.9375rem;
-      color: var(--text-muted);
-      max-width: 36rem;
-    }
-  </style>
+  <link rel="stylesheet" href="site.css">
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
   <div class="glow" aria-hidden="true"></div>
 
-  <header>
+  <header class="site-header">
     <div class="wrap">
-      <nav class="nav" aria-label="Primary">
-        <div class="logo">
-          <img class="logo-app-icon" src="app-icon-nav.png" width="64" height="64" alt="" decoding="async" aria-hidden="true">
-          <span><a href="https://gxlself.com" rel="noopener">gxlself</a><span>/</span>Paste</span>
+      <nav class="site-nav" aria-label="Primary">
+        <div class="site-nav__row">
+          <div class="logo">
+            <a href="index.html"><img class="logo-app-icon" src="app-icon-nav.png" width="64" height="64" alt="" decoding="async" aria-hidden="true"></a>
+            <span><a href="https://gxlself.com" rel="noopener">gxlself</a><span>/</span>Paste</span>
+          </div>
+          <a class="btn btn-primary btn-nav-cta" href="https://github.com/gxlself/Paste/releases" rel="noopener">Download</a>
         </div>
-        <div class="nav-links">
-          <a href="#platforms">Platforms</a>
-          <a href="#features">Features</a>
-          <a href="#get-started">Get started</a>
-          <a href="https://github.com/gxlself/Paste/releases" rel="noopener">Download</a>
-          <span class="nav-sep" aria-hidden="true">·</span>
-          <a class="nav-highlight" href="https://gxlself.com" rel="noopener">gxlself.com</a>
+        <div class="site-nav__links" aria-label="Site sections">
+          <a href="index.html" class="nav-current" aria-current="page">Home</a>
+          <a href="everyone.html">Everyone</a>
+          <a href="developers.html">Developers</a>
+          <a href="designers.html">Designers</a>
+          <a href="sales-support.html">Sales &amp; Support</a>
+          <a href="use-cases.html">Use cases</a>
+          <span class="site-nav__sep" aria-hidden="true">·</span>
+          <a href="features.html">Features</a>
+          <a href="help.html">Help</a>
+          <a href="updates.html">Updates</a>
+          <span class="site-nav__sep" aria-hidden="true">·</span>
+          <a href="contact.html">Contact</a>
           <a href="https://github.com/gxlself/paste" rel="noopener">GitHub</a>
         </div>
       </nav>
@@ -634,11 +106,36 @@
     <section id="features" aria-labelledby="features-heading">
       <div class="wrap">
         <h2 id="features-heading">Highlights</h2>
+        <p class="section-lead" style="margin-top:-0.25rem">KEEP · SEARCH · ORGANIZE · Mac / iPhone / Keyboard. <a href="features.html">Feature tour →</a></p>
+        <div class="grid-3" style="margin-bottom:1.75rem">
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              KEEP
+            </h3>
+            <p>Rich history on Mac: text, RTF, images, paths. Dedup, retention, timeline, excluded apps. Never lose the clip you need next.</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              SEARCH
+            </h3>
+            <p>Live search, type tabs, regex presets, custom categories. Find that snippet from this morning in seconds.</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5H3v4h13V5zM16 9H3v4h13V9zM8 13H3v4h5v-4z"/><path d="M18 13v6l3-3-3-3z"/></svg>
+              ORGANIZE
+            </h3>
+            <p>Pinboards, Paste Stack, pin to top, plain-text paste options. Optional iCloud sync across Mac &amp; iOS.</p>
+          </article>
+        </div>
         <ul class="features">
           <li><strong>macOS:</strong> Text, RTF, images, file paths · SHA-256 dedup · excluded apps · retention &amp; timeline · search, regex, custom types · Assisted Paste (Accessibility)</li>
           <li><strong>Sync:</strong> iOS app ↔ keyboard via App Group; macOS ↔ iOS via optional iCloud (same Apple ID)</li>
           <li><strong>Privacy:</strong> Local-first; iCloud opt-in; no analytics or third-party SDKs in the described setup</li>
         </ul>
+        <p class="section-lead" style="margin-top:1.25rem;margin-bottom:0"><a href="features.html">See sync, privacy, power features &amp; use cases →</a></p>
       </div>
     </section>
 
@@ -691,17 +188,29 @@
     </section>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <div class="footer-row">
-        <a href="https://gxlself.com" class="footer-site" rel="noopener">gxlself.com</a>
-        <span aria-hidden="true">·</span>
-        <a href="https://github.com/gxlself/paste/blob/main/LICENSE">MIT License</a>
-        <span aria-hidden="true">·</span>
-        <a href="https://github.com/gxlself/paste">gxlself/paste</a>
-        <span aria-hidden="true">·</span>
-        <a href="https://github.com/gxlself/Paste/releases">Releases</a>
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-col-title">Product</div>
+        <a href="features.html">Features</a>
+        <a href="updates.html">What's New</a>
       </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <a href="help.html">Help</a>
+        <a href="use-cases.html">Use cases</a>
+        <a href="everyone.html">Everyone</a>
+      </div>
+      <div>
+        <div class="footer-col-title">More</div>
+        <a href="https://gxlself.com" rel="noopener">gxlself.com</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/gxlself/paste/issues">Suggest a feature</a>
+        <a href="https://github.com/gxlself/paste/blob/main/LICENSE">MIT License</a>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="footer-copy">gxlself Paste · MIT · <a href="https://github.com/gxlself/paste">source</a></p>
     </div>
   </footer>
 </body>
