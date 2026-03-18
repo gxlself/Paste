@@ -1,0 +1,218 @@
+"menu.title.recentClipboard" = "최근 클립보드";
+"menu.action.openPanel" = "패널 열기";
+"menu.empty.noRecords" = "기록 없음";
+"menu.action.settings" = "설정";
+"menu.action.quit" = "종료";
+
+"status.menu.accessibilityDescription" = "클립보드 관리자";
+"status.menu.openClipboard" = "Paste 열기";
+"status.menu.about" = "정보";
+"status.menu.preferences" = "환경설정…";
+"status.menu.pause" = "Paste 일시정지";
+"status.menu.resume" = "Paste 재개";
+"status.menu.quit" = "Paste 종료";
+
+"mainpanel.search.placeholder" = "검색…";
+"mainpanel.filter.all" = "전체";
+"mainpanel.filter.text" = "텍스트";
+"mainpanel.filter.image" = "이미지";
+"mainpanel.filter.file" = "파일";
+"mainpanel.itemCountFormat" = "%d개";
+"mainpanel.clearAll.help" = "모두 지우기";
+"mainpanel.empty.noHistory" = "클립보드 기록이 비어 있습니다";
+"mainpanel.empty.noMatches" = "일치하는 항목이 없습니다";
+"mainpanel.context.paste" = "붙여넣기";
+"mainpanel.context.delete" = "삭제";
+"mainpanel.text.characterCountFormat" = "%d자";
+"mainpanel.file.fileCountFormat" = "%d개";
+
+"preferences.tab.general" = "일반";
+"preferences.tab.shortcuts" = "단축키";
+"preferences.tab.excludedApps" = "제외 앱";
+"preferences.tab.about" = "정보";
+
+"preferences.general.maxItems" = "최대 저장 개수";
+"preferences.general.recordImages" = "이미지 기록";
+"preferences.general.launchAtLogin" = "로그인 시 실행";
+"preferences.general.appearance" = "테마";
+"preferences.general.appearance.system" = "시스템";
+"preferences.general.appearance.light" = "라이트";
+"preferences.general.appearance.dark" = "다크";
+"preferences.general.databaseSize" = "데이터베이스 크기";
+"preferences.general.clearAllHistory" = "기록 모두 삭제";
+"preferences.general.clearConfirm.title" = "모든 기록을 삭제할까요?";
+"preferences.general.clearConfirm.confirm" = "삭제";
+"preferences.general.clearConfirm.cancel" = "취소";
+"preferences.general.clearConfirm.message" = "이 작업은 되돌릴 수 없습니다.";
+
+"preferences.shortcuts.invokeHotKey" = "호출 단축키";
+"preferences.shortcuts.resetDefault" = "기본값으로 재설정 (⌘⇧V)";
+"preferences.shortcuts.section.title" = "단축키 설정";
+"preferences.shortcuts.section.footer" = "단축키로 클립보드 패널을 빠르게 열 수 있습니다";
+"preferences.shortcuts.panelShortcuts.title" = "패널 내 단축키";
+"preferences.shortcuts.row.navigate" = "선택 이동";
+"preferences.shortcuts.row.paste" = "선택 항목 붙여넣기";
+"preferences.shortcuts.row.copy" = "클립보드에 복사";
+"preferences.shortcuts.row.delete" = "선택 항목 삭제";
+"preferences.shortcuts.row.esc" = "검색 지우기 / 패널 닫기";
+
+"preferences.excludedApps.description" = "다음 앱의 클립보드 내용은 기록되지 않습니다:";
+"preferences.excludedApps.addApp" = "앱 추가";
+"preferences.excludedApps.add1Password" = "1Password 추가";
+
+"preferences.databaseSize.unknown" = "알 수 없음";
+"preferences.databaseSize.zero" = "0 KB";
+
+"about.appName" = "Paste";
+"about.versionFormat" = "버전 %@";
+"about.tagline" = "간단하고 빠른 macOS 클립보드 관리자";
+"about.copyrightFormat" = "© %d Paste";
+"about.window.title" = "About";
+"about.developedByFormat" = "Developed by %@";
+"about.privacyPolicy" = "Privacy Policy";
+"about.termsOfUse" = "Terms of Use";
+"policy.window.privacy.title" = "Privacy Policy";
+"policy.window.terms.title" = "Terms of Use";
+
+"clipboard.type.text" = "텍스트";
+"clipboard.type.image" = "이미지";
+"clipboard.type.file" = "파일";
+
+"clipboard.item.placeholder.image" = "[이미지]";
+"clipboard.item.placeholder.file" = "[파일]";
+
+"clipboard.timeGroup.today" = "오늘";
+"clipboard.timeGroup.yesterday" = "어제";
+"clipboard.timeGroup.thisWeek" = "이번 주";
+"clipboard.timeGroup.earlier" = "이전";
+"clipboard.timeGroup.pinned" = "고정";
+
+"preferences.tab.rules" = "Rules";
+"preferences.tab.sync" = "Sync";
+
+"preferences.general.integration" = "Integration";
+"preferences.general.accessibility" = "손쉬운 사용";
+"preferences.general.accessibility.assistedPaste" = "보조 붙여넣기";
+"preferences.general.accessibility.assistedPaste.description" = "선택 후 대상 앱에 자동으로 붙여넣습니다. 운동 장애가 있거나 키보드 단축키 사용이 어려운 사용자를 위한 기능입니다. ⌘V를 직접 누를 필요가 없습니다.";
+"preferences.general.accessibility.voiceOverAnnounce" = "VoiceOver 클립보드 알림";
+"preferences.general.accessibility.voiceOverAnnounce.description" = "VoiceOver가 활성화된 상태에서 복사 또는 붙여넣기 후 요약을 알려주어 시각 장애가 있는 사용자를 돕습니다.";
+"preferences.general.accessibility.status.granted" = "손쉬운 사용 권한 승인됨";
+"preferences.general.accessibility.status.notGranted" = "손쉬운 사용 권한 미승인";
+"preferences.general.accessibility.openSettings" = "시스템 설정 열기";
+"preferences.general.directPaste" = "보조 붙여넣기";
+"preferences.general.pastePlainText" = "Paste as plain text";
+"preferences.general.linkPreview" = "Enable link preview";
+"preferences.general.others" = "Others";
+"preferences.general.sound" = "Enable sound";
+"preferences.general.menuBarIcon" = "Show icon in menu bar";
+"preferences.general.appLanguage" = "앱 언어";
+"preferences.general.appLanguage.system" = "시스템";
+"preferences.general.appLanguage.zh-Hans" = "간체 중국어";
+"preferences.general.appLanguage.en" = "English";
+"preferences.general.appLanguage.ja" = "일본어";
+"preferences.general.appLanguage.de" = "독일어";
+"preferences.general.appLanguage.fr" = "프랑스어";
+"preferences.general.appLanguage.it" = "이탈리아어";
+"preferences.general.appLanguage.ko" = "한국어";
+"preferences.general.appLanguage.ru" = "러시아어";
+"preferences.general.appLanguage.restartHint" = "변경 사항을 적용하려면 앱을 다시 시작하세요.";
+"preferences.general.storage" = "Storage";
+"preferences.general.retentionCapacity" = "History retention";
+"preferences.general.retention.day" = "Day";
+"preferences.general.retention.week" = "Week";
+"preferences.general.retention.month" = "Month";
+"preferences.general.retention.year" = "Year";
+"preferences.general.retention.unlimited" = "Unlimited";
+
+"preferences.shortcuts.activatePaste" = "Activate Paste";
+"preferences.shortcuts.activatePasteStack" = "Activate Paste Stack";
+"preferences.shortcuts.nextPinboard" = "Next Pinboard";
+"preferences.shortcuts.prevPinboard" = "Previous Pinboard";
+"preferences.shortcuts.quickPaste" = "Quick paste";
+"preferences.shortcuts.plainTextMode" = "Plain text mode";
+"preferences.shortcuts.recording" = "Press shortcut…";
+"preferences.shortcuts.clear" = "Clear";
+
+"preferences.rules.ignoreSensitive" = "Ignore sensitive content";
+"preferences.rules.ignoreAutoGenerated" = "Ignore auto-generated content";
+"preferences.rules.excludedApps.title" = "Do not save history for these apps:";
+
+"preferences.sync.enableICloud" = "Enable iCloud Sync";
+"preferences.sync.syncNow" = "Sync now";
+"preferences.sync.feedback.triggered" = "Sync triggered.";
+"preferences.sync.feedback.failed" = "Sync failed";
+"preferences.sync.restartToApply" = "Restart the app to apply changes.";
+"preferences.sync.status.available" = "iCloud available";
+"preferences.sync.status.noAccount" = "No iCloud account";
+"preferences.sync.status.restricted" = "iCloud restricted";
+"preferences.sync.status.temporarilyUnavailable" = "iCloud temporarily unavailable";
+"preferences.sync.status.unknown" = "Unable to determine iCloud status";
+"preferences.sync.notSupported.personalTeam" = "iCloud capability is not available for the current signing team.";
+"preferences.sync.notSupported.configuration" = "iCloud capability is not properly configured. Please check Xcode project settings and developer account configuration";
+
+"status.menu.purchase" = "Purchase Premium";
+
+"purchase.window.title" = "Purchase Paste Premium";
+"purchase.title" = "Upgrade to Paste Premium";
+"purchase.subtitle" = "Unlock all premium features";
+"purchase.feature.iCloudSync" = "iCloud Sync";
+"purchase.feature.unlimitedHistory" = "Unlimited History";
+"purchase.feature.advancedPinboard" = "Advanced Pinboard Features";
+"purchase.feature.prioritySupport" = "Priority Support";
+"purchase.purchased" = "Purchased";
+"purchase.button.buy" = "Purchase Now";
+"purchase.button.restore" = "Restore Purchases";
+"purchase.error.productNotFound" = "Product not found";
+"purchase.productUnavailable" = "Product unavailable. Check network or try again later.";
+"purchase.error.userCancelled" = "Purchase cancelled";
+"purchase.error.pending" = "Purchase pending, please wait";
+"purchase.error.unknown" = "Unknown error";
+"purchase.restore.noPurchases" = "No purchases found";
+
+"preferences.sync.premiumRequired" = "Premium version required for iCloud Sync";
+
+"mainpanel.pasteStack.title" = "Paste Stack";
+"mainpanel.pinboard.titleFormat" = "Pinboard %d";
+"mainpanel.context.addToPasteStack" = "Add to Paste Stack";
+"mainpanel.context.removeFromPasteStack" = "Remove from Paste Stack";
+"mainpanel.context.togglePinboardCurrent" = "Toggle in current Pinboard";
+"mainpanel.context.pinboard" = "Pinboard";
+"mainpanel.context.pinboard.moveFormat" = "Move to Pinboard %d";
+
+"mainpanel.premium.title" = "Premium 버전 필요";
+"mainpanel.premium.message" = "Premium으로 업그레이드하여 모든 기능 잠금 해제";
+"mainpanel.premium.button" = "지금 구매";
+
+"purchase.error.networkUsingCache" = "Unable to verify purchase status, using local cache";
+"purchase.error.verificationFailed" = "Purchase verification failed, downgraded to free version";
+
+"freeVersion.limit.title" = "Free Version Limit Reached";
+"freeVersion.limit.message" = "The free version can save up to 10 history items. Upgrade to Premium to unlock unlimited history and more advanced features.";
+"freeVersion.limit.upgrade" = "Upgrade to Premium";
+"freeVersion.limit.dismiss" = "Got it";
+
+"about.rateApp" = "Rate on App Store";
+"about.contactSupport" = "Contact Support";
+"about.supportEmail.subject" = "Paste Support Request";
+"about.supportEmail.body" = "Please describe your issue or suggestion:\n\n";
+
+
+
+"permission.directPaste.title" = "손쉬운 사용 권한 필요";
+"permission.directPaste.message" = "보조 붙여넣기에는 손쉬운 사용 권한이 필요합니다. 시스템 설정에서 활성화하거나 보조 붙여넣기를 비활성화하고 수동으로 붙여넣을 수 있습니다.";
+"permission.directPaste.openSettings" = "시스템 설정 열기";
+"permission.directPaste.disableDirectPaste" = "보조 붙여넣기 비활성화";
+"permission.directPaste.cancel" = "취소";
+"mainpanel.pasteTarget.format" = "Paste to %@";
+
+
+"drag.ghost.releaseHint" = "Release to Paste";
+
+"voiceover.announce.copied.text %@" = "복사됨: %@";
+"voiceover.announce.copied.image" = "이미지 복사됨";
+"voiceover.announce.copied.file %lld" = "파일 %lld개 복사됨";
+"voiceover.announce.copied.multipleFormat %lld" = "%lld개 항목 복사됨";
+
+"mainpanel.assistedPaste.help" = "보조 붙여넣기 켜기/끄기";
+"accessibility.state.on" = "켜짐";
+"accessibility.state.off" = "꺼짐";

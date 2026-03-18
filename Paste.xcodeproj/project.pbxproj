@@ -1,0 +1,941 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5959F7AA2F66977D0008AF36 /* Paste-Keyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5959F7A32F66977D0008AF36 /* Paste-Keyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5905B3FF2F20CFBE00CD22C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5905B3E82F20CFBD00CD22C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5905B3EF2F20CFBD00CD22C2;
+			remoteInfo = Paste;
+		};
+		5905B4092F20CFBE00CD22C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5905B3E82F20CFBD00CD22C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5905B3EF2F20CFBD00CD22C2;
+			remoteInfo = Paste;
+		};
+		5959F7A82F66977D0008AF36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5905B3E82F20CFBD00CD22C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5959F7A22F66977D0008AF36;
+			remoteInfo = "Paste-Keyboard";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5959F7AF2F66977D0008AF36 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5959F7AA2F66977D0008AF36 /* Paste-Keyboard.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5905B3F02F20CFBD00CD22C2 /* Paste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paste.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5905B3FE2F20CFBE00CD22C2 /* PasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5905B4082F20CFBE00CD22C2 /* PasteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PasteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5959F77D2F66976B0008AF36 /* Paste-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Paste-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5959F7A32F66977D0008AF36 /* Paste-Keyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Paste-Keyboard.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		59C609752F45EB7500606778 /* PasteRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PasteRelease.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5959F78C2F66976C0008AF36 /* Exceptions for "Paste-iOS" folder in "Paste-iOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5959F77C2F66976B0008AF36 /* Paste-iOS */;
+		};
+		5959F7AB2F66977D0008AF36 /* Exceptions for "Paste-Keyboard" folder in "Paste-Keyboard" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5959F7A22F66977D0008AF36 /* Paste-Keyboard */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		5905B3F22F20CFBD00CD22C2 /* Paste */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Paste;
+			sourceTree = "<group>";
+		};
+		5905B4012F20CFBE00CD22C2 /* PasteTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PasteTests;
+			sourceTree = "<group>";
+		};
+		5905B40B2F20CFBE00CD22C2 /* PasteUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PasteUITests;
+			sourceTree = "<group>";
+		};
+		5959F77E2F66976B0008AF36 /* Paste-iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5959F78C2F66976C0008AF36 /* Exceptions for "Paste-iOS" folder in "Paste-iOS" target */,
+			);
+			path = "Paste-iOS";
+			sourceTree = "<group>";
+		};
+		5959F7A42F66977D0008AF36 /* Paste-Keyboard */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5959F7AB2F66977D0008AF36 /* Exceptions for "Paste-Keyboard" folder in "Paste-Keyboard" target */,
+			);
+			path = "Paste-Keyboard";
+			sourceTree = "<group>";
+		};
+		5959F7C02F669F000008AF36 /* Paste-Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Paste-Shared";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5905B3ED2F20CFBD00CD22C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5905B3FB2F20CFBE00CD22C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5905B4052F20CFBE00CD22C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5959F77A2F66976B0008AF36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5959F7A02F66977D0008AF36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5905B3E72F20CFBD00CD22C2 = {
+			isa = PBXGroup;
+			children = (
+				59C609752F45EB7500606778 /* PasteRelease.entitlements */,
+				5905B3F22F20CFBD00CD22C2 /* Paste */,
+				5905B4012F20CFBE00CD22C2 /* PasteTests */,
+				5905B40B2F20CFBE00CD22C2 /* PasteUITests */,
+				5959F77E2F66976B0008AF36 /* Paste-iOS */,
+				5959F7A42F66977D0008AF36 /* Paste-Keyboard */,
+				5959F7C02F669F000008AF36 /* Paste-Shared */,
+				5905B3F12F20CFBD00CD22C2 /* Products */,
+			);
+			sourceTree = "<group>";
+			usesTabs = 0;
+		};
+		5905B3F12F20CFBD00CD22C2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5905B3F02F20CFBD00CD22C2 /* Paste.app */,
+				5905B3FE2F20CFBE00CD22C2 /* PasteTests.xctest */,
+				5905B4082F20CFBE00CD22C2 /* PasteUITests.xctest */,
+				5959F77D2F66976B0008AF36 /* Paste-iOS.app */,
+				5959F7A32F66977D0008AF36 /* Paste-Keyboard.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5905B3EF2F20CFBD00CD22C2 /* Paste */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5905B4122F20CFBE00CD22C2 /* Build configuration list for PBXNativeTarget "Paste" */;
+			buildPhases = (
+				5905B3EC2F20CFBD00CD22C2 /* Sources */,
+				5905B3ED2F20CFBD00CD22C2 /* Frameworks */,
+				5905B3EE2F20CFBD00CD22C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5905B3F22F20CFBD00CD22C2 /* Paste */,
+				5959F7C02F669F000008AF36 /* Paste-Shared */,
+			);
+			name = Paste;
+			packageProductDependencies = (
+			);
+			productName = Paste;
+			productReference = 5905B3F02F20CFBD00CD22C2 /* Paste.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5905B3FD2F20CFBE00CD22C2 /* PasteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5905B4152F20CFBE00CD22C2 /* Build configuration list for PBXNativeTarget "PasteTests" */;
+			buildPhases = (
+				5905B3FA2F20CFBE00CD22C2 /* Sources */,
+				5905B3FB2F20CFBE00CD22C2 /* Frameworks */,
+				5905B3FC2F20CFBE00CD22C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5905B4002F20CFBE00CD22C2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5905B4012F20CFBE00CD22C2 /* PasteTests */,
+			);
+			name = PasteTests;
+			packageProductDependencies = (
+			);
+			productName = PasteTests;
+			productReference = 5905B3FE2F20CFBE00CD22C2 /* PasteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5905B4072F20CFBE00CD22C2 /* PasteUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5905B4182F20CFBE00CD22C2 /* Build configuration list for PBXNativeTarget "PasteUITests" */;
+			buildPhases = (
+				5905B4042F20CFBE00CD22C2 /* Sources */,
+				5905B4052F20CFBE00CD22C2 /* Frameworks */,
+				5905B4062F20CFBE00CD22C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5905B40A2F20CFBE00CD22C2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5905B40B2F20CFBE00CD22C2 /* PasteUITests */,
+			);
+			name = PasteUITests;
+			packageProductDependencies = (
+			);
+			productName = PasteUITests;
+			productReference = 5905B4082F20CFBE00CD22C2 /* PasteUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		5959F77C2F66976B0008AF36 /* Paste-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5959F78D2F66976C0008AF36 /* Build configuration list for PBXNativeTarget "Paste-iOS" */;
+			buildPhases = (
+				5959F7792F66976B0008AF36 /* Sources */,
+				5959F77A2F66976B0008AF36 /* Frameworks */,
+				5959F77B2F66976B0008AF36 /* Resources */,
+				5959F7AF2F66977D0008AF36 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5959F7A92F66977D0008AF36 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				5959F77E2F66976B0008AF36 /* Paste-iOS */,
+				5959F7C02F669F000008AF36 /* Paste-Shared */,
+			);
+			name = "Paste-iOS";
+			packageProductDependencies = (
+			);
+			productName = "Paste-iOS";
+			productReference = 5959F77D2F66976B0008AF36 /* Paste-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5959F7A22F66977D0008AF36 /* Paste-Keyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5959F7AC2F66977D0008AF36 /* Build configuration list for PBXNativeTarget "Paste-Keyboard" */;
+			buildPhases = (
+				5959F79F2F66977D0008AF36 /* Sources */,
+				5959F7A02F66977D0008AF36 /* Frameworks */,
+				5959F7A12F66977D0008AF36 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5959F7A42F66977D0008AF36 /* Paste-Keyboard */,
+				5959F7C02F669F000008AF36 /* Paste-Shared */,
+			);
+			name = "Paste-Keyboard";
+			packageProductDependencies = (
+			);
+			productName = "Paste-Keyboard";
+			productReference = 5959F7A32F66977D0008AF36 /* Paste-Keyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5905B3E82F20CFBD00CD22C2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 1640;
+				ORGANIZATIONNAME = Gxlself;
+				TargetAttributes = {
+					5905B3EF2F20CFBD00CD22C2 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					5905B3FD2F20CFBE00CD22C2 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 5905B3EF2F20CFBD00CD22C2;
+					};
+					5905B4072F20CFBE00CD22C2 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 5905B3EF2F20CFBD00CD22C2;
+					};
+					5959F77C2F66976B0008AF36 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					5959F7A22F66977D0008AF36 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+				};
+			};
+			buildConfigurationList = 5905B3EB2F20CFBD00CD22C2 /* Build configuration list for PBXProject "Paste" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+				fr,
+				it,
+				ja,
+				ko,
+				ru,
+				"zh-Hans",
+			);
+			mainGroup = 5905B3E72F20CFBD00CD22C2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5905B3F12F20CFBD00CD22C2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5905B3EF2F20CFBD00CD22C2 /* Paste */,
+				5905B3FD2F20CFBE00CD22C2 /* PasteTests */,
+				5905B4072F20CFBE00CD22C2 /* PasteUITests */,
+				5959F77C2F66976B0008AF36 /* Paste-iOS */,
+				5959F7A22F66977D0008AF36 /* Paste-Keyboard */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5905B3EE2F20CFBD00CD22C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5905B3FC2F20CFBE00CD22C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5905B4062F20CFBE00CD22C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5959F77B2F66976B0008AF36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5959F7A12F66977D0008AF36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5905B3EC2F20CFBD00CD22C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5905B3FA2F20CFBE00CD22C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5905B4042F20CFBE00CD22C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5959F7792F66976B0008AF36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5959F79F2F66977D0008AF36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5905B4002F20CFBE00CD22C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5905B3EF2F20CFBD00CD22C2 /* Paste */;
+			targetProxy = 5905B3FF2F20CFBE00CD22C2 /* PBXContainerItemProxy */;
+		};
+		5905B40A2F20CFBE00CD22C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5905B3EF2F20CFBD00CD22C2 /* Paste */;
+			targetProxy = 5905B4092F20CFBE00CD22C2 /* PBXContainerItemProxy */;
+		};
+		5959F7A92F66977D0008AF36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5959F7A22F66977D0008AF36 /* Paste-Keyboard */;
+			targetProxy = 5959F7A82F66977D0008AF36 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5905B4102F20CFBE00CD22C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5905B4112F20CFBE00CD22C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		5905B4132F20CFBE00CD22C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Paste/paste_tool_icloud.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = YES;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Paste;
+				INFOPLIST_KEY_CFBundleName = Paste;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "用于辅助目的与无障碍体验，将剪贴板内容粘贴到您正在使用的应用中。";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.8.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-tool";
+				PRODUCT_NAME = Paste;
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5905B4142F20CFBE00CD22C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = PasteRelease.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = YES;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Paste;
+				INFOPLIST_KEY_CFBundleName = Paste;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "用于辅助目的与无障碍体验，将剪贴板内容粘贴到您正在使用的应用中。";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.8.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-tool";
+				PRODUCT_NAME = Paste;
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		5905B4162F20CFBE00CD22C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.3;
+				MARKETING_VERSION = 1.7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-toolTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Paste.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Paste";
+			};
+			name = Debug;
+		};
+		5905B4172F20CFBE00CD22C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.3;
+				MARKETING_VERSION = 1.7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-toolTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Paste.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Paste";
+			};
+			name = Release;
+		};
+		5905B4192F20CFBE00CD22C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-toolUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Paste;
+			};
+			name = Debug;
+		};
+		5905B41A2F20CFBE00CD22C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-toolUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Paste;
+			};
+			name = Release;
+		};
+		5959F78E2F66976C0008AF36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Paste-iOS/paste_tool_iOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Paste-iOS/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Paste;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Paste 需要访问相机来扫描文档。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-tool";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5959F78F2F66976C0008AF36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Paste-iOS/paste_tool_iOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Paste-iOS/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Paste;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Paste 需要访问相机来扫描文档。";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-tool";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5959F7AD2F66977D0008AF36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Paste-Keyboard/Paste-Keyboard.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Paste-Keyboard/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Paste;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gxlself. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-tool.keyboard";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5959F7AE2F66977D0008AF36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Paste-Keyboard/Paste-Keyboard.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W8L8ZJ3N2P;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Paste-Keyboard/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Paste;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gxlself. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "gxlself.paste-tool.keyboard";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5905B3EB2F20CFBD00CD22C2 /* Build configuration list for PBXProject "Paste" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5905B4102F20CFBE00CD22C2 /* Debug */,
+				5905B4112F20CFBE00CD22C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5905B4122F20CFBE00CD22C2 /* Build configuration list for PBXNativeTarget "Paste" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5905B4132F20CFBE00CD22C2 /* Debug */,
+				5905B4142F20CFBE00CD22C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5905B4152F20CFBE00CD22C2 /* Build configuration list for PBXNativeTarget "PasteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5905B4162F20CFBE00CD22C2 /* Debug */,
+				5905B4172F20CFBE00CD22C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5905B4182F20CFBE00CD22C2 /* Build configuration list for PBXNativeTarget "PasteUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5905B4192F20CFBE00CD22C2 /* Debug */,
+				5905B41A2F20CFBE00CD22C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5959F78D2F66976C0008AF36 /* Build configuration list for PBXNativeTarget "Paste-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5959F78E2F66976C0008AF36 /* Debug */,
+				5959F78F2F66976C0008AF36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5959F7AC2F66977D0008AF36 /* Build configuration list for PBXNativeTarget "Paste-Keyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5959F7AD2F66977D0008AF36 /* Debug */,
+				5959F7AE2F66977D0008AF36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5905B3E82F20CFBD00CD22C2 /* Project object */;
+}

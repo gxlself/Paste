@@ -1,0 +1,218 @@
+"menu.title.recentClipboard" = "Presse-papiers récent";
+"menu.action.openPanel" = "Ouvrir le panneau";
+"menu.empty.noRecords" = "Aucun élément";
+"menu.action.settings" = "Réglages";
+"menu.action.quit" = "Quitter";
+
+"status.menu.accessibilityDescription" = "Gestionnaire du presse-papiers";
+"status.menu.openClipboard" = "Ouvrir Paste";
+"status.menu.about" = "À propos";
+"status.menu.preferences" = "Réglages…";
+"status.menu.pause" = "Suspendre Paste";
+"status.menu.resume" = "Reprendre Paste";
+"status.menu.quit" = "Quitter Paste";
+
+"mainpanel.search.placeholder" = "Rechercher…";
+"mainpanel.filter.all" = "Tout";
+"mainpanel.filter.text" = "Texte";
+"mainpanel.filter.image" = "Image";
+"mainpanel.filter.file" = "Fichiers";
+"mainpanel.itemCountFormat" = "%d éléments";
+"mainpanel.clearAll.help" = "Tout effacer";
+"mainpanel.empty.noHistory" = "Historique vide";
+"mainpanel.empty.noMatches" = "Aucun résultat";
+"mainpanel.context.paste" = "Coller";
+"mainpanel.context.delete" = "Supprimer";
+"mainpanel.text.characterCountFormat" = "%d caractères";
+"mainpanel.file.fileCountFormat" = "%d fichiers";
+
+"preferences.tab.general" = "Général";
+"preferences.tab.shortcuts" = "Raccourcis";
+"preferences.tab.excludedApps" = "Apps exclues";
+"preferences.tab.about" = "À propos";
+
+"preferences.general.maxItems" = "Nombre max.";
+"preferences.general.recordImages" = "Enregistrer les images";
+"preferences.general.launchAtLogin" = "Ouvrir à la connexion";
+"preferences.general.appearance" = "Apparence";
+"preferences.general.appearance.system" = "Système";
+"preferences.general.appearance.light" = "Clair";
+"preferences.general.appearance.dark" = "Sombre";
+"preferences.general.databaseSize" = "Taille de la base";
+"preferences.general.clearAllHistory" = "Effacer l’historique";
+"preferences.general.clearConfirm.title" = "Effacer tout l’historique ?";
+"preferences.general.clearConfirm.confirm" = "Effacer";
+"preferences.general.clearConfirm.cancel" = "Annuler";
+"preferences.general.clearConfirm.message" = "Cette action est irréversible.";
+
+"preferences.shortcuts.invokeHotKey" = "Raccourci";
+"preferences.shortcuts.resetDefault" = "Rétablir par défaut (⌘⇧V)";
+"preferences.shortcuts.section.title" = "Raccourcis";
+"preferences.shortcuts.section.footer" = "Utilisez le raccourci pour ouvrir rapidement le panneau";
+"preferences.shortcuts.panelShortcuts.title" = "Raccourcis du panneau";
+"preferences.shortcuts.row.navigate" = "Changer la sélection";
+"preferences.shortcuts.row.paste" = "Coller l’élément sélectionné";
+"preferences.shortcuts.row.copy" = "Copier dans le presse-papiers";
+"preferences.shortcuts.row.delete" = "Supprimer l’élément sélectionné";
+"preferences.shortcuts.row.esc" = "Vider la recherche / fermer le panneau";
+
+"preferences.excludedApps.description" = "Le contenu de ces apps ne sera pas enregistré :";
+"preferences.excludedApps.addApp" = "Ajouter une app";
+"preferences.excludedApps.add1Password" = "Ajouter 1Password";
+
+"preferences.databaseSize.unknown" = "Inconnu";
+"preferences.databaseSize.zero" = "0 KB";
+
+"about.appName" = "Paste";
+"about.versionFormat" = "Version %@";
+"about.tagline" = "Un gestionnaire de presse-papiers macOS simple et efficace";
+"about.copyrightFormat" = "© %d Paste";
+"about.window.title" = "About";
+"about.developedByFormat" = "Developed by %@";
+"about.privacyPolicy" = "Privacy Policy";
+"about.termsOfUse" = "Terms of Use";
+"policy.window.privacy.title" = "Privacy Policy";
+"policy.window.terms.title" = "Terms of Use";
+
+"clipboard.type.text" = "Texte";
+"clipboard.type.image" = "Image";
+"clipboard.type.file" = "Fichiers";
+
+"clipboard.item.placeholder.image" = "[Image]";
+"clipboard.item.placeholder.file" = "[Fichier]";
+
+"clipboard.timeGroup.today" = "Aujourd’hui";
+"clipboard.timeGroup.yesterday" = "Hier";
+"clipboard.timeGroup.thisWeek" = "Cette semaine";
+"clipboard.timeGroup.earlier" = "Plus tôt";
+"clipboard.timeGroup.pinned" = "Épinglé";
+
+"preferences.tab.rules" = "Rules";
+"preferences.tab.sync" = "Sync";
+
+"preferences.general.integration" = "Integration";
+"preferences.general.accessibility" = "Accessibilité";
+"preferences.general.accessibility.assistedPaste" = "Collage assisté";
+"preferences.general.accessibility.assistedPaste.description" = "Colle automatiquement dans l'application cible — conçu pour les utilisateurs ayant des difficultés motrices ou des problèmes avec les raccourcis clavier. Pas besoin d'appuyer sur ⌘V.";
+"preferences.general.accessibility.voiceOverAnnounce" = "Annonces VoiceOver du presse-papiers";
+"preferences.general.accessibility.voiceOverAnnounce.description" = "Lorsque VoiceOver est actif, annonce un résumé après chaque copie ou collage pour informer les utilisateurs malvoyants.";
+"preferences.general.accessibility.status.granted" = "Autorisation d'accessibilité accordée";
+"preferences.general.accessibility.status.notGranted" = "Autorisation d'accessibilité non accordée";
+"preferences.general.accessibility.openSettings" = "Ouvrir les Réglages Système";
+"preferences.general.directPaste" = "Collage assisté";
+"preferences.general.pastePlainText" = "Paste as plain text";
+"preferences.general.linkPreview" = "Enable link preview";
+"preferences.general.others" = "Others";
+"preferences.general.sound" = "Enable sound";
+"preferences.general.menuBarIcon" = "Show icon in menu bar";
+"preferences.general.appLanguage" = "Langue de l’app";
+"preferences.general.appLanguage.system" = "Système";
+"preferences.general.appLanguage.zh-Hans" = "Chinois simplifié";
+"preferences.general.appLanguage.en" = "English";
+"preferences.general.appLanguage.ja" = "Japonais";
+"preferences.general.appLanguage.de" = "Allemand";
+"preferences.general.appLanguage.fr" = "Français";
+"preferences.general.appLanguage.it" = "Italien";
+"preferences.general.appLanguage.ko" = "Coréen";
+"preferences.general.appLanguage.ru" = "Russe";
+"preferences.general.appLanguage.restartHint" = "Redémarrez l’app pour appliquer la modification.";
+"preferences.general.storage" = "Storage";
+"preferences.general.retentionCapacity" = "History retention";
+"preferences.general.retention.day" = "Day";
+"preferences.general.retention.week" = "Week";
+"preferences.general.retention.month" = "Month";
+"preferences.general.retention.year" = "Year";
+"preferences.general.retention.unlimited" = "Unlimited";
+
+"preferences.shortcuts.activatePaste" = "Activate Paste";
+"preferences.shortcuts.activatePasteStack" = "Activate Paste Stack";
+"preferences.shortcuts.nextPinboard" = "Next Pinboard";
+"preferences.shortcuts.prevPinboard" = "Previous Pinboard";
+"preferences.shortcuts.quickPaste" = "Quick paste";
+"preferences.shortcuts.plainTextMode" = "Plain text mode";
+"preferences.shortcuts.recording" = "Press shortcut…";
+"preferences.shortcuts.clear" = "Clear";
+
+"preferences.rules.ignoreSensitive" = "Ignore sensitive content";
+"preferences.rules.ignoreAutoGenerated" = "Ignore auto-generated content";
+"preferences.rules.excludedApps.title" = "Do not save history for these apps:";
+
+"preferences.sync.enableICloud" = "Enable iCloud Sync";
+"preferences.sync.syncNow" = "Sync now";
+"preferences.sync.feedback.triggered" = "Sync triggered.";
+"preferences.sync.feedback.failed" = "Sync failed";
+"preferences.sync.restartToApply" = "Restart the app to apply changes.";
+"preferences.sync.status.available" = "iCloud available";
+"preferences.sync.status.noAccount" = "No iCloud account";
+"preferences.sync.status.restricted" = "iCloud restricted";
+"preferences.sync.status.temporarilyUnavailable" = "iCloud temporarily unavailable";
+"preferences.sync.status.unknown" = "Unable to determine iCloud status";
+"preferences.sync.notSupported.personalTeam" = "iCloud capability is not available for the current signing team.";
+"preferences.sync.notSupported.configuration" = "iCloud capability is not properly configured. Please check Xcode project settings and developer account configuration";
+
+"status.menu.purchase" = "Purchase Premium";
+
+"purchase.window.title" = "Purchase Paste Premium";
+"purchase.title" = "Upgrade to Paste Premium";
+"purchase.subtitle" = "Unlock all premium features";
+"purchase.feature.iCloudSync" = "iCloud Sync";
+"purchase.feature.unlimitedHistory" = "Unlimited History";
+"purchase.feature.advancedPinboard" = "Advanced Pinboard Features";
+"purchase.feature.prioritySupport" = "Priority Support";
+"purchase.purchased" = "Purchased";
+"purchase.button.buy" = "Purchase Now";
+"purchase.button.restore" = "Restore Purchases";
+"purchase.error.productNotFound" = "Product not found";
+"purchase.productUnavailable" = "Product unavailable. Check network or try again later.";
+"purchase.error.userCancelled" = "Purchase cancelled";
+"purchase.error.pending" = "Purchase pending, please wait";
+"purchase.error.unknown" = "Unknown error";
+"purchase.restore.noPurchases" = "No purchases found";
+
+"preferences.sync.premiumRequired" = "Premium version required for iCloud Sync";
+
+"mainpanel.pasteStack.title" = "Paste Stack";
+"mainpanel.pinboard.titleFormat" = "Pinboard %d";
+"mainpanel.context.addToPasteStack" = "Add to Paste Stack";
+"mainpanel.context.removeFromPasteStack" = "Remove from Paste Stack";
+"mainpanel.context.togglePinboardCurrent" = "Toggle in current Pinboard";
+"mainpanel.context.pinboard" = "Pinboard";
+"mainpanel.context.pinboard.moveFormat" = "Move to Pinboard %d";
+
+"mainpanel.premium.title" = "Premium requis";
+"mainpanel.premium.message" = "Passez à Premium pour débloquer toutes les fonctionnalités";
+"mainpanel.premium.button" = "Acheter maintenant";
+
+"purchase.error.networkUsingCache" = "Unable to verify purchase status, using local cache";
+"purchase.error.verificationFailed" = "Purchase verification failed, downgraded to free version";
+
+"freeVersion.limit.title" = "Free Version Limit Reached";
+"freeVersion.limit.message" = "The free version can save up to 10 history items. Upgrade to Premium to unlock unlimited history and more advanced features.";
+"freeVersion.limit.upgrade" = "Upgrade to Premium";
+"freeVersion.limit.dismiss" = "Got it";
+
+"about.rateApp" = "Rate on App Store";
+"about.contactSupport" = "Contact Support";
+"about.supportEmail.subject" = "Paste Support Request";
+"about.supportEmail.body" = "Please describe your issue or suggestion:\n\n";
+
+
+
+"permission.directPaste.title" = "Autorisation d'accessibilité requise";
+"permission.directPaste.message" = "Le collage assisté nécessite l'autorisation d'accessibilité. Vous pouvez l'activer dans les Réglages Système ou désactiver le collage assisté et coller manuellement.";
+"permission.directPaste.openSettings" = "Ouvrir les Réglages Système";
+"permission.directPaste.disableDirectPaste" = "Désactiver le collage assisté";
+"permission.directPaste.cancel" = "Annuler";
+"mainpanel.pasteTarget.format" = "Paste to %@";
+
+
+"drag.ghost.releaseHint" = "Release to Paste";
+
+"voiceover.announce.copied.text %@" = "Copié : %@";
+"voiceover.announce.copied.image" = "Image copiée";
+"voiceover.announce.copied.file %lld" = "%lld fichiers copiés";
+"voiceover.announce.copied.multipleFormat %lld" = "%lld éléments copiés";
+
+"mainpanel.assistedPaste.help" = "Activer ou désactiver le collage assisté";
+"accessibility.state.on" = "Activé";
+"accessibility.state.off" = "Désactivé";

@@ -1,0 +1,24 @@
+/* Keyboard Extension – 日本語 */
+
+"mainpanel.search.placeholder" = "検索…";
+"mainpanel.empty.noHistory" = "クリップボードは空です";
+"mainpanel.filter.all" = "すべて";
+"mainpanel.filter.text" = "テキスト";
+"mainpanel.filter.image" = "画像";
+"mainpanel.filter.file" = "ファイル";
+
+"clipboard.type.text" = "テキスト";
+"clipboard.type.image" = "画像";
+"clipboard.type.file" = "ファイル";
+
+"ios.tab.clipboard" = "クリップボード";
+"ios.keyboard.paste" = "ペースト";
+"ios.keyboard.space" = "スペース";
+"ios.keyboard.send" = "送信";
+"ios.keyboard.copied.hint" = "コピー済み、どこでもペースト可能";
+"ios.card.copy" = "コピー";
+"ios.card.pin" = "固定";
+"ios.card.unpin" = "固定解除";
+"ios.card.preview" = "プレビュー";
+"ios.card.edit" = "編集";
+"ios.card.delete" = "削除";

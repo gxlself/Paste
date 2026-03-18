@@ -1,0 +1,274 @@
+"menu.title.recentClipboard" = "最近剪贴板";
+"menu.action.openPanel" = "打开面板";
+"menu.empty.noRecords" = "暂无记录";
+"menu.action.settings" = "设置";
+"menu.action.quit" = "退出";
+
+"status.menu.accessibilityDescription" = "剪贴板管理器";
+"status.menu.openClipboard" = "打开Paste";
+"status.menu.about" = "关于";
+"status.menu.preferences" = "偏好设置…";
+"status.menu.pause" = "暂停Paste";
+"status.menu.resume" = "恢复Paste";
+"status.menu.quit" = "退出Paste";
+
+"mainpanel.search.placeholder" = "搜索...";
+"mainpanel.filter.all" = "全部";
+"mainpanel.filter.text" = "文本";
+"mainpanel.filter.image" = "图片";
+"mainpanel.filter.file" = "文件";
+"mainpanel.filter.regex" = "正则";
+"mainpanel.itemCountFormat" = "%d 项";
+"mainpanel.clearAll.help" = "清空所有";
+"mainpanel.empty.noHistory" = "剪贴板历史为空";
+"mainpanel.empty.noMatches" = "没有找到匹配内容";
+"mainpanel.context.paste" = "粘贴";
+"mainpanel.context.delete" = "删除";
+"mainpanel.rename.title" = "重命名";
+"mainpanel.edit.title" = "编辑";
+"mainpanel.edit.ok" = "确定";
+"mainpanel.edit.cancel" = "取消";
+"mainpanel.newItem.title" = "新建文本";
+"mainpanel.text.characterCountFormat" = "%d字";
+"mainpanel.file.fileCountFormat" = "%d个";
+
+"preferences.tab.general" = "通用";
+"preferences.tab.shortcuts" = "快捷键";
+"preferences.tab.excludedApps" = "排除应用";
+"preferences.tab.about" = "关于";
+
+"preferences.general.maxItems" = "最大保存条数";
+"preferences.general.recordImages" = "记录图片";
+"preferences.general.launchAtLogin" = "开机自动启动";
+"preferences.general.appearance" = "外观";
+"preferences.general.appearance.system" = "跟随系统";
+"preferences.general.appearance.light" = "浅色";
+"preferences.general.appearance.dark" = "深色";
+"preferences.general.panelPosition" = "面板位置";
+"preferences.general.panelPosition.bottom" = "底部";
+"preferences.general.panelPosition.top" = "顶部";
+"preferences.general.panelPosition.left" = "左侧";
+"preferences.general.panelPosition.right" = "右侧";
+"preferences.general.accessibility" = "辅助功能";
+"preferences.general.accessibility.assistedPaste" = "辅助粘贴";
+"preferences.general.accessibility.assistedPaste.description" = "为有肢体障碍或难以按下键盘组合键的用户自动完成粘贴操作。开启后选中内容将自动粘贴到目标应用，无需手动按 ⌘V。";
+"preferences.general.accessibility.voiceOverAnnounce" = "VoiceOver 剪贴板播报";
+"preferences.general.accessibility.voiceOverAnnounce.description" = "当 VoiceOver 处于活跃状态时，复制或粘贴剪贴板内容后自动播报操作摘要，帮助视障用户了解当前操作。";
+"preferences.general.accessibility.status.granted" = "辅助功能权限已授权";
+"preferences.general.accessibility.status.notGranted" = "辅助功能权限未授权";
+"preferences.general.accessibility.openSettings" = "前往系统设置";
+"preferences.general.databaseSize" = "数据库大小";
+"preferences.general.clearAllHistory" = "清空所有历史记录";
+"preferences.general.clearConfirm.title" = "确定要清空所有历史记录吗？";
+"preferences.general.clearConfirm.confirm" = "清空";
+"preferences.general.clearConfirm.cancel" = "取消";
+"preferences.general.clearConfirm.message" = "此操作无法撤销";
+
+"preferences.shortcuts.invokeHotKey" = "呼出快捷键";
+"preferences.shortcuts.resetDefault" = "恢复默认 (⌘⇧V)";
+"preferences.shortcuts.section.title" = "快捷键设置";
+"preferences.shortcuts.section.footer" = "按下快捷键可快速打开剪贴板面板";
+"preferences.shortcuts.panelShortcuts.title" = "面板内快捷键";
+"preferences.shortcuts.row.navigate" = "切换选中项";
+"preferences.shortcuts.row.paste" = "粘贴选中项";
+"preferences.shortcuts.row.copy" = "复制到剪贴板";
+"preferences.shortcuts.row.delete" = "删除选中项";
+"preferences.shortcuts.row.esc" = "清空搜索 / 关闭面板";
+
+"preferences.excludedApps.description" = "以下应用的剪贴板内容将不会被记录：";
+"preferences.excludedApps.addApp" = "添加应用";
+"preferences.excludedApps.add1Password" = "添加 1Password";
+
+"preferences.databaseSize.unknown" = "未知";
+"preferences.databaseSize.zero" = "0 KB";
+
+"about.appName" = "Paste";
+"about.versionFormat" = "版本 %@";
+"about.tagline" = "一款简洁高效的 macOS 剪贴板管理工具";
+"about.copyrightFormat" = "© %d Paste";
+"about.window.title" = "关于";
+"about.developedByFormat" = "由%@开发";
+"about.privacyPolicy" = "隐私政策";
+"about.termsOfUse" = "使用条款";
+"policy.window.privacy.title" = "隐私政策";
+"policy.window.terms.title" = "使用条款";
+
+"clipboard.type.text" = "文本";
+"clipboard.type.image" = "图片";
+"clipboard.type.file" = "文件";
+
+"clipboard.item.placeholder.image" = "[图片]";
+"clipboard.item.placeholder.file" = "[文件]";
+
+"clipboard.timeGroup.today" = "今天";
+"clipboard.timeGroup.yesterday" = "昨天";
+"clipboard.timeGroup.thisWeek" = "本周";
+"clipboard.timeGroup.earlier" = "更早";
+"clipboard.timeGroup.pinned" = "置顶";
+
+"preferences.tab.rules" = "规则";
+"preferences.tab.sync" = "同步";
+
+"preferences.general.integration" = "集成";
+"preferences.general.directPaste" = "辅助粘贴";
+"preferences.general.pastePlainText" = "粘贴为纯文本";
+"preferences.general.linkPreview" = "启用链接预览";
+"preferences.general.others" = "其他";
+"preferences.general.sound" = "启用音效";
+"preferences.general.menuBarIcon" = "在菜单栏显示图标";
+"preferences.general.appLanguage" = "应用语言";
+"preferences.general.appLanguage.system" = "跟随系统";
+"preferences.general.appLanguage.zh-Hans" = "简体中文";
+"preferences.general.appLanguage.en" = "English";
+"preferences.general.appLanguage.ja" = "日本語";
+"preferences.general.appLanguage.de" = "Deutsch";
+"preferences.general.appLanguage.fr" = "Français";
+"preferences.general.appLanguage.it" = "Italiano";
+"preferences.general.appLanguage.ko" = "한국어";
+"preferences.general.appLanguage.ru" = "Русский";
+"preferences.general.appLanguage.restartHint" = "更改语言后需重启应用生效。";
+"preferences.general.storage" = "存储";
+"preferences.general.retentionCapacity" = "历史记录容量";
+"preferences.general.retention.day" = "天";
+"preferences.general.retention.week" = "星期";
+"preferences.general.retention.month" = "月";
+"preferences.general.retention.year" = "Year";
+"preferences.general.retention.unlimited" = "无限";
+
+"preferences.shortcuts.activatePaste" = "激活 Paste";
+"preferences.shortcuts.activatePasteStack" = "激活 Paste Stack";
+"preferences.shortcuts.nextPinboard" = "显示下一个 Pinboard";
+"preferences.shortcuts.prevPinboard" = "显示上一个 Pinboard";
+"preferences.shortcuts.quickPaste" = "快速粘贴";
+"preferences.shortcuts.plainTextMode" = "纯文本模式";
+"preferences.shortcuts.recording" = "请按下快捷键…";
+"preferences.shortcuts.clear" = "清除";
+
+"preferences.rules.ignoreSensitive" = "忽略检测到的密码之类的保密内容";
+"preferences.rules.ignoreAutoGenerated" = "忽略自动生成的内容";
+"preferences.rules.excludedApps.title" = "不保存以下应用的历史：";
+
+"preferences.sync.enableICloud" = "开启 iCloud 同步";
+"preferences.sync.syncNow" = "立即同步";
+"preferences.sync.feedback.triggered" = "同步已触发。";
+"preferences.sync.feedback.failed" = "同步失败";
+"preferences.sync.restartToApply" = "重启应用后生效。";
+"preferences.sync.status.available" = "iCloud 可用";
+"preferences.sync.status.noAccount" = "未登录 iCloud";
+"preferences.sync.status.restricted" = "iCloud 受限制";
+"preferences.sync.status.temporarilyUnavailable" = "iCloud 暂时不可用";
+"preferences.sync.status.unknown" = "无法确定 iCloud 状态";
+"preferences.sync.notSupported.personalTeam" = "当前签名团队不支持 iCloud 能力（Personal Team 无法使用 iCloud/CloudKit）。";
+"preferences.sync.notSupported.configuration" = "iCloud 能力未正确配置，请检查 Xcode 项目设置和开发者账号配置";
+
+"mainpanel.pasteStack.title" = "Paste Stack";
+"mainpanel.pinboard.titleFormat" = "Pinboard %d";
+"mainpanel.context.addToPasteStack" = "加入 Paste Stack";
+"mainpanel.context.removeFromPasteStack" = "从 Paste Stack 移除";
+"mainpanel.context.togglePinboardCurrent" = "加入/移出当前 Pinboard";
+"mainpanel.context.pinboard" = "Pinboard";
+"mainpanel.context.pinboard.moveFormat" = "移动到 Pinboard %d";
+
+"status.menu.purchase" = "购买 Premium";
+
+"purchase.window.title" = "购买 Paste Premium";
+"purchase.title" = "升级到 Paste Premium";
+"purchase.subtitle" = "解锁所有高级功能";
+"purchase.feature.iCloudSync" = "iCloud 同步";
+"purchase.feature.unlimitedHistory" = "无限历史记录";
+"purchase.feature.advancedPinboard" = "高级 Pinboard 功能";
+"purchase.feature.prioritySupport" = "优先技术支持";
+"purchase.purchased" = "已购买";
+"purchase.button.buy" = "立即购买";
+"purchase.button.restore" = "恢复购买";
+"purchase.error.productNotFound" = "产品未找到";
+"purchase.productUnavailable" = "产品暂时不可用，请检查网络或稍后重试。";
+"purchase.error.userCancelled" = "用户取消了购买";
+"purchase.error.pending" = "购买待处理，请稍候";
+"purchase.error.unknown" = "未知错误";
+"purchase.restore.noPurchases" = "未找到已购买的产品";
+
+"preferences.sync.premiumRequired" = "需要 Premium 版本才能使用 iCloud 同步";
+
+"mainpanel.premium.title" = "需要 Premium 版本";
+"mainpanel.premium.message" = "升级到 Premium 以解锁所有功能";
+"mainpanel.premium.button" = "立即购买";
+
+"purchase.error.networkUsingCache" = "无法验证购买状态，使用本地缓存";
+"purchase.error.verificationFailed" = "购买验证失败，已降级为免费版";
+
+"freeVersion.limit.title" = "已达到免费版限制";
+"freeVersion.limit.message" = "免费版最多保存 10 条历史记录。升级到 Premium 可解锁无限历史记录和更多高级功能。";
+"freeVersion.limit.upgrade" = "升级到 Premium";
+"freeVersion.limit.dismiss" = "知道了";
+
+"about.rateApp" = "在 App Store 中评价";
+"about.contactSupport" = "联系支持";
+"about.supportEmail.subject" = "Paste 支持请求";
+"about.supportEmail.body" = "请描述您的问题或建议：\n\n";
+
+"permission.onboarding.window.title" = "需要授权";
+"permission.onboarding.title" = "开启权限以完整使用 Paste";
+"permission.onboarding.subtitle" = "为支持全局快捷键与一键粘贴，请在系统设置中为 Paste 开启以下权限。";
+"permission.onboarding.intro" = "请按顺序完成以下步骤，在「系统设置」中勾选 Paste：";
+"permission.onboarding.accessibility.title" = "辅助功能";
+"permission.onboarding.accessibility.description" = "用于面板打开时响应 Cmd+F、Cmd+T 等快捷键，不抢焦点即可操作。";
+"permission.onboarding.inputMonitoring.title" = "输入监控";
+"permission.onboarding.inputMonitoring.description" = "用于将选中的历史项一键粘贴到当前应用（模拟 ⌘V）。";
+"permission.onboarding.openSettings" = "打开系统设置";
+"permission.onboarding.recheck" = "我已开启，重新检测";
+"permission.onboarding.footerHint" = "开启后请点击上方按钮重新检测，无需重启应用。";
+
+"permission.directPaste.title" = "需要辅助功能权限";
+"permission.directPaste.message" = "辅助粘贴需要辅助功能权限才能向目标应用自动粘贴。你可以在系统设置中开启，或关闭辅助粘贴后手动按 ⌘V 粘贴。";
+"permission.directPaste.openSettings" = "打开系统设置";
+"permission.directPaste.disableDirectPaste" = "关闭辅助粘贴";
+"permission.directPaste.cancel" = "取消";
+
+"mainpanel.pasteTarget.format" = "粘贴到 %@";
+
+"regex.preset.email" = "邮箱";
+"regex.preset.url" = "URL";
+"regex.preset.phone" = "电话";
+"regex.preset.uuid" = "UUID";
+"regex.preset.ipv4" = "IPv4";
+"regex.preset.integer" = "整数";
+"regex.preset.float" = "浮点数";
+"regex.preset.chinese" = "中文";
+"regex.preset.date" = "日期";
+"regex.preset.hexColor" = "十六进制颜色";
+"regex.preset.semver" = "语义化版本";
+"regex.preset.jsonString" = "JSON 字符串";
+"regex.preset.whitespace" = "空白";
+"regex.preset.htmlTag" = "HTML 标签";
+
+"accessibility.mainpanel.search" = "搜索剪贴板";
+"accessibility.mainpanel.search.hint" = "输入关键词筛选记录";
+"accessibility.mainpanel.clearAll" = "清空全部";
+"accessibility.mainpanel.clearAll.hint" = "清空剪贴板历史列表";
+"accessibility.mainpanel.filter.selected" = "已选中";
+"accessibility.mainpanel.filter.unselected" = "未选中";
+"accessibility.mainpanel.pasteStackExit" = "退出粘贴栈";
+"accessibility.mainpanel.pinboardExit" = "退出剪贴板";
+"accessibility.mainpanel.pasteTarget" = "粘贴目标：%@";
+"accessibility.mainpanel.inputSource" = "当前输入法：%@";
+"accessibility.mainpanel.card.hint" = "双击粘贴，右键显示更多操作";
+"accessibility.mainpanel.card.textFormat" = "文本，%@，%d 字，%@";
+"accessibility.mainpanel.card.imageFormat" = "图片，%@，%@";
+"accessibility.mainpanel.card.fileFormat" = "文件，%@，%@";
+"accessibility.mainpanel.card.colorFormat" = "颜色预览 %@，文本，%@";
+"accessibility.mainpanel.presetFormat" = "正则预设 %@，%@";
+"accessibility.preview.text" = "文本预览";
+"accessibility.preview.image" = "图片预览";
+"accessibility.preview.file" = "文件预览";
+
+"drag.ghost.releaseHint" = "松开即粘贴";
+
+"voiceover.announce.copied.text %@" = "已复制：%@";
+"voiceover.announce.copied.image" = "已复制图片";
+"voiceover.announce.copied.file %lld" = "已复制 %lld 个文件";
+"voiceover.announce.copied.multipleFormat %lld" = "已复制 %lld 项";
+
+"mainpanel.assistedPaste.help" = "开启或关闭辅助粘贴";
+"accessibility.state.on" = "已开启";
+"accessibility.state.off" = "已关闭";

@@ -1,0 +1,24 @@
+/* Keyboard Extension – Deutsch */
+
+"mainpanel.search.placeholder" = "Suche…";
+"mainpanel.empty.noHistory" = "Zwischenablage ist leer";
+"mainpanel.filter.all" = "Alle";
+"mainpanel.filter.text" = "Text";
+"mainpanel.filter.image" = "Bild";
+"mainpanel.filter.file" = "Dateien";
+
+"clipboard.type.text" = "Text";
+"clipboard.type.image" = "Bild";
+"clipboard.type.file" = "Dateien";
+
+"ios.tab.clipboard" = "Zwischenablage";
+"ios.keyboard.paste" = "Einfügen";
+"ios.keyboard.space" = "Leer";
+"ios.keyboard.send" = "Senden";
+"ios.keyboard.copied.hint" = "Kopiert, überall einfügen";
+"ios.card.copy" = "Kopieren";
+"ios.card.pin" = "Anheften";
+"ios.card.unpin" = "Lösen";
+"ios.card.preview" = "Vorschau";
+"ios.card.edit" = "Bearbeiten";
+"ios.card.delete" = "Löschen";

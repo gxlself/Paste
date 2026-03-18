@@ -1,0 +1,24 @@
+/* Keyboard Extension – English */
+
+"mainpanel.search.placeholder" = "Search…";
+"mainpanel.empty.noHistory" = "Clipboard is empty";
+"mainpanel.filter.all" = "All";
+"mainpanel.filter.text" = "Text";
+"mainpanel.filter.image" = "Image";
+"mainpanel.filter.file" = "Files";
+
+"clipboard.type.text" = "Text";
+"clipboard.type.image" = "Image";
+"clipboard.type.file" = "Files";
+
+"ios.tab.clipboard" = "Clipboard";
+"ios.keyboard.paste" = "Paste";
+"ios.keyboard.space" = "space";
+"ios.keyboard.send" = "send";
+"ios.keyboard.copied.hint" = "Copied, paste anywhere";
+"ios.card.copy" = "Copy";
+"ios.card.pin" = "Pin";
+"ios.card.unpin" = "Unpin";
+"ios.card.preview" = "Preview";
+"ios.card.edit" = "Edit";
+"ios.card.delete" = "Delete";

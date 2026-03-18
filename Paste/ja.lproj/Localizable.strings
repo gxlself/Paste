@@ -1,0 +1,218 @@
+"menu.title.recentClipboard" = "最近のクリップボード";
+"menu.action.openPanel" = "パネルを開く";
+"menu.empty.noRecords" = "履歴がありません";
+"menu.action.settings" = "設定";
+"menu.action.quit" = "終了";
+
+"status.menu.accessibilityDescription" = "クリップボードマネージャ";
+"status.menu.openClipboard" = "Pasteを開く";
+"status.menu.about" = "情報";
+"status.menu.preferences" = "設定…";
+"status.menu.pause" = "Pasteを一時停止";
+"status.menu.resume" = "Pasteを再開";
+"status.menu.quit" = "Pasteを終了";
+
+"mainpanel.search.placeholder" = "検索…";
+"mainpanel.filter.all" = "すべて";
+"mainpanel.filter.text" = "テキスト";
+"mainpanel.filter.image" = "画像";
+"mainpanel.filter.file" = "ファイル";
+"mainpanel.itemCountFormat" = "%d 件";
+"mainpanel.clearAll.help" = "すべて消去";
+"mainpanel.empty.noHistory" = "履歴は空です";
+"mainpanel.empty.noMatches" = "一致する項目がありません";
+"mainpanel.context.paste" = "貼り付け";
+"mainpanel.context.delete" = "削除";
+"mainpanel.text.characterCountFormat" = "%d 文字";
+"mainpanel.file.fileCountFormat" = "%d 個";
+
+"preferences.tab.general" = "一般";
+"preferences.tab.shortcuts" = "ショートカット";
+"preferences.tab.excludedApps" = "除外アプリ";
+"preferences.tab.about" = "情報";
+
+"preferences.general.maxItems" = "保存上限";
+"preferences.general.recordImages" = "画像を記録";
+"preferences.general.launchAtLogin" = "ログイン時に起動";
+"preferences.general.appearance" = "外観";
+"preferences.general.appearance.system" = "システム";
+"preferences.general.appearance.light" = "ライト";
+"preferences.general.appearance.dark" = "ダーク";
+"preferences.general.databaseSize" = "データベース容量";
+"preferences.general.clearAllHistory" = "履歴をすべて消去";
+"preferences.general.clearConfirm.title" = "履歴をすべて消去しますか？";
+"preferences.general.clearConfirm.confirm" = "消去";
+"preferences.general.clearConfirm.cancel" = "キャンセル";
+"preferences.general.clearConfirm.message" = "この操作は元に戻せません。";
+
+"preferences.shortcuts.invokeHotKey" = "呼び出しショートカット";
+"preferences.shortcuts.resetDefault" = "デフォルトに戻す (⌘⇧V)";
+"preferences.shortcuts.section.title" = "ショートカット設定";
+"preferences.shortcuts.section.footer" = "ショートカットでクリップボードパネルを素早く開けます";
+"preferences.shortcuts.panelShortcuts.title" = "パネル内ショートカット";
+"preferences.shortcuts.row.navigate" = "選択を移動";
+"preferences.shortcuts.row.paste" = "選択項目を貼り付け";
+"preferences.shortcuts.row.copy" = "クリップボードへコピー";
+"preferences.shortcuts.row.delete" = "選択項目を削除";
+"preferences.shortcuts.row.esc" = "検索をクリア / パネルを閉じる";
+
+"preferences.excludedApps.description" = "次のアプリのクリップボード内容は記録されません：";
+"preferences.excludedApps.addApp" = "アプリを追加";
+"preferences.excludedApps.add1Password" = "1Password を追加";
+
+"preferences.databaseSize.unknown" = "不明";
+"preferences.databaseSize.zero" = "0 KB";
+
+"about.appName" = "Paste";
+"about.versionFormat" = "バージョン %@";
+"about.tagline" = "シンプルで高速な macOS クリップボード管理ツール";
+"about.copyrightFormat" = "© %d Paste";
+"about.window.title" = "About";
+"about.developedByFormat" = "Developed by %@";
+"about.privacyPolicy" = "Privacy Policy";
+"about.termsOfUse" = "Terms of Use";
+"policy.window.privacy.title" = "Privacy Policy";
+"policy.window.terms.title" = "Terms of Use";
+
+"clipboard.type.text" = "テキスト";
+"clipboard.type.image" = "画像";
+"clipboard.type.file" = "ファイル";
+
+"clipboard.item.placeholder.image" = "[画像]";
+"clipboard.item.placeholder.file" = "[ファイル]";
+
+"clipboard.timeGroup.today" = "今日";
+"clipboard.timeGroup.yesterday" = "昨日";
+"clipboard.timeGroup.thisWeek" = "今週";
+"clipboard.timeGroup.earlier" = "以前";
+"clipboard.timeGroup.pinned" = "固定";
+
+"preferences.tab.rules" = "Rules";
+"preferences.tab.sync" = "Sync";
+
+"preferences.general.integration" = "Integration";
+"preferences.general.accessibility" = "アクセシビリティ";
+"preferences.general.accessibility.assistedPaste" = "アシストペースト";
+"preferences.general.accessibility.assistedPaste.description" = "選択後に対象アプリへ自動的にペーストします。運動障害やキーボードショートカットが困難なユーザー向けの機能です。⌘Vを手動で押す必要はありません。";
+"preferences.general.accessibility.voiceOverAnnounce" = "VoiceOverクリップボード読み上げ";
+"preferences.general.accessibility.voiceOverAnnounce.description" = "VoiceOverが有効な場合、コピーまたはペースト後に操作の概要を読み上げ、視覚障害のあるユーザーをサポートします。";
+"preferences.general.accessibility.status.granted" = "アクセシビリティ権限が許可されています";
+"preferences.general.accessibility.status.notGranted" = "アクセシビリティ権限が許可されていません";
+"preferences.general.accessibility.openSettings" = "システム設定を開く";
+"preferences.general.directPaste" = "アシストペースト";
+"preferences.general.pastePlainText" = "Paste as plain text";
+"preferences.general.linkPreview" = "Enable link preview";
+"preferences.general.others" = "Others";
+"preferences.general.sound" = "Enable sound";
+"preferences.general.menuBarIcon" = "Show icon in menu bar";
+"preferences.general.appLanguage" = "アプリの言語";
+"preferences.general.appLanguage.system" = "システムに従う";
+"preferences.general.appLanguage.zh-Hans" = "簡体字中国語";
+"preferences.general.appLanguage.en" = "English";
+"preferences.general.appLanguage.ja" = "日本語";
+"preferences.general.appLanguage.de" = "ドイツ語";
+"preferences.general.appLanguage.fr" = "フランス語";
+"preferences.general.appLanguage.it" = "イタリア語";
+"preferences.general.appLanguage.ko" = "韓国語";
+"preferences.general.appLanguage.ru" = "ロシア語";
+"preferences.general.appLanguage.restartHint" = "変更を反映するにはアプリを再起動してください。";
+"preferences.general.storage" = "Storage";
+"preferences.general.retentionCapacity" = "History retention";
+"preferences.general.retention.day" = "Day";
+"preferences.general.retention.week" = "Week";
+"preferences.general.retention.month" = "Month";
+"preferences.general.retention.year" = "Year";
+"preferences.general.retention.unlimited" = "Unlimited";
+
+"preferences.shortcuts.activatePaste" = "Activate Paste";
+"preferences.shortcuts.activatePasteStack" = "Activate Paste Stack";
+"preferences.shortcuts.nextPinboard" = "Next Pinboard";
+"preferences.shortcuts.prevPinboard" = "Previous Pinboard";
+"preferences.shortcuts.quickPaste" = "Quick paste";
+"preferences.shortcuts.plainTextMode" = "Plain text mode";
+"preferences.shortcuts.recording" = "Press shortcut…";
+"preferences.shortcuts.clear" = "Clear";
+
+"preferences.rules.ignoreSensitive" = "Ignore sensitive content";
+"preferences.rules.ignoreAutoGenerated" = "Ignore auto-generated content";
+"preferences.rules.excludedApps.title" = "Do not save history for these apps:";
+
+"preferences.sync.enableICloud" = "Enable iCloud Sync";
+"preferences.sync.syncNow" = "Sync now";
+"preferences.sync.feedback.triggered" = "Sync triggered.";
+"preferences.sync.feedback.failed" = "Sync failed";
+"preferences.sync.restartToApply" = "Restart the app to apply changes.";
+"preferences.sync.status.available" = "iCloud available";
+"preferences.sync.status.noAccount" = "No iCloud account";
+"preferences.sync.status.restricted" = "iCloud restricted";
+"preferences.sync.status.temporarilyUnavailable" = "iCloud temporarily unavailable";
+"preferences.sync.status.unknown" = "Unable to determine iCloud status";
+"preferences.sync.notSupported.personalTeam" = "iCloud capability is not available for the current signing team.";
+"preferences.sync.notSupported.configuration" = "iCloud capability is not properly configured. Please check Xcode project settings and developer account configuration";
+
+"status.menu.purchase" = "Purchase Premium";
+
+"purchase.window.title" = "Purchase Paste Premium";
+"purchase.title" = "Upgrade to Paste Premium";
+"purchase.subtitle" = "Unlock all premium features";
+"purchase.feature.iCloudSync" = "iCloud Sync";
+"purchase.feature.unlimitedHistory" = "Unlimited History";
+"purchase.feature.advancedPinboard" = "Advanced Pinboard Features";
+"purchase.feature.prioritySupport" = "Priority Support";
+"purchase.purchased" = "Purchased";
+"purchase.button.buy" = "Purchase Now";
+"purchase.button.restore" = "Restore Purchases";
+"purchase.error.productNotFound" = "Product not found";
+"purchase.productUnavailable" = "Product unavailable. Check network or try again later.";
+"purchase.error.userCancelled" = "Purchase cancelled";
+"purchase.error.pending" = "Purchase pending, please wait";
+"purchase.error.unknown" = "Unknown error";
+"purchase.restore.noPurchases" = "No purchases found";
+
+"preferences.sync.premiumRequired" = "Premium version required for iCloud Sync";
+
+"mainpanel.pasteStack.title" = "Paste Stack";
+"mainpanel.pinboard.titleFormat" = "Pinboard %d";
+"mainpanel.context.addToPasteStack" = "Add to Paste Stack";
+"mainpanel.context.removeFromPasteStack" = "Remove from Paste Stack";
+"mainpanel.context.togglePinboardCurrent" = "Toggle in current Pinboard";
+"mainpanel.context.pinboard" = "Pinboard";
+"mainpanel.context.pinboard.moveFormat" = "Move to Pinboard %d";
+
+"mainpanel.premium.title" = "Premium版が必要です";
+"mainpanel.premium.message" = "Premium版にアップグレードしてすべての機能をアンロック";
+"mainpanel.premium.button" = "今すぐ購入";
+
+"purchase.error.networkUsingCache" = "Unable to verify purchase status, using local cache";
+"purchase.error.verificationFailed" = "Purchase verification failed, downgraded to free version";
+
+"freeVersion.limit.title" = "Free Version Limit Reached";
+"freeVersion.limit.message" = "The free version can save up to 10 history items. Upgrade to Premium to unlock unlimited history and more advanced features.";
+"freeVersion.limit.upgrade" = "Upgrade to Premium";
+"freeVersion.limit.dismiss" = "Got it";
+
+"about.rateApp" = "Rate on App Store";
+"about.contactSupport" = "Contact Support";
+"about.supportEmail.subject" = "Paste Support Request";
+"about.supportEmail.body" = "Please describe your issue or suggestion:\n\n";
+
+
+
+"permission.directPaste.title" = "アクセシビリティ権限が必要です";
+"permission.directPaste.message" = "アシストペーストにはアクセシビリティ権限が必要です。システム設定で有効にするか、アシストペーストを無効にして手動でペーストしてください。";
+"permission.directPaste.openSettings" = "システム設定を開く";
+"permission.directPaste.disableDirectPaste" = "アシストペーストを無効にする";
+"permission.directPaste.cancel" = "キャンセル";
+"mainpanel.pasteTarget.format" = "Paste to %@";
+
+
+"drag.ghost.releaseHint" = "Release to Paste";
+
+"voiceover.announce.copied.text %@" = "コピーしました：%@";
+"voiceover.announce.copied.image" = "画像をコピーしました";
+"voiceover.announce.copied.file %lld" = "%lldファイルをコピーしました";
+"voiceover.announce.copied.multipleFormat %lld" = "%lld項目をコピーしました";
+
+"mainpanel.assistedPaste.help" = "アシストペーストのオン・オフを切り替え";
+"accessibility.state.on" = "オン";
+"accessibility.state.off" = "オフ";

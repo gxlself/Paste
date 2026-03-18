@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="24D70a" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="ClipboardItemEntity" representedClassName="ClipboardItemEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="appBundleId" optional="YES" attributeType="String"/>
+        <attribute name="appIconData" optional="YES" attributeType="Binary"/>
+        <attribute name="contentHash" optional="YES" attributeType="String"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="filePaths" optional="YES" attributeType="Binary"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="isPinned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="plainText" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <attribute name="rtfData" optional="YES" attributeType="Binary"/>
+        <attribute name="tags" optional="YES" attributeType="Binary"/>
+        <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <fetchIndex name="byContentHashIndex">
+            <fetchIndexElement property="contentHash" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byCreatedAtIndex">
+            <fetchIndexElement property="createdAt" type="Binary" order="descending"/>
+        </fetchIndex>
+        <fetchIndex name="byTypeIndex">
+            <fetchIndexElement property="type" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="StackEntryEntity" representedClassName="StackEntryEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="itemId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <fetchIndex name="byCreatedAtIndex">
+            <fetchIndexElement property="createdAt" type="Binary" order="descending"/>
+        </fetchIndex>
+        <fetchIndex name="byItemIdIndex">
+            <fetchIndexElement property="itemId" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+</model>

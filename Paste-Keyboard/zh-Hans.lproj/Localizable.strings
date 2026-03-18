@@ -1,0 +1,24 @@
+/* Keyboard Extension – 简体中文 */
+
+"mainpanel.search.placeholder" = "搜索…";
+"mainpanel.empty.noHistory" = "剪贴板为空";
+"mainpanel.filter.all" = "全部";
+"mainpanel.filter.text" = "文本";
+"mainpanel.filter.image" = "图片";
+"mainpanel.filter.file" = "文件";
+
+"clipboard.type.text" = "文本";
+"clipboard.type.image" = "图片";
+"clipboard.type.file" = "文件";
+
+"ios.tab.clipboard" = "剪贴板";
+"ios.keyboard.paste" = "粘贴";
+"ios.keyboard.space" = "空格";
+"ios.keyboard.send" = "发送";
+"ios.keyboard.copied.hint" = "已复制，可粘贴到任何地方";
+"ios.card.copy" = "复制";
+"ios.card.pin" = "置顶";
+"ios.card.unpin" = "取消置顶";
+"ios.card.preview" = "预览";
+"ios.card.edit" = "编辑";
+"ios.card.delete" = "删除";

@@ -1,0 +1,274 @@
+"menu.title.recentClipboard" = "Recent clipboard";
+"menu.action.openPanel" = "Open panel";
+"menu.empty.noRecords" = "No records";
+"menu.action.settings" = "Settings";
+"menu.action.quit" = "Quit";
+
+"status.menu.accessibilityDescription" = "Clipboard Manager";
+"status.menu.openClipboard" = "Open Paste";
+"status.menu.about" = "About";
+"status.menu.preferences" = "Preferences…";
+"status.menu.pause" = "Pause Paste";
+"status.menu.resume" = "Resume Paste";
+"status.menu.quit" = "Quit Paste";
+
+"mainpanel.search.placeholder" = "Search…";
+"mainpanel.filter.all" = "All";
+"mainpanel.filter.text" = "Text";
+"mainpanel.filter.image" = "Image";
+"mainpanel.filter.file" = "Files";
+"mainpanel.filter.regex" = "Regex";
+"mainpanel.itemCountFormat" = "%d items";
+"mainpanel.clearAll.help" = "Clear all";
+"mainpanel.empty.noHistory" = "Clipboard history is empty";
+"mainpanel.empty.noMatches" = "No matches found";
+"mainpanel.context.paste" = "Paste";
+"mainpanel.context.delete" = "Delete";
+"mainpanel.rename.title" = "Rename";
+"mainpanel.edit.title" = "Edit";
+"mainpanel.edit.ok" = "OK";
+"mainpanel.edit.cancel" = "Cancel";
+"mainpanel.newItem.title" = "New Text Item";
+"mainpanel.text.characterCountFormat" = "%d chars";
+"mainpanel.file.fileCountFormat" = "%d files";
+
+"preferences.tab.general" = "General";
+"preferences.tab.shortcuts" = "Shortcuts";
+"preferences.tab.excludedApps" = "Excluded apps";
+"preferences.tab.about" = "About";
+
+"preferences.general.maxItems" = "Max items";
+"preferences.general.recordImages" = "Record images";
+"preferences.general.launchAtLogin" = "Launch at login";
+"preferences.general.appearance" = "Appearance";
+"preferences.general.appearance.system" = "System";
+"preferences.general.appearance.light" = "Light";
+"preferences.general.appearance.dark" = "Dark";
+"preferences.general.panelPosition" = "Panel position";
+"preferences.general.panelPosition.bottom" = "Bottom";
+"preferences.general.panelPosition.top" = "Top";
+"preferences.general.panelPosition.left" = "Left";
+"preferences.general.panelPosition.right" = "Right";
+"preferences.general.accessibility" = "Accessibility";
+"preferences.general.accessibility.assistedPaste" = "Assisted Paste";
+"preferences.general.accessibility.assistedPaste.description" = "Automatically pastes into the target app after selection — designed for users with motor impairments or difficulty pressing keyboard shortcuts. No need to press ⌘V manually.";
+"preferences.general.accessibility.voiceOverAnnounce" = "VoiceOver Clipboard Announcements";
+"preferences.general.accessibility.voiceOverAnnounce.description" = "When VoiceOver is active, announces a summary after copying or pasting clipboard content, helping visually impaired users stay informed.";
+"preferences.general.accessibility.status.granted" = "Accessibility permission granted";
+"preferences.general.accessibility.status.notGranted" = "Accessibility permission not granted";
+"preferences.general.accessibility.openSettings" = "Open System Settings";
+"preferences.general.databaseSize" = "Database size";
+"preferences.general.clearAllHistory" = "Clear all history";
+"preferences.general.clearConfirm.title" = "Clear all history?";
+"preferences.general.clearConfirm.confirm" = "Clear";
+"preferences.general.clearConfirm.cancel" = "Cancel";
+"preferences.general.clearConfirm.message" = "This action can’t be undone.";
+
+"preferences.shortcuts.invokeHotKey" = "Hotkey";
+"preferences.shortcuts.resetDefault" = "Reset to default (⌘⇧V)";
+"preferences.shortcuts.section.title" = "Hotkey settings";
+"preferences.shortcuts.section.footer" = "Press the hotkey to open the clipboard panel quickly";
+"preferences.shortcuts.panelShortcuts.title" = "Panel shortcuts";
+"preferences.shortcuts.row.navigate" = "Move selection";
+"preferences.shortcuts.row.paste" = "Paste selected item";
+"preferences.shortcuts.row.copy" = "Copy to clipboard";
+"preferences.shortcuts.row.delete" = "Delete selected item";
+"preferences.shortcuts.row.esc" = "Clear search / close panel";
+
+"preferences.excludedApps.description" = "Clipboard content from the following apps won’t be recorded:";
+"preferences.excludedApps.addApp" = "Add app";
+"preferences.excludedApps.add1Password" = "Add 1Password";
+
+"preferences.databaseSize.unknown" = "Unknown";
+"preferences.databaseSize.zero" = "0 KB";
+
+"about.appName" = "Paste";
+"about.versionFormat" = "Version %@";
+"about.tagline" = "A simple and efficient macOS clipboard manager";
+"about.copyrightFormat" = "© %d Paste";
+"about.window.title" = "About";
+"about.developedByFormat" = "Developed by %@";
+"about.privacyPolicy" = "Privacy Policy";
+"about.termsOfUse" = "Terms of Use";
+"policy.window.privacy.title" = "Privacy Policy";
+"policy.window.terms.title" = "Terms of Use";
+
+"clipboard.type.text" = "Text";
+"clipboard.type.image" = "Image";
+"clipboard.type.file" = "Files";
+
+"clipboard.item.placeholder.image" = "[Image]";
+"clipboard.item.placeholder.file" = "[File]";
+
+"clipboard.timeGroup.today" = "Today";
+"clipboard.timeGroup.yesterday" = "Yesterday";
+"clipboard.timeGroup.thisWeek" = "This week";
+"clipboard.timeGroup.earlier" = "Earlier";
+"clipboard.timeGroup.pinned" = "Pinned";
+
+"preferences.tab.rules" = "Rules";
+"preferences.tab.sync" = "Sync";
+
+"preferences.general.integration" = "Integration";
+"preferences.general.directPaste" = "Assisted Paste";
+"preferences.general.pastePlainText" = "Paste as plain text";
+"preferences.general.linkPreview" = "Enable link preview";
+"preferences.general.others" = "Others";
+"preferences.general.sound" = "Enable sound";
+"preferences.general.menuBarIcon" = "Show icon in menu bar";
+"preferences.general.appLanguage" = "App Language";
+"preferences.general.appLanguage.system" = "System";
+"preferences.general.appLanguage.zh-Hans" = "Simplified Chinese";
+"preferences.general.appLanguage.en" = "English";
+"preferences.general.appLanguage.ja" = "Japanese";
+"preferences.general.appLanguage.de" = "German";
+"preferences.general.appLanguage.fr" = "French";
+"preferences.general.appLanguage.it" = "Italian";
+"preferences.general.appLanguage.ko" = "Korean";
+"preferences.general.appLanguage.ru" = "Russian";
+"preferences.general.appLanguage.restartHint" = "Restart the app for the change to take effect.";
+"preferences.general.storage" = "Storage";
+"preferences.general.retentionCapacity" = "History retention";
+"preferences.general.retention.day" = "Day";
+"preferences.general.retention.week" = "Week";
+"preferences.general.retention.month" = "Month";
+"preferences.general.retention.year" = "Year";
+"preferences.general.retention.unlimited" = "Unlimited";
+
+"preferences.shortcuts.activatePaste" = "Activate Paste";
+"preferences.shortcuts.activatePasteStack" = "Activate Paste Stack";
+"preferences.shortcuts.nextPinboard" = "Next Pinboard";
+"preferences.shortcuts.prevPinboard" = "Previous Pinboard";
+"preferences.shortcuts.quickPaste" = "Quick paste";
+"preferences.shortcuts.plainTextMode" = "Plain text mode";
+"preferences.shortcuts.recording" = "Press shortcut…";
+"preferences.shortcuts.clear" = "Clear";
+
+"preferences.rules.ignoreSensitive" = "Ignore sensitive content";
+"preferences.rules.ignoreAutoGenerated" = "Ignore auto-generated content";
+"preferences.rules.excludedApps.title" = "Do not save history for these apps:";
+
+"preferences.sync.enableICloud" = "Enable iCloud Sync";
+"preferences.sync.syncNow" = "Sync now";
+"preferences.sync.feedback.triggered" = "Sync triggered.";
+"preferences.sync.feedback.failed" = "Sync failed";
+"preferences.sync.restartToApply" = "Restart the app to apply changes.";
+"preferences.sync.status.available" = "iCloud available";
+"preferences.sync.status.noAccount" = "No iCloud account";
+"preferences.sync.status.restricted" = "iCloud restricted";
+"preferences.sync.status.temporarilyUnavailable" = "iCloud temporarily unavailable";
+"preferences.sync.status.unknown" = "Unable to determine iCloud status";
+"preferences.sync.notSupported.personalTeam" = "iCloud capability is not available for the current signing team.";
+"preferences.sync.notSupported.configuration" = "iCloud capability is not properly configured. Please check Xcode project settings and developer account configuration";
+
+"mainpanel.pasteStack.title" = "Paste Stack";
+"mainpanel.pinboard.titleFormat" = "Pinboard %d";
+"mainpanel.context.addToPasteStack" = "Add to Paste Stack";
+"mainpanel.context.removeFromPasteStack" = "Remove from Paste Stack";
+"mainpanel.context.togglePinboardCurrent" = "Toggle in current Pinboard";
+"mainpanel.context.pinboard" = "Pinboard";
+"mainpanel.context.pinboard.moveFormat" = "Move to Pinboard %d";
+
+"status.menu.purchase" = "Purchase Premium";
+
+"purchase.window.title" = "Purchase Paste Premium";
+"purchase.title" = "Upgrade to Paste Premium";
+"purchase.subtitle" = "Unlock all premium features";
+"purchase.feature.iCloudSync" = "iCloud Sync";
+"purchase.feature.unlimitedHistory" = "Unlimited History";
+"purchase.feature.advancedPinboard" = "Advanced Pinboard Features";
+"purchase.feature.prioritySupport" = "Priority Support";
+"purchase.purchased" = "Purchased";
+"purchase.button.buy" = "Purchase Now";
+"purchase.button.restore" = "Restore Purchases";
+"purchase.error.productNotFound" = "Product not found";
+"purchase.productUnavailable" = "Product unavailable. Check network or try again later.";
+"purchase.error.userCancelled" = "Purchase cancelled";
+"purchase.error.pending" = "Purchase pending, please wait";
+"purchase.error.unknown" = "Unknown error";
+"purchase.restore.noPurchases" = "No purchases found";
+
+"preferences.sync.premiumRequired" = "Premium version required for iCloud Sync";
+
+"mainpanel.premium.title" = "Premium Required";
+"mainpanel.premium.message" = "Upgrade to Premium to unlock all features";
+"mainpanel.premium.button" = "Purchase Now";
+
+"purchase.error.networkUsingCache" = "Unable to verify purchase status, using local cache";
+"purchase.error.verificationFailed" = "Purchase verification failed, downgraded to free version";
+
+"freeVersion.limit.title" = "Free Version Limit Reached";
+"freeVersion.limit.message" = "The free version can save up to 10 history items. Upgrade to Premium to unlock unlimited history and more advanced features.";
+"freeVersion.limit.upgrade" = "Upgrade to Premium";
+"freeVersion.limit.dismiss" = "Got it";
+
+"about.rateApp" = "Rate on App Store";
+"about.contactSupport" = "Contact Support";
+"about.supportEmail.subject" = "Paste Support Request";
+"about.supportEmail.body" = "Please describe your issue or suggestion:\n\n";
+
+"permission.onboarding.window.title" = "Permissions Required";
+"permission.onboarding.title" = "Enable permissions to use Paste fully";
+"permission.onboarding.subtitle" = "To support global shortcuts and one‑click paste, please enable the following permissions for Paste in System Settings.";
+"permission.onboarding.intro" = "Complete the steps below and turn on Paste in System Settings:";
+"permission.onboarding.accessibility.title" = "Accessibility";
+"permission.onboarding.accessibility.description" = "Responds to Cmd+F, Cmd+T, etc. when the panel is open without stealing focus.";
+"permission.onboarding.inputMonitoring.title" = "Input Monitoring";
+"permission.onboarding.inputMonitoring.description" = "Pastes the selected history item into the front app (simulates ⌘V).";
+"permission.onboarding.openSettings" = "Open System Settings";
+"permission.onboarding.recheck" = "I’ve enabled them, re-check";
+"permission.onboarding.footerHint" = "After enabling, tap the button above to re-check; no need to restart the app.";
+
+"permission.directPaste.title" = "Accessibility Permission Required";
+"permission.directPaste.message" = "Assisted Paste needs Accessibility permission to automatically paste into the target app. You can enable it in System Settings, or disable Assisted Paste and press ⌘V manually.";
+"permission.directPaste.openSettings" = "Open System Settings";
+"permission.directPaste.disableDirectPaste" = "Disable Assisted Paste";
+"permission.directPaste.cancel" = "Cancel";
+
+"mainpanel.pasteTarget.format" = "Paste to %@";
+
+"regex.preset.email" = "Email";
+"regex.preset.url" = "URL";
+"regex.preset.phone" = "Phone";
+"regex.preset.uuid" = "UUID";
+"regex.preset.ipv4" = "IPv4";
+"regex.preset.integer" = "Integer";
+"regex.preset.float" = "Float";
+"regex.preset.chinese" = "Chinese";
+"regex.preset.date" = "Date";
+"regex.preset.hexColor" = "Hex color";
+"regex.preset.semver" = "Semver";
+"regex.preset.jsonString" = "JSON string";
+"regex.preset.whitespace" = "Whitespace";
+"regex.preset.htmlTag" = "HTML tag";
+
+"accessibility.mainpanel.search" = "Search clipboard";
+"accessibility.mainpanel.search.hint" = "Type to filter records";
+"accessibility.mainpanel.clearAll" = "Clear all";
+"accessibility.mainpanel.clearAll.hint" = "Clear clipboard history list";
+"accessibility.mainpanel.filter.selected" = "Selected";
+"accessibility.mainpanel.filter.unselected" = "Not selected";
+"accessibility.mainpanel.pasteStackExit" = "Exit paste stack";
+"accessibility.mainpanel.pinboardExit" = "Exit pinboard";
+"accessibility.mainpanel.pasteTarget" = "Paste target: %@";
+"accessibility.mainpanel.inputSource" = "Input source: %@";
+"accessibility.mainpanel.card.hint" = "Double-tap to paste, right-click for more actions";
+"accessibility.mainpanel.card.textFormat" = "Text, %@, %d characters, %@";
+"accessibility.mainpanel.card.imageFormat" = "Image, %@, %@";
+"accessibility.mainpanel.card.fileFormat" = "File, %@, %@";
+"accessibility.mainpanel.card.colorFormat" = "Color preview %@, text, %@";
+"accessibility.mainpanel.presetFormat" = "Regex preset %@, %@";
+"accessibility.preview.text" = "Text preview";
+"accessibility.preview.image" = "Image preview";
+"accessibility.preview.file" = "File preview";
+
+"drag.ghost.releaseHint" = "Release to Paste";
+
+"voiceover.announce.copied.text %@" = "Copied: %@";
+"voiceover.announce.copied.image" = "Image copied";
+"voiceover.announce.copied.file %lld" = "Copied %lld files";
+"voiceover.announce.copied.multipleFormat %lld" = "Copied %lld items";
+
+"mainpanel.assistedPaste.help" = "Toggle Assisted Paste on or off";
+"accessibility.state.on" = "On";
+"accessibility.state.off" = "Off";

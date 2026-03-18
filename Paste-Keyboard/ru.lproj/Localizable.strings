@@ -1,0 +1,24 @@
+/* Keyboard Extension – Русский */
+
+"mainpanel.search.placeholder" = "Поиск…";
+"mainpanel.empty.noHistory" = "Буфер обмена пуст";
+"mainpanel.filter.all" = "Все";
+"mainpanel.filter.text" = "Текст";
+"mainpanel.filter.image" = "Изображение";
+"mainpanel.filter.file" = "Файлы";
+
+"clipboard.type.text" = "Текст";
+"clipboard.type.image" = "Изображение";
+"clipboard.type.file" = "Файлы";
+
+"ios.tab.clipboard" = "Буфер обмена";
+"ios.keyboard.paste" = "Вставить";
+"ios.keyboard.space" = "пробел";
+"ios.keyboard.send" = "отправить";
+"ios.keyboard.copied.hint" = "Скопировано, вставьте куда угодно";
+"ios.card.copy" = "Копировать";
+"ios.card.pin" = "Закрепить";
+"ios.card.unpin" = "Открепить";
+"ios.card.preview" = "Просмотр";
+"ios.card.edit" = "Редактировать";
+"ios.card.delete" = "Удалить";

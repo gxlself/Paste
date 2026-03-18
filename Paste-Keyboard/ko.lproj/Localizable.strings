@@ -1,0 +1,24 @@
+/* Keyboard Extension – 한국어 */
+
+"mainpanel.search.placeholder" = "검색…";
+"mainpanel.empty.noHistory" = "클립보드가 비어 있습니다";
+"mainpanel.filter.all" = "전체";
+"mainpanel.filter.text" = "텍스트";
+"mainpanel.filter.image" = "이미지";
+"mainpanel.filter.file" = "파일";
+
+"clipboard.type.text" = "텍스트";
+"clipboard.type.image" = "이미지";
+"clipboard.type.file" = "파일";
+
+"ios.tab.clipboard" = "클립보드";
+"ios.keyboard.paste" = "붙여넣기";
+"ios.keyboard.space" = "스페이스";
+"ios.keyboard.send" = "보내기";
+"ios.keyboard.copied.hint" = "복사됨, 아무 곳에나 붙여넣기";
+"ios.card.copy" = "복사";
+"ios.card.pin" = "고정";
+"ios.card.unpin" = "고정 해제";
+"ios.card.preview" = "미리보기";
+"ios.card.edit" = "편집";
+"ios.card.delete" = "삭제";
