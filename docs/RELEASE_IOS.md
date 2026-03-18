@@ -33,7 +33,7 @@ So **GitHub Releases + .ipa for “everyone” is not viable** unless you use Te
 
 Then in [App Store Connect](https://appstoreconnect.apple.com):
 
-- **TestFlight**: After processing, add internal/external testers and share the public link or send invites.
+- **TestFlight**: After processing, add internal/external testers and share the public link or send invites. This repo’s public link (when enabled in App Store Connect): **https://testflight.apple.com/join/2UKC5P27**
 - **App Store**: Create the app listing, submit for review, release.
 
 The archive includes the embedded **Paste-Keyboard** extension if **Embed Foundation Extensions** is set correctly (see SETUP.md).

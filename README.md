@@ -16,7 +16,7 @@ The **iOS app** and **Paste keyboard** share one **App Group** database so the k
 
 **iOS companion for others:** Apple does not allow install-from-GitHub like macOS; distribution is via **TestFlight** or the **App Store** — see **[docs/RELEASE_IOS.md](docs/RELEASE_IOS.md)**.
 
-**iOS TestFlight access:** Want to try the iOS app on TestFlight? **Email [gxlself@gmail.com](mailto:gxlself@gmail.com)** and ask to be added.
+**iOS TestFlight:** Install [TestFlight](https://apps.apple.com/app/testflight/id899247664) on your iPhone/iPad, then open **[this public link](https://testflight.apple.com/join/2UKC5P27)** to join the beta. If the link says it’s full or not accepting testers, email **[gxlself@gmail.com](mailto:gxlself@gmail.com)**.
 
 **Questions or bugs:** Please [**open an issue**](https://github.com/gxlself/paste/issues) on GitHub.
 
