@@ -12,7 +12,13 @@ The **iOS app** and **Paste keyboard** share one **App Group** database so the k
 
 **iOS / keyboard builds** need one-time signing and App Group setup — see **[SETUP.md](SETUP.md)**. The macOS target runs with no extra configuration.
 
-**Ship a macOS zip for GitHub Releases:** install full Xcode, then run `./scripts/build-macos-github-release.sh` — see **[docs/RELEASE_MACOS.md](docs/RELEASE_MACOS.md)** (fixes `xcodebuild: command not found`).
+**Ship a macOS zip/pkg for GitHub Releases:** install full Xcode, then run `./scripts/build-macos-github-release.sh` — see **[docs/RELEASE_MACOS.md](docs/RELEASE_MACOS.md)**.
+
+**iOS companion for others:** Apple does not allow install-from-GitHub like macOS; distribution is via **TestFlight** or the **App Store** — see **[docs/RELEASE_IOS.md](docs/RELEASE_IOS.md)**.
+
+**iOS TestFlight access:** Want to try the iOS app on TestFlight? **Email [gxlself@gmail.com](mailto:gxlself@gmail.com)** and ask to be added.
+
+**Questions or bugs:** Please [**open an issue**](https://github.com/gxlself/paste/issues) on GitHub.
 
 If Paste is helpful to you, please [**star the repository on GitHub**](https://github.com/gxlself/paste) — it helps others find the project. 若觉得有用，也欢迎随手点个 Star。
 
