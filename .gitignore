@@ -45,8 +45,8 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-# Docs site (tracked only on branch `docs`; main does not track)
-docs/
+# Docs site: main tracks docs/ for editing; subtree push to branch `docs` (docs branch root = site only)
+# docs/
 
 # Other
 *.moved-aside

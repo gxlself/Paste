@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Paste — 轻量、隐私优先的 macOS 与 iOS 剪贴板管理。菜单栏应用、iOS 应用、自定义键盘扩展，可选 iCloud 同步。">
+  <meta name="theme-color" content="#0f1419">
+  <title>Paste — macOS 与 iOS 剪贴板管理</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="alternate" hreflang="en" href="../index.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <nav class="site-nav" aria-label="主导航">
+        <div class="site-nav__row">
+          <div class="logo">
+            <a href="index.html"><img class="logo-app-icon" src="../app-icon-nav.png" width="64" height="64" alt="" decoding="async" aria-hidden="true"></a>
+            <span><a href="https://gxlself.com" rel="noopener">gxlself</a><span>/</span>Paste</span>
+          </div>
+          <div class="nav-cta-group" aria-label="操作">
+            <a class="btn btn-primary btn-nav-cta" href="https://github.com/gxlself/Paste/releases" rel="noopener">下载</a>
+            <a class="nav-lang" href="../index.html" hreflang="en" title="English">English</a>
+          </div>
+        </div>
+        <div class="site-nav__links" aria-label="站点导航">
+          <a href="index.html" class="nav-current" aria-current="page">首页</a>
+          <span class="site-nav__sep" aria-hidden="true">·</span>
+          <a href="features.html">功能</a>
+          <a href="updates.html">更新</a>
+          <span class="site-nav__sep" aria-hidden="true">·</span>
+          <a href="contact.html">联系</a>
+          <a href="https://github.com/gxlself/paste" rel="noopener">GitHub</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <span class="badge">MIT · Swift · SwiftUI</span>
+        <h1>macOS 与 iOS 剪贴板管理</h1>
+        <p class="lead">轻量、隐私优先。Mac 菜单栏历史记录，iPhone 浏览与置顶，自定义键盘内一键粘贴 — 可选 iCloud 跨设备同步。</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/gxlself/Paste/releases" rel="noopener">下载 macOS 版</a>
+          <a class="btn btn-ghost" href="https://github.com/gxlself/paste" rel="noopener">在 GitHub 加星</a>
+          <a class="btn btn-ghost" href="https://testflight.apple.com/join/2UKC5P27" rel="noopener">iOS TestFlight</a>
+          <a class="btn btn-ghost" href="https://gxlself.com" rel="noopener">作者站点</a>
+          <a class="btn btn-ghost" href="https://github.com/gxlself/paste/issues" rel="noopener">Issues</a>
+        </div>
+        <p class="lang-note">若 Paste 对你有帮助，欢迎在 GitHub 点个 Star。TestFlight 满员或无法加入时，可邮件 <a href="mailto:gxlself@gmail.com">gxlself@gmail.com</a>。</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="platforms" aria-labelledby="platforms-heading">
+      <div class="wrap">
+        <h2 id="platforms-heading">一个项目，三种形态</h2>
+        <p class="section-lead">同一个 Xcode 工程产出：Mac 菜单栏应用、iOS 伴侣应用与自定义键盘扩展。</p>
+        <div class="grid-3">
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              Paste (macOS)
+            </h3>
+            <p>菜单栏应用：剪贴板历史、全局快捷键、悬浮面板、Paste Stack、Pinboards，可选 iCloud 同步。</p>
+            <p class="meta">macOS 13+ · 默认 ⌘⇧V</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
+                <path d="M12 18h.01"/>
+              </svg>
+              Paste-iOS
+            </h3>
+            <p>在 iPhone/iPad 上浏览同一套历史：Pinboards、筛选、分类、多选、扫描与快速新建文本。</p>
+            <p class="meta">iOS 16+ · App Group</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M10 8h4M6 12h12M6 16h8"/>
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+              </svg>
+              Paste-Keyboard
+            </h3>
+            <p>自定义键盘：在邮件、备忘录等应用中直接选取已保存片段插入，无需切出。需开启「完全访问」。</p>
+            <p class="meta">与 iOS 应用共享数据库</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="screenshots-section" aria-labelledby="screenshots-heading">
+      <div class="wrap">
+        <h2 id="screenshots-heading">效果图</h2>
+        <p class="section-lead">macOS 主面板与 iOS 应用（Paste G）及自定义键盘。</p>
+        <div class="screenshots-grid">
+          <figure class="screenshot-fig">
+            <img src="../screenshots/mac-main.png" alt="macOS 主面板：搜索与类型筛选" width="800" height="auto" loading="lazy" decoding="async">
+            <figcaption>macOS — 主面板：搜索、筛选（全部 / 文本 / 图片 / 文件 / 链接 / 收藏）、横向卡片</figcaption>
+          </figure>
+          <figure class="screenshot-fig">
+            <img src="../screenshots/mac-preview.png" alt="macOS 主面板预览与分类" width="800" height="auto" loading="lazy" decoding="async">
+            <figcaption>macOS — 预览区与分类栏（深色外观）</figcaption>
+          </figure>
+          <figure class="screenshot-fig">
+            <img src="../screenshots/ios-hero.png" alt="iOS Paste G 概览" width="480" height="auto" loading="lazy" decoding="async">
+            <figcaption>iOS — 应用概览与历史（全部 / 文本 / 图片 / 文件）</figcaption>
+          </figure>
+          <figure class="screenshot-fig">
+            <img src="../screenshots/ios-keyboard.png" alt="iOS 自定义键盘" width="360" height="auto" loading="lazy" decoding="async">
+            <figcaption>iOS — 自定义键盘：在任意应用中搜索并插入片段</figcaption>
+          </figure>
+          <figure class="screenshot-fig">
+            <img src="../screenshots/ios-features.png" alt="iOS 功能总览" width="600" height="auto" loading="lazy" decoding="async">
+            <figcaption>iOS — 历史、上下文菜单、键盘与 iCloud 同步设置</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" aria-labelledby="features-heading">
+      <div class="wrap">
+        <h2 id="features-heading">亮点</h2>
+        <p class="section-lead" style="margin-top:-0.25rem">留存 · 搜索 · 整理 · Mac / iPhone / 键盘。<a href="features.html">功能一览 →</a></p>
+        <div class="grid-3" style="margin-bottom:1.75rem">
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              留存
+            </h3>
+            <p>Mac 上完整历史：文本、RTF、图片、路径。去重、保留策略、时间线、排除应用。需要的内容随时能找到。</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              搜索
+            </h3>
+            <p>实时搜索、类型标签、正则预设、自定义分类。几秒内找到早上复制的那段内容。</p>
+          </article>
+          <article class="card">
+            <h3>
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5H3v4h13V5zM16 9H3v4h13V9zM8 13H3v4h5v-4z"/><path d="M18 13v6l3-3-3-3z"/></svg>
+              整理
+            </h3>
+            <p>Pinboards、Paste Stack、置顶、纯文本粘贴选项。可选 iCloud 在 Mac 与 iOS 间同步。</p>
+          </article>
+        </div>
+        <ul class="features">
+          <li><strong>macOS：</strong>文本、RTF、图片、文件路径 · SHA-256 去重 · 排除应用 · 保留与时间线 · 搜索、正则、自定义类型 · 辅助粘贴（需无障碍权限）</li>
+          <li><strong>同步：</strong>iOS 应用与键盘通过 App Group；macOS 与 iOS 通过可选 iCloud（同一 Apple ID）</li>
+          <li><strong>隐私：</strong>本地优先；iCloud 可选；所述配置下无统计与第三方 SDK</li>
+        </ul>
+        <p class="section-lead" style="margin-top:1.25rem;margin-bottom:0"><a href="features.html">查看同步、隐私与更多功能 →</a></p>
+      </div>
+    </section>
+
+    <section id="get-started" aria-labelledby="get-started-heading">
+      <div class="wrap">
+        <h2 id="get-started-heading">快速开始</h2>
+        <dl class="req">
+          <dt>下载（macOS）</dt>
+          <dd>最新构建：<a href="https://github.com/gxlself/Paste/releases">GitHub Releases</a> — 下载 <strong>Paste-*-macos.zip</strong>，解压后将 <strong>Paste</strong> 拖入「应用程序」。首次打开若被拦截，右键 Paste → <strong>打开</strong>（或在系统设置 → 隐私与安全性 中允许）。</dd>
+          <dt>克隆并打开</dt>
+          <dd><code style="color:var(--text)">git clone https://github.com/gxlself/paste.git && cd paste && open Paste.xcodeproj</code></dd>
+          <dt>macOS（从源码运行）</dt>
+          <dd>选择 <strong>Paste</strong> scheme → My Mac → ⌘R。若使用辅助粘贴或全局快捷键，需在「系统设置 → 隐私与安全性 → 无障碍」中授权。</dd>
+          <dt>iOS 与键盘</dt>
+          <dd>签名与 App Group <code>group.gxlself.paste-tool</code> 见 <a href="https://github.com/gxlself/paste/blob/main/SETUP.md">SETUP.md</a>。</dd>
+          <dt>发布构建</dt>
+          <dd>macOS：<a href="https://github.com/gxlself/paste/blob/main/docs/RELEASE_MACOS.md">RELEASE_MACOS.md</a> · iOS：<a href="https://github.com/gxlself/paste/blob/main/docs/RELEASE_IOS.md">RELEASE_IOS.md</a></dd>
+        </dl>
+      </div>
+    </section>
+
+    <section id="sponsor" class="sponsor-showcase" aria-labelledby="sponsor-heading">
+      <div class="wrap">
+        <h2 id="sponsor-heading">赞助与关注</h2>
+        <p class="section-lead">若 Paste 为你节省了时间，欢迎打赏。扫码关注微信公众号获取更新。</p>
+        <ul class="sponsor-cards" role="list">
+          <li class="sponsor-card sponsor-card--wechat">
+            <div class="sponsor-card__frame">
+              <img src="../sponsor/wechat-pay-tip.png" width="192" height="192" alt="微信支付打赏二维码" loading="lazy" decoding="async">
+            </div>
+            <span class="sponsor-card__label">微信支付</span>
+            <span class="sponsor-card__hint">WeChat Pay</span>
+          </li>
+          <li class="sponsor-card sponsor-card--alipay">
+            <div class="sponsor-card__frame">
+              <img src="../sponsor/alipay-tip.png" width="192" height="192" alt="支付宝打赏二维码" loading="lazy" decoding="async">
+            </div>
+            <span class="sponsor-card__label">支付宝</span>
+            <span class="sponsor-card__hint">Alipay</span>
+          </li>
+          <li class="sponsor-card sponsor-card--oa">
+            <div class="sponsor-card__frame">
+              <img src="../sponsor/wechat-official-account.png" width="192" height="192" alt="微信公众号二维码" loading="lazy" decoding="async">
+            </div>
+            <span class="sponsor-card__label">微信公众号</span>
+            <span class="sponsor-card__hint">更新与动态</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-col-title">产品</div>
+        <a href="features.html">功能</a>
+        <a href="updates.html">更新日志</a>
+      </div>
+      <div>
+        <div class="footer-col-title">更多</div>
+        <a href="https://gxlself.com" rel="noopener">gxlself.com</a>
+        <a href="contact.html">联系</a>
+        <a href="https://github.com/gxlself/paste/issues">功能建议</a>
+        <a href="https://github.com/gxlself/paste/blob/main/LICENSE">MIT 许可证</a>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="footer-copy">gxlself Paste · MIT · <a href="https://github.com/gxlself/paste">源代码</a></p>
+    </div>
+  </footer>
+</body>
+</html>

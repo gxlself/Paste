@@ -1,13 +1,10 @@
-# Push docs/ to gh-pages for GitHub Pages. Site source on branch `docs`; main does not track docs/.
+# Deploy docs branch to gh-pages. Branch `docs` contains only site files (root = docs/ contents).
 # Repo Settings → Pages → Deploy from a branch → Branch: gh-pages, / (root).
 name: Deploy docs to gh-pages
 
 on:
   push:
     branches: [docs]
-    paths:
-      - 'docs/**'
-      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
 permissions:
@@ -17,14 +14,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout docs branch
         uses: actions/checkout@v4
         with:
+          ref: docs
           fetch-depth: 0
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: .
           force_orphan: true
