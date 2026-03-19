@@ -832,7 +832,7 @@ class ClipboardViewModel: ObservableObject {
         switch display {
         case .preset(let p):
             clipboardService.copyPlainTextToClipboard(p.pattern)
-            announceToVoiceOver(String(localized: "voiceover.announce.copied.text \(p.pattern.prefix(50))"))
+            announceToVoiceOver(String(localized: "voiceover.announce.copied.text \(String(p.pattern.prefix(50)))"))
             if AppSettings.directPasteEnabled {
                 NotificationCenter.default.post(name: AppNotification.requestCloseAndPaste, object: nil)
             } else {
