@@ -45,6 +45,9 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+# Docs site (tracked only on branch `docs`; main does not track)
+docs/
+
 # Other
 *.moved-aside
 *.orig
