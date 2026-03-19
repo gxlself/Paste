@@ -125,20 +125,24 @@ If Paste is helpful to you, please [**star the repository on GitHub**](https://g
 
 ## Documentation site (`docs/`)
 
-Static pages for this open-source project. Open **`docs/index.html`** in a browser; styles in **`docs/site.css`**.
+Static pages for this project. **main 分支不追踪 `docs/`**；站点源在 **docs** 分支，部署到 **gh-pages**。详见 [GITHUB_PAGES.md](GITHUB_PAGES.md)。
+
+**GitHub Pages:** 在 **Settings → Pages** 选 **Deploy from a branch**，分支 **gh-pages**，根目录 **/**. 向 **docs** 分支推送并修改 `docs/` 时会自动部署。
+
+**中文:** 站点导航中 **中文** 进入 `zh/index.html`。
 
 | Page | Role |
 |------|------|
-| [index.html](docs/index.html) | Home, platforms, highlights, sponsor |
-| [features.html](docs/features.html) | Feature tour (KEEP / SEARCH / ORGANIZE / sync / privacy) |
-| [everyone.html](docs/everyone.html) | General audience |
-| [developers.html](docs/developers.html) | Developers |
-| [designers.html](docs/designers.html) | Designers |
-| [sales-support.html](docs/sales-support.html) | Sales & support |
-| [use-cases.html](docs/use-cases.html) | Use-case hub |
-| [help.html](docs/help.html) | Help & FAQ |
-| [updates.html](docs/updates.html) | What's new → Releases |
-| [contact.html](docs/contact.html) | Contact |
+| index.html | Home, platforms, highlights, sponsor |
+| features.html | Feature tour (KEEP / SEARCH / ORGANIZE / sync / privacy) |
+| everyone.html | General audience |
+| developers.html | Developers |
+| designers.html | Designers |
+| sales-support.html | Sales & support |
+| use-cases.html | Use-case hub |
+| help.html | Help & FAQ |
+| updates.html | What's new → Releases |
+| contact.html | Contact |
 
 ---
 
