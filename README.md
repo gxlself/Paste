@@ -2,6 +2,8 @@
   <img src="Paste/Assets.xcassets/AppIcon.appiconset/icon_256.png" alt="Paste app icon" width="192" height="192">
 </p>
 
+**English** | [中文](README.zh-CN.md)
+
 # Paste — Clipboard manager for macOS & iOS
 
 A lightweight, privacy-first clipboard manager. This repository ships **three deliverables** in one Xcode project:
