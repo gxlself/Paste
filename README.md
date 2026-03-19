@@ -28,6 +28,44 @@ If Paste is helpful to you, please [**star the repository on GitHub**](https://g
 
 ---
 
+## Screenshots
+
+### macOS — Paste
+
+Main panel: search, type filters (All / Text / Image / File / Link / Favorites), and horizontal card browse.
+
+<p align="center">
+  <img src="docs/screenshots/mac-main.png" alt="macOS main panel: search and filters" width="800">
+</p>
+
+Preview area and category bar (dark appearance).
+
+<p align="center">
+  <img src="docs/screenshots/mac-preview.png" alt="macOS main panel preview and categories" width="800">
+</p>
+
+### iOS — Paste G
+
+App overview and history feed (All / Text / Image / Files filters).
+
+<p align="center">
+  <img src="docs/screenshots/ios-hero.png" alt="iOS Paste G overview" width="480">
+</p>
+
+Custom keyboard: bring up the Paste keyboard in any app to search and insert saved clips.
+
+<p align="center">
+  <img src="docs/screenshots/ios-keyboard.png" alt="iOS custom keyboard" width="360">
+</p>
+
+Feature overview: history and categories, context menu (Copy / Preview / Edit / Pin / Share, etc.), keyboard and iCloud sync settings.
+
+<p align="center">
+  <img src="docs/screenshots/ios-features.png" alt="iOS feature overview" width="600">
+</p>
+
+---
+
 ## Features
 
 ### Clipboard & history (macOS)
