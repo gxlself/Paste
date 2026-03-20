@@ -1,0 +1,2 @@
+/* Apple Events permission for assisted paste */
+"NSAppleEventsUsageDescription" = "アクセシビリティの目的で、使用中のアプリにクリップボードの内容を貼り付けるため。";

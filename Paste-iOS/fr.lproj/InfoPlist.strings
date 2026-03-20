@@ -1,0 +1,2 @@
+/* Camera permission for document scanning */
+"NSCameraUsageDescription" = "Paste a besoin d'accéder à l'appareil photo pour numériser des documents.";

@@ -1,0 +1,2 @@
+/* Apple Events permission for assisted paste */
+"NSAppleEventsUsageDescription" = "À des fins d'accessibilité, pour coller le contenu du presse-papiers dans l'application que vous utilisez.";

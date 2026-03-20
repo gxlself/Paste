@@ -1,0 +1,2 @@
+/* Apple Events permission for assisted paste */
+"NSAppleEventsUsageDescription" = "For accessibility purposes, to paste clipboard content into the app you are using.";

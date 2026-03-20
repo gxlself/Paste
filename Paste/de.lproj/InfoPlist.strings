@@ -1,0 +1,2 @@
+/* Apple Events permission for assisted paste */
+"NSAppleEventsUsageDescription" = "Für Barrierefreiheitszwecke, um Zwischenablageinhalte in die von Ihnen verwendete App einzufügen.";

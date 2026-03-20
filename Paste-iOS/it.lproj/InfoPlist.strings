@@ -1,0 +1,2 @@
+/* Camera permission for document scanning */
+"NSCameraUsageDescription" = "Paste necessita dell'accesso alla fotocamera per scansionare i documenti.";

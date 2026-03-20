@@ -1,0 +1,2 @@
+/* Apple Events permission for assisted paste */
+"NSAppleEventsUsageDescription" = "Per scopi di accessibilità, per incollare il contenuto degli appunti nell'app che stai utilizzando.";

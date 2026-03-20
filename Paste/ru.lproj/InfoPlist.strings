@@ -1,0 +1,2 @@
+/* Apple Events permission for assisted paste */
+"NSAppleEventsUsageDescription" = "Для целей доступности, чтобы вставить содержимое буфера обмена в используемое вами приложение.";
