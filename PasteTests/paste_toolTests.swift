@@ -6,7 +6,7 @@
 //
 
 import Testing
-@testable import paste_tool
+@testable import Paste
 
 struct paste_toolTests {
 
