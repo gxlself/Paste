@@ -22,6 +22,8 @@
 
 **iOS 分发给他人：** Apple 不允许像 macOS 那样从 GitHub 安装；分发通过 **TestFlight** 或 **App Store**，详见 **[docs/RELEASE_IOS.md](docs/RELEASE_IOS.md)**。
 
+**iOS 已上架 App Store：** [**Paste G** 在 App Store](https://apps.apple.com/us/app/paste-g/id6758338373) — 适用于 iPhone 与 iPad（¥18 等区定价）。
+
 **iOS TestFlight：** 在 iPhone/iPad 上安装 [TestFlight](https://apps.apple.com/app/testflight/id899247664)，然后打开 **[此公开链接](https://testflight.apple.com/join/2UKC5P27)** 加入测试。若链接显示已满或暂不接收测试者，可邮件 **[gxlself@gmail.com](mailto:gxlself@gmail.com)**。
 
 **问题或 Bug：** 请在 GitHub 上 [**提交 issue**](https://github.com/gxlself/paste/issues)。
