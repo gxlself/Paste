@@ -7,6 +7,8 @@ import SwiftUI
 
 struct SettingsView: View {
 
+    private static let pasteWebsiteURL = URL(string: "https://paste.gxlself.com")!
+
     @ObservedObject var settings: iOSAppSettings
     @Environment(\.dismiss) private var dismiss
     @State private var showClearConfirmation = false
@@ -213,6 +215,26 @@ struct SettingsView: View {
                     Image(systemName: "questionmark.circle")
                 }
             }
+
+            Button {
+                UIApplication.shared.open(Self.pasteWebsiteURL)
+            } label: {
+                HStack {
+                    Label {
+                        Text("ios.promo.macPaste.title")
+                            .foregroundStyle(Color(UIColor.label))
+                    } icon: {
+                        Image(systemName: "macbook")
+                            .foregroundStyle(Color.accentColor)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "arrow.up.forward.square")
+                        .font(.body)
+                        .foregroundStyle(.tertiary)
+                        .accessibilityHidden(true)
+                }
+            }
+            .accessibilityHint(Text("ios.promo.macPaste.a11yHint"))
 
             Button {
                 contactSupport()

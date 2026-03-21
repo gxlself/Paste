@@ -28,6 +28,7 @@ struct ContentView: View {
     @FocusState private var isSearchFieldFocused: Bool
 
     private static let filterOrder: [ClipboardItemType?] = [nil, .text, .image, .file]
+    private static let pasteWebsiteURL = URL(string: "https://paste.gxlself.com")!
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,6 +44,7 @@ struct ContentView: View {
                 onRenameCustomType: { id, name in viewModel.settings.renameCustomType(id: id, name: name) }
             )
             Divider()
+            macPastePromoRow
 
             ZStack(alignment: .top) {
                 TabView(selection: $selectedPageIndex) {
@@ -219,6 +221,41 @@ struct ContentView: View {
         renameCategoryText = viewModel.settings.filterTabName(for: type)
             ?? String(localized: String.LocalizationValue(defaultLabels[type] ?? "mainpanel.filter.all"))
         showRenameCategoryAlert = true
+    }
+
+    // MARK: - Mac companion (below pinboards)
+
+    private var macPastePromoRow: some View {
+        Button {
+            UIApplication.shared.open(Self.pasteWebsiteURL)
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "macbook")
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(Color.accentColor.opacity(0.9))
+                    .frame(width: 28, alignment: .center)
+                    .accessibilityHidden(true)
+
+                Text("ios.promo.macPaste.title")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "arrow.up.forward.square")
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
+            }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+            .background(Color(UIColor.secondarySystemGroupedBackground))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text("ios.promo.macPaste.title"))
+        .accessibilityHint(Text("ios.promo.macPaste.a11yHint"))
     }
 
     // MARK: - Top bar

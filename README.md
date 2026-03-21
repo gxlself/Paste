@@ -6,6 +6,8 @@
 
 # Paste — Clipboard manager for macOS & iOS
 
+**Official site:** [paste.gxlself.com](https://paste.gxlself.com) — product overview, screenshots, and how to get the macOS app (installers are published on GitHub Releases).
+
 A lightweight, privacy-first clipboard manager. This repository ships **three deliverables** in one Xcode project:
 
 | Platform | What it is |

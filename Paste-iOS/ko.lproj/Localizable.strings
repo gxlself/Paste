@@ -17,6 +17,8 @@
 "mainpanel.text.characterCountFormat" = "%d자";
 "mainpanel.pinboard.titleFormat" = "Pinboard %d";
 "mainpanel.context.pinboard" = "Pinboard";
+"ios.promo.macPaste.title" = "Mac에서 Paste 사용";
+"ios.promo.macPaste.a11yHint" = "브라우저에서 Paste 웹사이트를 엽니다.";
 "ios.topbar.done" = "완료";
 "ios.menu.newTextItem" = "새 텍스트 항목";
 "ios.menu.scanDocument" = "문서 스캔";

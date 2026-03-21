@@ -1,6 +1,6 @@
 # iOS distribution (companion to macOS)
 
-The iOS app (**Paste-iOS**, shipped as **Paste G**) and **Paste-Keyboard** extension work with the Mac app when **iCloud sync** is enabled on both (same Apple ID). See [SETUP.md](../SETUP.md) for signing and App Group setup.
+The iOS app (**Paste-iOS**, shipped as **Paste G**) and **Paste-Keyboard** extension work with the Mac app when **iCloud sync** is enabled on both (same Apple ID). For the macOS app and cross-device setup, start at the official site **[paste.gxlself.com](https://paste.gxlself.com)**. See [SETUP.md](../SETUP.md) for signing and App Group setup.
 
 ## App Store (public release)
 

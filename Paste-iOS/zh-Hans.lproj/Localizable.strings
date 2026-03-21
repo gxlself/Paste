@@ -23,6 +23,8 @@
 "mainpanel.context.pinboard" = "Pinboard";
 
 /* Top bar & menu */
+"ios.promo.macPaste.title" = "Mac 上使用 Paste";
+"ios.promo.macPaste.a11yHint" = "在浏览器中打开 Paste 官网。";
 "ios.topbar.done" = "完成";
 "ios.menu.newTextItem" = "新文本项";
 "ios.menu.scanDocument" = "扫描文档";
