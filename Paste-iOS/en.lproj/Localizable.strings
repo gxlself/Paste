@@ -120,6 +120,10 @@
 "ios.settings.showInScreenSharing.desc" = "Allow others to see Paste when sharing your screen.";
 "ios.settings.gettingStarted" = "Getting Started";
 "ios.settings.helpCenter" = "Help Center";
+"ios.settings.recommendedApps" = "Recommended Apps";
+"ios.settings.recommended.gCalcPro" = "G Calc Pro";
+"ios.settings.recommended.stayAboveKillLine" = "Stay Above Kill Line";
+"ios.settings.recommended.a11yHint" = "Opens in the App Store.";
 
 /* Card - extended */
 "ios.card.copyPlainText" = "Copy as Plain Text";

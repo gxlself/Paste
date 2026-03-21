@@ -94,6 +94,10 @@
 "ios.settings.showInScreenSharing.desc" = "Разрешить отображение Paste при демонстрации экрана.";
 "ios.settings.gettingStarted" = "Начало работы";
 "ios.settings.helpCenter" = "Центр помощи";
+"ios.settings.recommendedApps" = "Рекомендуемые приложения";
+"ios.settings.recommended.gCalcPro" = "G Calc Pro";
+"ios.settings.recommended.stayAboveKillLine" = "Stay Above Kill Line";
+"ios.settings.recommended.a11yHint" = "Открывает в App Store.";
 "ios.extension.howToUse" = "Использование Paste в других приложениях";
 "ios.extension.step1" = "1. Выделите текст или контент в любом приложении";
 "ios.extension.step2" = "2. Нажмите кнопку «Поделиться»";

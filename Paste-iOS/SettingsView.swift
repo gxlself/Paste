@@ -8,6 +8,8 @@ import SwiftUI
 struct SettingsView: View {
 
     private static let pasteWebsiteURL = URL(string: "https://paste.gxlself.com")!
+    private static let appStoreGCalcProURL = URL(string: "https://apps.apple.com/us/app/g-calc-pro/id6759799669")!
+    private static let appStoreStayAboveKillLineURL = URL(string: "https://apps.apple.com/us/app/stay-above-kill-line/id6759259799")!
 
     @ObservedObject var settings: iOSAppSettings
     @Environment(\.dismiss) private var dismiss
@@ -24,6 +26,7 @@ struct SettingsView: View {
                 storageSection
                 privacySection
                 supportSection
+                recommendedAppsSection
                 legalSection
             }
             .navigationTitle(Text("menu.action.settings"))
@@ -247,6 +250,51 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Recommended apps (App Store)
+
+    private var recommendedAppsSection: some View {
+        Section(header: Text("ios.settings.recommendedApps")) {
+            appStoreRecommendationRow(
+                "ios.settings.recommended.gCalcPro",
+                appIconAssetName: "RecommendedGCalcPro",
+                url: Self.appStoreGCalcProURL
+            )
+            appStoreRecommendationRow(
+                "ios.settings.recommended.stayAboveKillLine",
+                appIconAssetName: "RecommendedStayAboveKillLine",
+                url: Self.appStoreStayAboveKillLineURL
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func appStoreRecommendationRow(
+        _ titleKey: LocalizedStringKey,
+        appIconAssetName: String,
+        url: URL
+    ) -> some View {
+        Button {
+            UIApplication.shared.open(url)
+        } label: {
+            HStack(spacing: 12) {
+                Image(appIconAssetName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 29, height: 29)
+                    .clipShape(RoundedRectangle(cornerRadius: 6.5, style: .continuous))
+                    .accessibilityHidden(true)
+                Text(titleKey)
+                    .foregroundStyle(Color(UIColor.label))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: "arrow.up.forward.square")
+                    .font(.body)
+                    .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)
+            }
+        }
+        .accessibilityHint(Text("ios.settings.recommended.a11yHint"))
     }
 
     // MARK: - Legal

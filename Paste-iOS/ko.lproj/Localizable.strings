@@ -94,6 +94,10 @@
 "ios.settings.showInScreenSharing.desc" = "화면 공유 시 다른 사람에게 Paste 표시를 허용합니다.";
 "ios.settings.gettingStarted" = "시작하기";
 "ios.settings.helpCenter" = "도움말 센터";
+"ios.settings.recommendedApps" = "추천 앱";
+"ios.settings.recommended.gCalcPro" = "G Calc Pro";
+"ios.settings.recommended.stayAboveKillLine" = "Stay Above Kill Line";
+"ios.settings.recommended.a11yHint" = "App Store에서 엽니다.";
 "ios.extension.howToUse" = "다른 앱에서 Paste 사용하기";
 "ios.extension.step1" = "1. 앱에서 텍스트나 콘텐츠를 선택하세요";
 "ios.extension.step2" = "2. 공유 버튼을 탭하세요";

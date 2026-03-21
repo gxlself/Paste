@@ -94,6 +94,10 @@
 "ios.settings.showInScreenSharing.desc" = "画面共有時に他の人にPasteの表示を許可します。";
 "ios.settings.gettingStarted" = "はじめに";
 "ios.settings.helpCenter" = "ヘルプセンター";
+"ios.settings.recommendedApps" = "おすすめアプリ";
+"ios.settings.recommended.gCalcPro" = "G Calc Pro";
+"ios.settings.recommended.stayAboveKillLine" = "Stay Above Kill Line";
+"ios.settings.recommended.a11yHint" = "App Store で開きます。";
 "ios.extension.howToUse" = "他のアプリで Paste を使う";
 "ios.extension.step1" = "1. 任意のアプリでテキストやコンテンツを選択";
 "ios.extension.step2" = "2. 共有ボタンをタップ";

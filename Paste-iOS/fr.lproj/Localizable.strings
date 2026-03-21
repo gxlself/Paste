@@ -94,6 +94,10 @@
 "ios.settings.showInScreenSharing.desc" = "Autoriser l'affichage de Paste lors du partage d'écran.";
 "ios.settings.gettingStarted" = "Premiers pas";
 "ios.settings.helpCenter" = "Centre d'aide";
+"ios.settings.recommendedApps" = "Apps recommandées";
+"ios.settings.recommended.gCalcPro" = "G Calc Pro";
+"ios.settings.recommended.stayAboveKillLine" = "Stay Above Kill Line";
+"ios.settings.recommended.a11yHint" = "Ouvre dans l’App Store.";
 "ios.extension.howToUse" = "Utiliser Paste dans d'autres apps";
 "ios.extension.step1" = "1. Sélectionnez du texte ou du contenu dans une app";
 "ios.extension.step2" = "2. Appuyez sur le bouton Partager";

@@ -120,6 +120,10 @@
 "ios.settings.showInScreenSharing.desc" = "允许在共享屏幕时向其他人显示 Paste。";
 "ios.settings.gettingStarted" = "入门指南";
 "ios.settings.helpCenter" = "帮助中心";
+"ios.settings.recommendedApps" = "推荐应用";
+"ios.settings.recommended.gCalcPro" = "G创意计算器";
+"ios.settings.recommended.stayAboveKillLine" = "逃离斩杀线";
+"ios.settings.recommended.a11yHint" = "在 App Store 中打开。";
 
 /* Card - extended */
 "ios.card.copyPlainText" = "复制为纯文本";

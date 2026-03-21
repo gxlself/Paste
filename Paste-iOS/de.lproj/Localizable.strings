@@ -94,6 +94,10 @@
 "ios.settings.showInScreenSharing.desc" = "Paste bei Bildschirmfreigabe für andere sichtbar machen.";
 "ios.settings.gettingStarted" = "Erste Schritte";
 "ios.settings.helpCenter" = "Hilfe-Center";
+"ios.settings.recommendedApps" = "Empfohlene Apps";
+"ios.settings.recommended.gCalcPro" = "G Calc Pro";
+"ios.settings.recommended.stayAboveKillLine" = "Stay Above Kill Line";
+"ios.settings.recommended.a11yHint" = "Öffnet im App Store.";
 "ios.extension.howToUse" = "Paste in anderen Apps verwenden";
 "ios.extension.step1" = "1. Text oder Inhalt in einer App auswählen";
 "ios.extension.step2" = "2. Auf die Teilen-Taste tippen";
