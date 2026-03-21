@@ -803,3 +803,84 @@ ul.features strong { color: var(--text); }
   color: var(--text);
 }
 .footer-site:hover { color: var(--accent); text-decoration: none; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Same-author App Store picks (aligned with Paste iOS settings) */
+.author-apps {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border);
+}
+.author-apps__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+}
+.author-app-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  min-height: 44px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .author-app-card { transition: none; }
+}
+.author-app-card:hover {
+  border-color: rgba(240, 160, 48, 0.35);
+  background: rgba(20, 26, 34, 0.85);
+  text-decoration: none;
+}
+.author-app-card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.author-app-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.author-app-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.author-app-card__title {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1rem;
+}
+.author-app-card__desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.author-app-card__cta {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent);
+  flex-shrink: 0;
+}

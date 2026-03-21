@@ -1,10 +1,14 @@
-# Deploy docs branch to gh-pages. Branch `docs` contains only site files (root = docs/ contents).
-# Repo Settings → Pages → Deploy from a branch → Branch: gh-pages, / (root).
+# Publishes `docs/` from branch `main` to the `gh-pages` branch (site root).
+# Repo Settings → Pages → Deploy from branch → gh-pages, / (root).
+# Custom domain: paste.gxlself.com (see docs/CNAME).
 name: Deploy docs to gh-pages
 
 on:
   push:
-    branches: [docs]
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
 permissions:
@@ -14,15 +18,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout docs branch
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: docs
+          ref: main
           fetch-depth: 0
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./docs
           force_orphan: true

@@ -13,8 +13,8 @@
 
 ## 触发部署
 
-- 向 **main** 分支推送时，若修改了 `docs/` 下任意文件或本 workflow 文件，会自动运行 **Deploy docs to gh-pages**，将 `docs/` 的当前内容推送到 **gh-pages** 分支。
-- 也可在 **Actions** 页手动运行 **Deploy docs to gh-pages** workflow。
+- 向 **main** 分支推送且变更包含 `docs/**` 或 `.github/workflows/deploy-docs.yml` 时，会自动运行 **Deploy docs to gh-pages**，将仓库中 **`docs/` 目录**推送到 **gh-pages** 分支根目录（与线上站点一致）。
+- 也可在 **Actions** 页手动 **Run workflow** 触发部署。
 
 ## 中文支持
 
