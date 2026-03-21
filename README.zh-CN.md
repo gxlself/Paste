@@ -6,7 +6,9 @@
 
 # Paste — macOS 与 iOS 剪贴板管理器
 
-**官网：** [paste.gxlself.com](https://paste.gxlself.com)（[中文首页](https://paste.gxlself.com/zh/index.html)）— 产品介绍、效果图与 macOS 获取方式说明（安装包见 GitHub Releases）。
+**官网：** [paste.gxlself.com](https://paste.gxlself.com)（[中文首页](https://paste.gxlself.com/zh/index.html)）— 产品介绍与效果图。
+
+**macOS 应用（下载）：** [GitHub Releases](https://github.com/gxlself/Paste/releases) — 下载最新的 **Paste-*-macos.zip**，解压后将 **Paste** 拖入「应用程序」。
 
 轻量、隐私优先的剪贴板管理器。本仓库在一个 Xcode 工程中提供 **三套交付物**：
 
