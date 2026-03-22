@@ -100,6 +100,15 @@ struct SettingsView: View {
                     }
                 }
             }
+            if !settings.iCloudAccountStatusMessage.isEmpty {
+                Text(settings.iCloudAccountStatusMessage)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .onAppear { settings.refreshICloudAccountStatus() }
+        .onChange(of: settings.iCloudSyncEnabled) { _ in
+            settings.refreshICloudAccountStatus()
         }
     }
 

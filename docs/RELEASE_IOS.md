@@ -50,6 +50,30 @@ The archive includes the embedded **Paste-Keyboard** extension if **Embed Founda
 
 ---
 
+## iCloud / CloudKit (distribution checklist)
+
+1. **Production CloudKit schema**  
+   In [CloudKit Dashboard](https://icloud.developer.apple.com/), open container **`iCloud.gxlself.paste-tool`**, select **Production**, and ensure the schema is **deployed** (not only in Development). App Store and TestFlight builds use the **production** environment; if the schema was never deployed there, **Core Data + CloudKit sync will not work** across devices.
+
+2. **Verify embedded entitlements on the shipped app**  
+   After exporting an `.ipa`, unzip it and run (path is the main app inside `Payload`):
+
+   ```bash
+   codesign -d --entitlements :- "Payload/Paste-iOS.app"
+   ```
+
+   Confirm:
+
+   - `aps-environment` is **`production`** (not `development`).
+   - `com.apple.developer.icloud-container-identifiers` includes **`iCloud.gxlself.paste-tool`**.
+
+   The Xcode project uses **`paste_tool_ios_release.entitlements`** for **Release** so TestFlight/App Store archives pick up production APS. Debug builds use **`paste_tool_ios_debug.entitlements`** (`development`).
+
+3. **End users**  
+   Same Apple ID on all devices, iCloud sync enabled in app settings, and **fully quit and relaunch** the app after toggling sync (the Core Data stack is created once per launch).
+
+---
+
 ## Command-line archive (optional)
 
 Replace team/signing as needed; often easier to use Xcode Archive first.

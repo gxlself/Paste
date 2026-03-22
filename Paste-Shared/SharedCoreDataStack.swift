@@ -9,8 +9,11 @@
 // Add this file to: Paste-iOS target AND Paste-Keyboard target.
 
 import CoreData
+import OSLog
 
 final class SharedCoreDataStack {
+
+    private static let log = Logger(subsystem: "gxlself.paste-tool", category: "SharedCoreDataStack")
 
     static let shared = SharedCoreDataStack()
 
@@ -83,7 +86,12 @@ final class SharedCoreDataStack {
 
         container.loadPersistentStores { _, error in
             if let error {
+                Self.log.error("loadPersistentStores failed: \(String(describing: error), privacy: .public)")
                 print("SharedCoreDataStack load failed: \(error)")
+            } else if useCloudKit {
+                Self.log.debug("loadPersistentStores ok (CloudKit enabled)")
+            } else {
+                Self.log.debug("loadPersistentStores ok (local store)")
             }
         }
 

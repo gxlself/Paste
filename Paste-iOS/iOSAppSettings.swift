@@ -6,6 +6,7 @@
 import Foundation
 import Combine
 import CoreData
+import CloudKit
 
 final class iOSAppSettings: ObservableObject {
 
@@ -186,6 +187,39 @@ final class iOSAppSettings: ObservableObject {
 
     @Published var iCloudSyncEnabled: Bool = false {
         didSet { defaults.set(iCloudSyncEnabled, forKey: Keys.iCloudSync) }
+    }
+
+    /// Shown under the iCloud toggle (CloudKit account status).
+    @Published var iCloudAccountStatusMessage: String = ""
+
+    private static let cloudKitContainerID = "iCloud.gxlself.paste-tool"
+
+    /// Refreshes `iCloudAccountStatusMessage` from CloudKit (call from Settings).
+    func refreshICloudAccountStatus() {
+        let container = CKContainer(identifier: Self.cloudKitContainerID)
+        container.accountStatus { [weak self] status, error in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                if let error {
+                    self.iCloudAccountStatusMessage = error.localizedDescription
+                    return
+                }
+                switch status {
+                case .available:
+                    self.iCloudAccountStatusMessage = String(localized: "preferences.sync.status.available")
+                case .noAccount:
+                    self.iCloudAccountStatusMessage = String(localized: "preferences.sync.status.noAccount")
+                case .restricted:
+                    self.iCloudAccountStatusMessage = String(localized: "preferences.sync.status.restricted")
+                case .temporarilyUnavailable:
+                    self.iCloudAccountStatusMessage = String(localized: "preferences.sync.status.temporarilyUnavailable")
+                case .couldNotDetermine:
+                    self.iCloudAccountStatusMessage = String(localized: "preferences.sync.status.unknown")
+                @unknown default:
+                    self.iCloudAccountStatusMessage = String(localized: "preferences.sync.status.unknown")
+                }
+            }
+        }
     }
 
     @Published var collectWhenActive: Bool = true {

@@ -11,6 +11,8 @@ import SwiftUI
 @main
 struct paste_tool_iOSApp: App {
 
+    @UIApplicationDelegateAdaptor(PasteIOSAppDelegate.self) private var appDelegate
+
     @State private var showSplash = true
 
     var body: some Scene {
