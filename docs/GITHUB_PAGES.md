@@ -16,11 +16,11 @@
 - 向 **main** 分支推送且变更包含 `docs/**` 或 `.github/workflows/deploy-docs.yml` 时，会自动运行 **Deploy docs to gh-pages**，将仓库中 **`docs/` 目录**推送到 **gh-pages** 分支根目录（与线上站点一致）。
 - 也可在 **Actions** 页手动 **Run workflow** 触发部署。
 
-## 链接约定（macOS 下载勿改）
+## 链接约定（macOS 安装包）
 
-- 导航主按钮 **Get Paste** / **官网** → `https://paste.gxlself.com`（或中文首页），作产品入口。
-- 首屏与功能页底部的 **Get Paste for macOS** / **获取 macOS 版 Paste** → **必须** 指向 **[GitHub Releases](https://github.com/gxlself/Paste/releases)**，便于一键进发布页下载 zip。
-- **Get started / 快速开始** 里「Download (macOS)」说明保持：官网介绍 + **GitHub Releases** 取 `Paste-*-macos.zip`；勿改成仅官网无 zip 链。
+- 导航主按钮 **Get Paste** / **获取 macOS 版**、首屏与功能页底部的 **Get Paste for macOS** / **获取 macOS 版 Paste**、**Updates** 页主按钮 → 均指向 **[GitHub Releases](https://github.com/gxlself/Paste/releases)**，便于一键进入发布页下载 `Paste-*-macos.zip`。
+- **paste.gxlself.com** 可在文案中作为产品介绍 / 截图说明出现（纯文字或单独链到官网）；**不要**把 macOS zip 的唯一入口改成仅官网而无 Releases 链。
+- iOS（App Store / TestFlight）链接与 macOS 下载分开维护，勿混用。
 
 ## 中文支持
 
