@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="gxlself Paste — full feature tour: clipboard history, search, pinboards, iCloud sync, macOS menu bar & iOS keyboard.">
+  <meta name="theme-color" content="#0f1419">
+  <meta name="keywords" content="gxlself, G创意开发, Paste, features, clipboard history, pinboards, iCloud, macOS, iOS">
+  <title>Features — gxlself Paste</title>
+  <link rel="canonical" href="https://paste.gxlself.com/features.html">
+  <link rel="alternate" hreflang="en" href="https://paste.gxlself.com/features.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://paste.gxlself.com/zh/features.html">
+  <link rel="alternate" hreflang="x-default" href="https://paste.gxlself.com/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="gxlself Paste">
+  <meta property="og:title" content="Features — gxlself Paste">
+  <meta property="og:description" content="gxlself Paste — full feature tour: clipboard history, search, pinboards, iCloud sync, macOS menu bar &amp; iOS keyboard.">
+  <meta property="og:url" content="https://paste.gxlself.com/features.html">
+  <meta property="og:image" content="https://paste.gxlself.com/apple-touch-icon.png">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Features — gxlself Paste">
+  <meta name="twitter:description" content="gxlself Paste — full feature tour: clipboard history, search, pinboards, iCloud sync, macOS menu bar &amp; iOS keyboard.">
+  <meta name="twitter:image" content="https://paste.gxlself.com/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="glow glow-left" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <nav class="site-nav" aria-label="Primary">
+        <div class="site-nav__row">
+          <div class="logo">
+            <a href="index.html"><img class="logo-app-icon" src="app-icon-nav.png" width="64" height="64" alt="" decoding="async" aria-hidden="true"></a>
+            <span><a href="https://gxlself.com" rel="noopener">gxlself</a><span>/</span>Paste</span>
+          </div>
+          <div class="nav-cta-group" aria-label="Actions">
+            <a class="btn btn-primary btn-nav-cta" href="https://github.com/gxlself/Paste/releases" rel="noopener">Get Paste</a>
+            <a class="nav-lang" href="zh/index.html" hreflang="zh-Hans" lang="zh-Hans" title="简体中文">中文</a>
+          </div>
+        </div>
+        <div class="site-nav__links" aria-label="Site sections">
+          <a href="index.html">Home</a>
+          <span class="site-nav__sep" aria-hidden="true">·</span>
+          <a href="features.html" class="nav-current" aria-current="page">Features</a>
+          <a href="updates.html">Updates</a>
+          <a href="contact.html">Contact</a>
+          <a href="https://github.com/gxlself/paste" rel="noopener">GitHub</a>
+        </div>
+      </nav>
+      <div class="page-hero">
+        <p class="section-kicker">Feature tour</p>
+        <h1>Features</h1>
+        <p class="lead">History, search, pinboards, optional iCloud sync — Mac menu bar app, iOS app, custom keyboard. MIT, local-first.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="site-section" aria-labelledby="pillars-heading">
+      <div class="wrap">
+        <p class="section-kicker" id="pillars-heading">Core ideas</p>
+        <h2>What you get</h2>
+        <p class="section-lead">KEEP · SEARCH · ORGANIZE · Everywhere — history, find, pinboards, optional sync across Mac &amp; iOS.</p>
+        <div class="pillars">
+          <article class="pillar">
+            <div class="label">KEEP</div>
+            <h3>Unlimited history (within your rules)</h3>
+            <p>Text, RTF, images, and file paths on macOS. SHA-256 dedup, timeline groups, retention presets and max item cap. Optional skip for excluded apps.</p>
+          </article>
+          <article class="pillar">
+            <div class="label">SEARCH</div>
+            <h3>Find anything you copied</h3>
+            <p>Live search, type tabs, regex quick filters, and custom categories.</p>
+          </article>
+          <article class="pillar">
+            <div class="label">ORGANIZE</div>
+            <h3>Pinboards &amp; Paste Stack</h3>
+            <p>Multiple pinboard slots; queue clips and paste in order; plain-text options.</p>
+          </article>
+          <article class="pillar">
+            <div class="label">EVERYWHERE</div>
+            <h3>Mac · iPhone · Keyboard</h3>
+            <p>App Group + optional iCloud (same Apple ID) across Mac and iOS.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section" aria-labelledby="sync-privacy-heading">
+      <div class="wrap">
+        <p class="section-kicker" id="sync-privacy-heading">Trust</p>
+        <h2>Sync · Privacy</h2>
+        <div class="two-col">
+          <div class="highlight-box">
+            <h3>iCloud (optional)</h3>
+            <p>Same Apple ID on Mac and iOS. App Group links iOS app and keyboard on device.</p>
+          </div>
+          <div class="highlight-box">
+            <h3>Local-first</h3>
+            <p>Sync off by default. Excluded apps, retention, clear history — your call.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section" aria-labelledby="power-heading">
+      <div class="wrap">
+        <p class="section-kicker" id="power-heading">Details</p>
+        <h2>Behavior &amp; UI</h2>
+        <p class="section-lead">Assisted Paste, Paste Stack, excluded apps, preview, shortcuts, iOS keyboard.</p>
+        <div class="feature-grid">
+          <div class="feat">
+            <h4>Paste modes</h4>
+            <p>Assisted Paste, Paste Stack, plain text vs rich. Paste multiple items in order from the stack.</p>
+          </div>
+          <div class="feat">
+            <h4>Custom rules</h4>
+            <p>Exclude apps; skip images; iOS rule toggles where applicable.</p>
+          </div>
+          <div class="feat">
+            <h4>Preview and edit</h4>
+            <p>Quick look, link previews, edit/rename text, multi-select, undo delete.</p>
+          </div>
+          <div class="feat">
+            <h4>Panel</h4>
+            <p>Menu bar, overlay position, light/dark/system, hotkeys.</p>
+          </div>
+          <div class="feat">
+            <h4>iOS Keyboard</h4>
+            <p>Paste Keyboard: search and insert clips while typing. Full Access for shared DB.</p>
+          </div>
+          <div class="feat">
+            <h4>Shortcuts-ready</h4>
+            <p>Global hotkeys, quick-paste by number. (Siri Shortcuts: use system automation as needed.)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section screenshots-section" id="screenshots" aria-labelledby="screenshots-heading">
+      <div class="wrap">
+        <p class="section-kicker" id="screenshots-heading">Screenshots</p>
+        <h2>See it in action</h2>
+        <p class="section-lead">macOS main panel and iOS app (Paste G) with custom keyboard.</p>
+        <div class="screenshots-grid">
+          <div class="screenshot-group" aria-label="macOS">
+            <p class="screenshot-group__title">macOS</p>
+            <div class="screenshot-card">
+              <figure class="screenshot-fig">
+                <img src="screenshots/mac-main.png" alt="macOS main panel: search and filters" width="800" loading="lazy" decoding="async">
+                <figcaption>Main panel</figcaption>
+              </figure>
+            </div>
+            <div class="screenshot-card">
+              <figure class="screenshot-fig">
+                <img src="screenshots/mac-preview.png" alt="macOS preview and categories" width="800" loading="lazy" decoding="async">
+                <figcaption>Preview (dark)</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div class="screenshot-group" aria-label="iOS">
+            <p class="screenshot-group__title">iOS</p>
+            <div class="screenshot-card">
+              <figure class="screenshot-fig">
+                <img src="screenshots/ios-hero.png" alt="iOS Paste G overview" width="480" loading="lazy" decoding="async">
+                <figcaption>Overview</figcaption>
+              </figure>
+            </div>
+            <div class="screenshot-card">
+              <figure class="screenshot-fig">
+                <img src="screenshots/ios-keyboard.png" alt="iOS custom keyboard" width="360" loading="lazy" decoding="async">
+                <figcaption>Custom keyboard</figcaption>
+              </figure>
+            </div>
+            <div class="screenshot-card">
+              <figure class="screenshot-fig">
+                <img src="screenshots/ios-features.png" alt="iOS feature overview" width="600" loading="lazy" decoding="async">
+                <figcaption>Features &amp; settings</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="cta-bar">
+        <a class="btn btn-primary" href="https://github.com/gxlself/Paste/releases" rel="noopener">Get Paste for macOS</a>
+        <a class="btn btn-ghost" href="https://testflight.apple.com/join/2UKC5P27" rel="noopener">iOS TestFlight</a>
+        <a class="btn btn-ghost" href="https://github.com/gxlself/paste/blob/main/README.md" rel="noopener">README</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <div class="footer-col-title">Product</div>
+        <a href="features.html">Features</a>
+        <a href="updates.html">What's New</a>
+      </div>
+      <div>
+        <div class="footer-col-title">More</div>
+        <a href="contact.html">Contact</a>
+        <a href="https://github.com/gxlself/paste/issues">Suggest a feature</a>
+        <a href="https://github.com/gxlself/paste/blob/main/LICENSE">MIT</a>
+      </div>
+    </div>
+    <div class="wrap"><p class="footer-copy">gxlself Paste · MIT</p></div>
+  </footer>
+</body>
+</html>
