@@ -59,8 +59,10 @@ The archive includes the embedded **Paste-Keyboard** extension if **Embed Founda
    After exporting an `.ipa`, unzip it and run (path is the main app inside `Payload`):
 
    ```bash
-   codesign -d --entitlements :- "Payload/Paste-iOS.app"
+   codesign -d --entitlements - "Payload/Paste-iOS.app"
    ```
+
+   Use the exact `.app` bundle name inside `Payload` (for this Xcode target it is usually **`Paste-iOS.app`**). Simulator builds may not show full entitlements; verify on an **archive** or exported **.ipa** intended for TestFlight/App Store.
 
    Confirm:
 

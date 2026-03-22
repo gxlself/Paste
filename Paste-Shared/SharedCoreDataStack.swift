@@ -114,4 +114,24 @@ final class SharedCoreDataStack {
         do { try ctx.save() }
         catch { print("SharedCoreDataStack save error: \(error)") }
     }
+
+    /// Best-effort: save pending changes so CloudKit can schedule a push (mirrors macOS `CoreDataStack.requestSyncNow`).
+    func requestSyncNow(completion: ((Error?) -> Void)? = nil) {
+        let context = viewContext
+        context.perform {
+            var saveError: Error?
+            do {
+                if context.hasChanges {
+                    try context.save()
+                }
+            } catch {
+                Self.log.error("requestSyncNow save failed: \(String(describing: error), privacy: .public)")
+                print("SharedCoreDataStack requestSyncNow save failed: \(error)")
+                saveError = error
+            }
+            if let completion {
+                DispatchQueue.main.async { completion(saveError) }
+            }
+        }
+    }
 }

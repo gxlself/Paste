@@ -102,6 +102,10 @@
 "preferences.databaseSize.zero" = "0 KB";
 
 "preferences.sync.enableICloud" = "Enable iCloud Sync";
+"preferences.sync.syncNow" = "Sync now";
+"preferences.sync.inlineSuccess" = "Success";
+"preferences.sync.feedback.triggered" = "Sync triggered.";
+"preferences.sync.feedback.failed" = "Sync failed";
 "preferences.sync.restartToApply" = "Restart the app to apply changes.";
 "preferences.sync.status.available" = "iCloud available";
 "preferences.sync.status.noAccount" = "No iCloud account";

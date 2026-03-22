@@ -102,6 +102,10 @@
 "preferences.databaseSize.zero" = "0 KB";
 
 "preferences.sync.enableICloud" = "开启 iCloud 同步";
+"preferences.sync.syncNow" = "立即同步";
+"preferences.sync.inlineSuccess" = "成功";
+"preferences.sync.feedback.triggered" = "已触发同步。";
+"preferences.sync.feedback.failed" = "同步失败";
 "preferences.sync.restartToApply" = "重启应用后生效。";
 "preferences.sync.status.available" = "iCloud 可用";
 "preferences.sync.status.noAccount" = "未登录 iCloud";

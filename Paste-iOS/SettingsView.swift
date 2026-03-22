@@ -15,6 +15,11 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showClearConfirmation = false
     @State private var showPastePermissionGuide = false
+    @State private var isManualCloudSyncInProgress = false
+    /// Brief inline “Success” before the icon (no separate “Sync triggered” line).
+    @State private var manualSyncSuccessFlash = false
+    /// Save/sync failure; shown as caption under the row.
+    @State private var manualSyncError: String?
 
     var body: some View {
         NavigationStack {
@@ -105,10 +110,74 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            if settings.iCloudSyncEnabled {
+                Button {
+                    triggerManualCloudSync()
+                } label: {
+                    HStack(spacing: 10) {
+                        Text("preferences.sync.syncNow")
+                            .foregroundStyle(Color(UIColor.label))
+                        Spacer(minLength: 8)
+                        if manualSyncSuccessFlash {
+                            Text("preferences.sync.inlineSuccess")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(Color.green)
+                        }
+                        if isManualCloudSyncInProgress {
+                            ManualSyncSpinningArrowIcon()
+                        } else {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                                .font(.body.weight(.medium))
+                                .foregroundStyle(Color.accentColor)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                }
+                .disabled(isManualCloudSyncInProgress)
+
+                if let manualSyncError {
+                    Text(manualSyncError)
+                        .font(.caption)
+                        .foregroundStyle(Color.red)
+                }
+            }
         }
         .onAppear { settings.refreshICloudAccountStatus() }
         .onChange(of: settings.iCloudSyncEnabled) { _ in
             settings.refreshICloudAccountStatus()
+            if !settings.iCloudSyncEnabled {
+                manualSyncError = nil
+                manualSyncSuccessFlash = false
+            }
+        }
+    }
+
+    private static let manualSyncMinSpinnerDuration: TimeInterval = 0.55
+    private static let manualSyncSuccessVisibleDuration: TimeInterval = 1.2
+
+    private func triggerManualCloudSync() {
+        guard settings.iCloudSyncEnabled else { return }
+        guard !isManualCloudSyncInProgress else { return }
+        manualSyncError = nil
+        manualSyncSuccessFlash = false
+        let startedAt = Date()
+        isManualCloudSyncInProgress = true
+        SharedCoreDataStack.shared.requestSyncNow { error in
+            let elapsed = Date().timeIntervalSince(startedAt)
+            let remaining = max(0, Self.manualSyncMinSpinnerDuration - elapsed)
+            DispatchQueue.main.asyncAfter(deadline: .now() + remaining) {
+                isManualCloudSyncInProgress = false
+                if let error {
+                    manualSyncError = String(localized: "preferences.sync.feedback.failed")
+                        + ": " + error.localizedDescription
+                } else {
+                    manualSyncSuccessFlash = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Self.manualSyncSuccessVisibleDuration) {
+                        manualSyncSuccessFlash = false
+                    }
+                }
+            }
         }
     }
 
@@ -386,6 +455,26 @@ struct SettingsView: View {
         }
         .navigationTitle(Text("preferences.tab.shortcuts"))
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - Manual sync spinner
+
+/// Drives rotation with `TimelineView` so it stops as soon as `isManualCloudSyncInProgress` becomes false.
+/// `Animation.repeatForever` on `@State` is not reliably cancelled when resetting the angle.
+private struct ManualSyncSpinningArrowIcon: View {
+
+    private static let secondsPerRevolution: Double = 0.85
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 1.0 / 60)) { context in
+            let t = context.date.timeIntervalSinceReferenceDate
+            let degrees = (t * 360 / Self.secondsPerRevolution).truncatingRemainder(dividingBy: 360)
+            Image(systemName: "arrow.triangle.2.circlepath")
+                .font(.body.weight(.medium))
+                .foregroundStyle(Color.accentColor)
+                .rotationEffect(.degrees(degrees))
+        }
     }
 }
 
