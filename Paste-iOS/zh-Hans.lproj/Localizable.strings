@@ -44,8 +44,7 @@
 "ios.card.copy" = "复制";
 "ios.card.openLink" = "打开链接";
 "ios.card.edit" = "编辑";
-"ios.card.pin" = "置顶";
-"ios.card.unpin" = "取消置顶";
+"ios.card.pin" = "Pin";
 "ios.card.delete" = "删除";
 
 /* Toast */

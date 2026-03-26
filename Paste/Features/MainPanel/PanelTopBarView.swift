@@ -110,53 +110,51 @@ struct PanelTopBarView: View {
 
             // Type filter buttons.
             HStack(spacing: 8) {
-                FilterButton(title: "mainpanel.filter.all", titleKeyForAccessibility: "mainpanel.filter.all", icon: "square.grid.2x2", isSelected: viewModel.selectedType == nil && !viewModel.isRegexPresetMode && viewModel.selectedCustomTypeId == nil, customTitle: AppSettings.filterTabName(for: nil)) {
+                FilterButton(title: "mainpanel.filter.all", titleKeyForAccessibility: "mainpanel.filter.all", icon: "square.grid.2x2", isSelected: viewModel.selectedType == nil && !viewModel.isRegexPresetMode && viewModel.activePinboardIndex == nil, customTitle: AppSettings.filterTabName(for: nil)) {
                     viewModel.selectedType = nil
                     viewModel.isRegexPresetMode = false
-                    viewModel.selectedCustomTypeId = nil
+                    viewModel.exitPinboard()
                 }
                 FilterButton(title: "mainpanel.filter.text", titleKeyForAccessibility: "mainpanel.filter.text", icon: "doc.text", isSelected: viewModel.selectedType == .text, customTitle: AppSettings.filterTabName(for: .text)) {
                     viewModel.selectedType = .text
+                    viewModel.exitPinboard()
                 }
                 FilterButton(title: "mainpanel.filter.image", titleKeyForAccessibility: "mainpanel.filter.image", icon: "photo", isSelected: viewModel.selectedType == .image, customTitle: AppSettings.filterTabName(for: .image)) {
                     viewModel.selectedType = .image
+                    viewModel.exitPinboard()
                 }
                 FilterButton(title: "mainpanel.filter.file", titleKeyForAccessibility: "mainpanel.filter.file", icon: "folder", isSelected: viewModel.selectedType == .file, customTitle: AppSettings.filterTabName(for: .file)) {
                     viewModel.selectedType = .file
+                    viewModel.exitPinboard()
                 }
                 FilterButton(title: "mainpanel.filter.regex", titleKeyForAccessibility: "mainpanel.filter.regex", icon: "curlybraces", isSelected: viewModel.isRegexPresetMode) {
                     viewModel.isRegexPresetMode = true
+                    viewModel.exitPinboard()
                 }
 
-                // Custom type buttons.
-                ForEach(viewModel.customTypes) { ct in
-                    CustomTypeFilterButton(
-                        customType: ct,
-                        isSelected: viewModel.selectedCustomTypeId == ct.id,
-                        onSelect: { viewModel.selectedCustomTypeId = ct.id },
-                        onRename: { newName in viewModel.renameCustomType(id: ct.id, name: newName) },
-                        onDelete: { viewModel.removeCustomType(id: ct.id) }
-                    )
+                ForEach(0..<AppSettings.pinboardCount, id: \.self) { index in
+                    FilterButton(
+                        title: LocalizedStringKey(AppSettings.pinboardName(at: index)),
+                        titleKeyForAccessibility: AppSettings.pinboardName(at: index),
+                        icon: "pin",
+                        isSelected: viewModel.activePinboardIndex == index
+                    ) {
+                        viewModel.selectedType = nil
+                        viewModel.isRegexPresetMode = false
+                        viewModel.showPinboard(index: index)
+                    }
                 }
 
-                // Add custom type button.
-                Button {
-                    viewModel.showCustomTypeInput = true
-                } label: {
-                    Image(systemName: "plus.circle")
-                        .font(.system(size: 14))
-                        .foregroundColor(.secondary)
-                }
-                .buttonStyle(.plain)
-                .help("Add custom type")
-
-                // Inline input (shown right of the + button when active).
-                if viewModel.showCustomTypeInput {
-                    CustomTypeInputRow(
-                        text: $viewModel.customTypeInputText,
-                        onConfirm: { viewModel.confirmAddCustomType() },
-                        onCancel: { viewModel.cancelAddCustomType() }
-                    )
+                if AppSettings.pinboardCount < AppSettings.pinboardCountMax {
+                    Button {
+                        viewModel.createNewPinboard()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .font(.system(size: 14))
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .help("Add pinboard")
                 }
 
                 // Fixed "About" tab — always last, never removable.
@@ -276,49 +274,50 @@ struct PanelTopBarVerticalView: View {
             // Row 2: filter buttons + count + clear (scrollable to fit custom types).
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
-                    FilterButton(title: "mainpanel.filter.all", titleKeyForAccessibility: "mainpanel.filter.all", icon: "square.grid.2x2", isSelected: viewModel.selectedType == nil && !viewModel.isRegexPresetMode && viewModel.selectedCustomTypeId == nil, customTitle: AppSettings.filterTabName(for: nil)) {
+                    FilterButton(title: "mainpanel.filter.all", titleKeyForAccessibility: "mainpanel.filter.all", icon: "square.grid.2x2", isSelected: viewModel.selectedType == nil && !viewModel.isRegexPresetMode && viewModel.activePinboardIndex == nil, customTitle: AppSettings.filterTabName(for: nil)) {
                         viewModel.selectedType = nil
                         viewModel.isRegexPresetMode = false
-                        viewModel.selectedCustomTypeId = nil
+                        viewModel.exitPinboard()
                     }
                     FilterButton(title: "mainpanel.filter.text", titleKeyForAccessibility: "mainpanel.filter.text", icon: "doc.text", isSelected: viewModel.selectedType == .text, customTitle: AppSettings.filterTabName(for: .text)) {
                         viewModel.selectedType = .text
+                        viewModel.exitPinboard()
                     }
                     FilterButton(title: "mainpanel.filter.image", titleKeyForAccessibility: "mainpanel.filter.image", icon: "photo", isSelected: viewModel.selectedType == .image, customTitle: AppSettings.filterTabName(for: .image)) {
                         viewModel.selectedType = .image
+                        viewModel.exitPinboard()
                     }
                     FilterButton(title: "mainpanel.filter.file", titleKeyForAccessibility: "mainpanel.filter.file", icon: "folder", isSelected: viewModel.selectedType == .file, customTitle: AppSettings.filterTabName(for: .file)) {
                         viewModel.selectedType = .file
+                        viewModel.exitPinboard()
                     }
                     FilterButton(title: "mainpanel.filter.regex", titleKeyForAccessibility: "mainpanel.filter.regex", icon: "curlybraces", isSelected: viewModel.isRegexPresetMode) {
                         viewModel.isRegexPresetMode = true
+                        viewModel.exitPinboard()
                     }
 
-                    ForEach(viewModel.customTypes) { ct in
-                        CustomTypeFilterButton(
-                            customType: ct,
-                            isSelected: viewModel.selectedCustomTypeId == ct.id,
-                            onSelect: { viewModel.selectedCustomTypeId = ct.id },
-                            onRename: { newName in viewModel.renameCustomType(id: ct.id, name: newName) },
-                            onDelete: { viewModel.removeCustomType(id: ct.id) }
-                        )
+                    ForEach(0..<AppSettings.pinboardCount, id: \.self) { index in
+                        FilterButton(
+                            title: LocalizedStringKey(AppSettings.pinboardName(at: index)),
+                            titleKeyForAccessibility: AppSettings.pinboardName(at: index),
+                            icon: "pin",
+                            isSelected: viewModel.activePinboardIndex == index
+                        ) {
+                            viewModel.selectedType = nil
+                            viewModel.isRegexPresetMode = false
+                            viewModel.showPinboard(index: index)
+                        }
                     }
 
-                    Button {
-                        viewModel.showCustomTypeInput = true
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .font(.system(size: 13))
-                            .foregroundColor(.secondary)
-                    }
-                    .buttonStyle(.plain)
-
-                    if viewModel.showCustomTypeInput {
-                        CustomTypeInputRow(
-                            text: $viewModel.customTypeInputText,
-                            onConfirm: { viewModel.confirmAddCustomType() },
-                            onCancel: { viewModel.cancelAddCustomType() }
-                        )
+                    if AppSettings.pinboardCount < AppSettings.pinboardCountMax {
+                        Button {
+                            viewModel.createNewPinboard()
+                        } label: {
+                            Image(systemName: "plus.circle")
+                                .font(.system(size: 13))
+                                .foregroundColor(.secondary)
+                        }
+                        .buttonStyle(.plain)
                     }
 
                     // Fixed "About" tab — always last, never removable.

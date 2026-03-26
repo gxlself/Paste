@@ -18,7 +18,6 @@
 "ios.keyboard.copied.hint" = "コピー済み、どこでもペースト可能";
 "ios.card.copy" = "コピー";
 "ios.card.pin" = "固定";
-"ios.card.unpin" = "固定解除";
 "ios.card.preview" = "プレビュー";
 "ios.card.edit" = "編集";
 "ios.card.delete" = "削除";

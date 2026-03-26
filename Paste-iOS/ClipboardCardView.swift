@@ -62,12 +62,6 @@ struct ClipboardCardView: View {
                     .frame(width: 8, height: 8)
             }
 
-            if item.isPinned {
-                Image(systemName: "pin.fill")
-                    .font(.system(size: 9))
-                    .foregroundStyle(.orange)
-            }
-
             sourceAppBadge
         }
     }

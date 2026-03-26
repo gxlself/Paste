@@ -202,7 +202,7 @@ final class iOSClipboardViewModel: ObservableObject {
     }
 
     func mergeSelectedItems() {
-        let selected = filteredItems.filter { selectedItemIDs.contains($0.id) }
+        let selected = items.filter { selectedItemIDs.contains($0.id) }
         let merged = selected.compactMap { $0.plainText }.joined(separator: "\n")
         if !merged.isEmpty {
             UIPasteboard.general.string = merged
@@ -231,6 +231,22 @@ final class iOSClipboardViewModel: ObservableObject {
         if let filter {
             result = result.filter { $0.itemType == filter }
         }
+
+        if !searchText.isEmpty {
+            let query = searchText.lowercased()
+            result = result.filter { item in
+                if let text = item.plainText, text.localizedCaseInsensitiveContains(query) { return true }
+                if let appName = item.sourceAppName, appName.localizedCaseInsensitiveContains(query) { return true }
+                if item.displayText.localizedCaseInsensitiveContains(query) { return true }
+                return false
+            }
+        }
+
+        return result
+    }
+
+    func pinboardItems(for pinboardIndex: Int) -> [SharedClipboardItem] {
+        var result = items.filter { $0.tagsArray.parsedTags().contains(where: { $0.pinboardIndex == pinboardIndex }) }
 
         if !searchText.isEmpty {
             let query = searchText.lowercased()

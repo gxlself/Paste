@@ -45,7 +45,6 @@
 "ios.card.openLink" = "Open Link";
 "ios.card.edit" = "Edit";
 "ios.card.pin" = "Pin";
-"ios.card.unpin" = "Unpin";
 "ios.card.delete" = "Delete";
 
 /* Toast */

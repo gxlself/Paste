@@ -49,8 +49,7 @@ struct ClipboardCardView: View {
     let onRemoveFromPasteStack: () -> Void
     let isPasteStackMode: Bool
     let onDelete: () -> Void
-    var customTypes: [CustomType] = []
-    var onToggleCustomType: ((_ typeId: String) -> Void)?
+    var onEdit: (() -> Void)?
 
     @State private var isHovered = false
     @State private var isDragging = false
@@ -114,6 +113,9 @@ struct ClipboardCardView: View {
         )
         .contextMenu {
             Button("mainpanel.context.paste") { onPaste(AppSettings.pastePlainTextByDefault) }
+            if item.itemType == .text {
+                Button("mainpanel.edit.title") { onEdit?() }
+            }
             Button("mainpanel.context.delete", role: .destructive) { onDelete() }
             Divider()
 
@@ -129,25 +131,8 @@ struct ClipboardCardView: View {
 
             Menu("mainpanel.context.pinboard") {
                 ForEach(0..<pinboardCount, id: \.self) { index in
-                    Button(String(format: String(localized: "mainpanel.context.pinboard.moveFormat"), index + 1)) {
+                    Button(AppSettings.pinboardName(at: index)) {
                         onMoveToPinboard(index)
-                    }
-                }
-            }
-
-            if !customTypes.isEmpty {
-                let assignedIds = Set(item.tagsArray.parsedTags().compactMap(\.customTypeId))
-                Menu("Assign to Type") {
-                    ForEach(customTypes) { ct in
-                        Button {
-                            onToggleCustomType?(ct.id)
-                        } label: {
-                            if assignedIds.contains(ct.id) {
-                                Label(ct.name, systemImage: "checkmark")
-                            } else {
-                                Text(ct.name)
-                            }
-                        }
                     }
                 }
             }

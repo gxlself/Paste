@@ -35,7 +35,6 @@
 "ios.card.openLink" = "Ouvrir le lien";
 "ios.card.edit" = "Modifier";
 "ios.card.pin" = "Épingler";
-"ios.card.unpin" = "Désépingler";
 "ios.card.delete" = "Supprimer";
 "ios.toast.copied" = "Copié · Collez dans d'autres apps";
 "ios.tab.clipboard" = "Presse-papiers";

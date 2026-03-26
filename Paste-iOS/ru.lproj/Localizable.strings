@@ -35,7 +35,6 @@
 "ios.card.openLink" = "Открыть ссылку";
 "ios.card.edit" = "Редактировать";
 "ios.card.pin" = "Закрепить";
-"ios.card.unpin" = "Открепить";
 "ios.card.delete" = "Удалить";
 "ios.toast.copied" = "Скопировано · Вставьте в другие приложения";
 "ios.tab.clipboard" = "Буфер обмена";

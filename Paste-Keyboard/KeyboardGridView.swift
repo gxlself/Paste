@@ -176,11 +176,6 @@ struct KeyboardGridView: View {
                 .font(.system(size: 9))
                 .foregroundStyle(.tertiary)
             Spacer()
-            if item.isPinned {
-                Image(systemName: "pin.fill")
-                    .font(.system(size: 8))
-                    .foregroundStyle(accentGold)
-            }
         }
     }
 
@@ -256,15 +251,6 @@ struct KeyboardGridView: View {
         }
 
         Divider()
-
-        Button {
-            viewModel.togglePin(item)
-        } label: {
-            Label(
-                String(localized: item.isPinned ? "ios.card.unpin" : "ios.card.pin"),
-                systemImage: item.isPinned ? "pin.slash" : "pin"
-            )
-        }
 
         Button {
             viewModel.openInApp(item, action: "preview")

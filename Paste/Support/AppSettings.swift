@@ -267,11 +267,29 @@ enum AppSettings {
     // MARK: - Pinboard
     
     static let pinboardCountMax = 10
-    static let pinboardCountDefault = 5
+    static let pinboardCountDefault = 1
 
     static var pinboardCount: Int {
         get { max(pinboardCountDefault, min(int(Key.pinboardCount, default: pinboardCountDefault), pinboardCountMax)) }
-        set { defaults.set(max(pinboardCountDefault, min(newValue, pinboardCountMax)), forKey: Key.pinboardCount) }
+        set {
+            defaults.set(max(pinboardCountDefault, min(newValue, pinboardCountMax)), forKey: Key.pinboardCount)
+            savePinboardsToKVS()
+        }
+    }
+
+    static func pinboardName(at index: Int) -> String {
+        defaults.string(forKey: "pinboardName_\(index)")
+            ?? String(format: String(localized: "mainpanel.pinboard.titleFormat"), index + 1)
+    }
+
+    static func setPinboardName(_ name: String, at index: Int) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty {
+            defaults.removeObject(forKey: "pinboardName_\(index)")
+        } else {
+            defaults.set(trimmed, forKey: "pinboardName_\(index)")
+        }
+        savePinboardsToKVS()
     }
 
     static var lastPinboardIndex: Int {
@@ -370,6 +388,42 @@ enum AppSettings {
     static var hotKeyPrevPinboardEnabled: Bool {
         get { bool(Key.hotKeyPrevPinboardEnabled, default: true) }
         set { defaults.set(newValue, forKey: Key.hotKeyPrevPinboardEnabled) }
+    }
+
+    // MARK: - Pinboard Sync (iCloud KV Store)
+
+    private static let pinboardKVKey = "pinboardSettings"
+
+    static func savePinboardsToKVS() {
+        var names: [String] = []
+        var colors: [String] = []
+        for i in 0..<pinboardCount {
+            names.append(defaults.string(forKey: "pinboardName_\(i)") ?? "")
+            colors.append(defaults.string(forKey: "pinboardColor_\(i)") ?? "")
+        }
+        let payload: [String: Any] = ["count": pinboardCount, "names": names, "colors": colors]
+        if let data = try? JSONSerialization.data(withJSONObject: payload) {
+            kvStore.set(data, forKey: pinboardKVKey)
+            kvStore.synchronize()
+        }
+    }
+
+    static func loadPinboardsFromKVS() {
+        guard let data = kvStore.data(forKey: pinboardKVKey),
+              let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let count = dict["count"] as? Int else { return }
+        let names = dict["names"] as? [String] ?? []
+        let colors = dict["colors"] as? [String] ?? []
+        let newCount = max(pinboardCountDefault, min(count, pinboardCountMax))
+        defaults.set(newCount, forKey: Key.pinboardCount)
+        for i in 0..<newCount {
+            if i < names.count && !names[i].isEmpty {
+                defaults.set(names[i], forKey: "pinboardName_\(i)")
+            }
+            if i < colors.count && !colors[i].isEmpty {
+                defaults.set(colors[i], forKey: "pinboardColor_\(i)")
+            }
+        }
     }
 
     // MARK: - Custom Types (iCloud KV Store, syncs with iOS)

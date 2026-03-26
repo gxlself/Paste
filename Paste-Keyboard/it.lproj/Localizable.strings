@@ -18,7 +18,6 @@
 "ios.keyboard.copied.hint" = "Copiato, incolla ovunque";
 "ios.card.copy" = "Copia";
 "ios.card.pin" = "Fissa";
-"ios.card.unpin" = "Rimuovi";
 "ios.card.preview" = "Anteprima";
 "ios.card.edit" = "Modifica";
 "ios.card.delete" = "Elimina";

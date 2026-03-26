@@ -35,7 +35,6 @@
 "ios.card.openLink" = "Apri link";
 "ios.card.edit" = "Modifica";
 "ios.card.pin" = "Fissa";
-"ios.card.unpin" = "Togli fissatura";
 "ios.card.delete" = "Elimina";
 "ios.toast.copied" = "Copiato · Incolla in altre app";
 "ios.tab.clipboard" = "Appunti";

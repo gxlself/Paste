@@ -43,8 +43,7 @@ struct ClipboardGridView: View {
                                     onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
                                     isPasteStackMode: viewModel.panelMode == .pasteStack,
                                     onDelete: { viewModel.deleteItem(item) },
-                                    customTypes: viewModel.customTypes,
-                                    onToggleCustomType: { viewModel.toggleCustomType(id: $0, for: item) }
+                                    onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
                                 )
                                 .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
                                 .id(displayItem.id)
@@ -158,8 +157,7 @@ struct ClipboardGridVerticalView: View {
                                 onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
                                 isPasteStackMode: viewModel.panelMode == .pasteStack,
                                 onDelete: { viewModel.deleteItem(item) },
-                                customTypes: viewModel.customTypes,
-                                onToggleCustomType: { viewModel.toggleCustomType(id: $0, for: item) }
+                                onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
                             )
                             .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
                             .id(displayItem.id)

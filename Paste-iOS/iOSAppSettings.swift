@@ -14,7 +14,7 @@ final class iOSAppSettings: ObservableObject {
 
     private let defaults: UserDefaults
 
-    static let pinboardCountDefault = 5
+    static let pinboardCountDefault = 1
     static let pinboardCountMax = 10
 
     private init() {
@@ -28,13 +28,14 @@ final class iOSAppSettings: ObservableObject {
             _customTypes = Published(initialValue: decoded)
         }
 
-        // Reload custom types when another device pushes an update.
+        // Reload custom types and pinboards when another device pushes an update.
         NotificationCenter.default.addObserver(
             forName: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
             object: NSUbiquitousKeyValueStore.default,
             queue: .main
         ) { [weak self] _ in
             self?.loadCustomTypes()
+            self?.loadPinboardsFromKVS()
         }
 
         let count = ud.integer(forKey: Keys.pinboardCount)
@@ -74,7 +75,10 @@ final class iOSAppSettings: ObservableObject {
     // MARK: - Pinboards
 
     @Published var pinboardCount: Int = 5 {
-        didSet { defaults.set(pinboardCount, forKey: Keys.pinboardCount) }
+        didSet {
+            defaults.set(pinboardCount, forKey: Keys.pinboardCount)
+            if !isSyncingFromKVS { savePinboardsToKVS() }
+        }
     }
 
     static let pinboardColors: [String] = [
@@ -85,6 +89,7 @@ final class iOSAppSettings: ObservableObject {
     func setPinboardName(_ name: String, at index: Int) {
         defaults.set(name, forKey: "\(Keys.pinboardName)\(index)")
         objectWillChange.send()
+        savePinboardsToKVS()
     }
 
     func pinboardColorHex(at index: Int) -> String {
@@ -95,6 +100,7 @@ final class iOSAppSettings: ObservableObject {
     func setPinboardColor(_ hex: String, at index: Int) {
         defaults.set(hex, forKey: "\(Keys.pinboardColor)\(index)")
         objectWillChange.send()
+        savePinboardsToKVS()
     }
 
     func pinboardName(at index: Int) -> String {
@@ -139,6 +145,47 @@ final class iOSAppSettings: ObservableObject {
         setPinboardName(srcName, at: destination)
         setPinboardColor(srcColor, at: destination)
         objectWillChange.send()
+    }
+
+    // MARK: - Pinboard Sync (iCloud KV Store)
+
+    private static let pinboardKVKey = "pinboardSettings"
+
+    func savePinboardsToKVS() {
+        var names: [String] = []
+        var colors: [String] = []
+        for i in 0..<pinboardCount {
+            names.append(defaults.string(forKey: "\(Keys.pinboardName)\(i)") ?? "")
+            colors.append(defaults.string(forKey: "\(Keys.pinboardColor)\(i)") ?? "")
+        }
+        let payload: [String: Any] = ["count": pinboardCount, "names": names, "colors": colors]
+        if let data = try? JSONSerialization.data(withJSONObject: payload) {
+            kvStore.set(data, forKey: Self.pinboardKVKey)
+            kvStore.synchronize()
+        }
+    }
+
+    private var isSyncingFromKVS = false
+
+    func loadPinboardsFromKVS() {
+        guard let data = kvStore.data(forKey: Self.pinboardKVKey),
+              let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let count = dict["count"] as? Int else { return }
+        let names = dict["names"] as? [String] ?? []
+        let colors = dict["colors"] as? [String] ?? []
+        let newCount = max(Self.pinboardCountDefault, min(count, Self.pinboardCountMax))
+        defaults.set(newCount, forKey: Keys.pinboardCount)
+        for i in 0..<newCount {
+            if i < names.count && !names[i].isEmpty {
+                defaults.set(names[i], forKey: "\(Keys.pinboardName)\(i)")
+            }
+            if i < colors.count && !colors[i].isEmpty {
+                defaults.set(colors[i], forKey: "\(Keys.pinboardColor)\(i)")
+            }
+        }
+        isSyncingFromKVS = true
+        pinboardCount = newCount
+        isSyncingFromKVS = false
     }
 
     // MARK: - Filter Tab Names

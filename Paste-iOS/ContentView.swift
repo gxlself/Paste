@@ -23,6 +23,9 @@ struct ContentView: View {
     @State private var showNewTextSheet = false
     @State private var showScanner = false
     @State private var showPinboardManager = false
+    @State private var renamingPinboardIndex: Int = -1
+    @State private var showRenamePinboardAlert = false
+    @State private var renamePinboardText = ""
     @State private var showSettings = false
     @State private var selectedPageIndex: Int = 0
     @FocusState private var isSearchFieldFocused: Bool
@@ -30,56 +33,66 @@ struct ContentView: View {
     private static let filterOrder: [ClipboardItemType?] = [nil, .text, .image, .file]
     private static let pasteWebsiteURL = URL(string: "https://paste.gxlself.com")!
 
+    private var totalPageCount: Int {
+        Self.filterOrder.count + viewModel.settings.pinboardCount
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             topBar
             Divider()
             PinboardTabsView(
-                selectedFilter: filterBinding,
-                selectedCustomTypeId: $viewModel.selectedCustomTypeId,
+                selectedPageIndex: $selectedPageIndex,
                 settings: viewModel.settings,
                 onClearType: { type in viewModel.clearItems(ofType: type) },
                 onRenameType: { type in beginRenameCategory(type) },
-                onDeleteCustomType: { id in viewModel.removeCustomType(id: id) },
-                onRenameCustomType: { id, name in viewModel.settings.renameCustomType(id: id, name: name) }
+                onAddPinboard: { viewModel.settings.addPinboard() },
+                onRenamePinboard: { index in beginRenamePinboard(index) },
+                onRemovePinboard: { index in
+                    viewModel.settings.removePinboard(at: index)
+                    if selectedPageIndex >= totalPageCount {
+                        selectedPageIndex = max(0, totalPageCount - 1)
+                    }
+                }
             )
             Divider()
             macPastePromoRow
 
             ZStack(alignment: .top) {
                 TabView(selection: $selectedPageIndex) {
-                    ForEach(0..<Self.filterOrder.count, id: \.self) { idx in
+                    ForEach(Array(0..<totalPageCount), id: \.self) { idx in
                         pageContent(for: idx)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .tag(idx)
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
 
-                if viewModel.copiedItemID != nil {
-                    CopiedToastView()
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                        .padding(.top, 16)
-                        .zIndex(10)
-                }
-
-                if viewModel.isMultiSelectMode {
-                    VStack {
-                        Spacer()
-                        multiSelectBar
-                            .transition(.move(edge: .bottom))
+                Group {
+                    if viewModel.copiedItemID != nil {
+                        CopiedToastView()
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .padding(.top, 16)
+                            .zIndex(10)
                     }
                 }
+                .animation(.spring(response: 0.35, dampingFraction: 0.7), value: viewModel.copiedItemID)
+
+                Group {
+                    if viewModel.isMultiSelectMode {
+                        VStack {
+                            Spacer()
+                            multiSelectBar
+                                .transition(.move(edge: .bottom))
+                        }
+                    }
+                }
+                .animation(.easeInOut(duration: 0.2), value: viewModel.isMultiSelectMode)
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: viewModel.isMultiSelectMode)
-        .animation(.spring(response: 0.35, dampingFraction: 0.7), value: viewModel.copiedItemID)
-        .onChange(of: selectedPageIndex) { newValue in
-            viewModel.selectedFilter = Self.filterOrder[newValue]
-        }
-        .onChange(of: viewModel.selectedFilter) { newValue in
-            if let idx = Self.filterOrder.firstIndex(where: { $0 == newValue }),
-               idx != selectedPageIndex {
-                selectedPageIndex = idx
+        .onChange(of: viewModel.settings.pinboardCount) { _ in
+            if selectedPageIndex >= totalPageCount {
+                selectedPageIndex = max(0, totalPageCount - 1)
             }
         }
         .sheet(item: $editingItem) { item in
@@ -142,6 +155,18 @@ struct ContentView: View {
                 renamingCategoryType = nil
             }
         }
+        .alert(String(localized: "ios.pinboard.manager.rename"), isPresented: $showRenamePinboardAlert) {
+            TextField(String(localized: "ios.pinboard.manager.rename.name"), text: $renamePinboardText)
+            Button(String(localized: "mainpanel.edit.cancel"), role: .cancel) {
+                renamingPinboardIndex = -1
+            }
+            Button(String(localized: "mainpanel.edit.ok")) {
+                if renamingPinboardIndex >= 0 {
+                    viewModel.settings.setPinboardName(renamePinboardText, at: renamingPinboardIndex)
+                }
+                renamingPinboardIndex = -1
+            }
+        }
         .alert(String(localized: "ios.card.rename"), isPresented: $showRenameItemAlert) {
             TextField(String(localized: "ios.rename.placeholder"), text: $renameItemText)
             Button(String(localized: "mainpanel.edit.cancel"), role: .cancel) {
@@ -166,22 +191,19 @@ struct ContentView: View {
         .onDisappear { viewModel.stop() }
     }
 
-    // MARK: - Filter binding (syncs tab bar with page)
+    // MARK: - Page content
 
-    private var filterBinding: Binding<ClipboardItemType?> {
-        Binding(
-            get: { Self.filterOrder[selectedPageIndex] },
-            set: { newVal in
-                if let idx = Self.filterOrder.firstIndex(where: { $0 == newVal }) {
-                    withAnimation { selectedPageIndex = idx }
-                }
-            }
-        )
+    @ViewBuilder
+    private func pageContent(for index: Int) -> some View {
+        let filterCount = Self.filterOrder.count
+        if index < filterCount {
+            filterPageContent(for: index)
+        } else {
+            pinboardPageContent(for: index - filterCount)
+        }
     }
 
-    // MARK: - Page content for each filter
-
-    private func pageContent(for index: Int) -> some View {
+    private func filterPageContent(for index: Int) -> some View {
         let filter = Self.filterOrder[index]
         let pageItems = viewModel.items(for: filter)
 
@@ -195,7 +217,6 @@ struct ContentView: View {
             onTap: { handleTap($0) },
             onDelete: { viewModel.deleteItem($0) },
             onEdit: { editingItem = $0 },
-            onTogglePin: { viewModel.togglePin($0) },
             onPreview: { previewingItem = $0 },
             onCopyPlainText: { copyPlainText($0) },
             onRename: { item in
@@ -204,6 +225,33 @@ struct ContentView: View {
                 showRenameItemAlert = true
             },
             onShare: { sharingItem = $0 },
+            onMoveToPinboard: { item, index in viewModel.pinItemToBoard(item, index: index) },
+            onStartMultiSelect: { withAnimation { viewModel.isMultiSelectMode = true } }
+        )
+    }
+
+    private func pinboardPageContent(for pinboardIndex: Int) -> some View {
+        let pageItems = viewModel.pinboardItems(for: pinboardIndex)
+
+        return ClipboardGridView(
+            items: pageItems,
+            copiedItemID: viewModel.copiedItemID,
+            isMultiSelectMode: viewModel.isMultiSelectMode,
+            selectedItemIDs: viewModel.selectedItemIDs,
+            settings: viewModel.settings,
+            pinboardIndexForItem: { viewModel.pinboardIndex(for: $0) },
+            onTap: { handleTap($0) },
+            onDelete: { viewModel.deleteItem($0) },
+            onEdit: { editingItem = $0 },
+            onPreview: { previewingItem = $0 },
+            onCopyPlainText: { copyPlainText($0) },
+            onRename: { item in
+                renamingItem = item
+                renameItemText = item.alias ?? ""
+                showRenameItemAlert = true
+            },
+            onShare: { sharingItem = $0 },
+            onMoveToPinboard: { item, index in viewModel.pinItemToBoard(item, index: index) },
             onStartMultiSelect: { withAnimation { viewModel.isMultiSelectMode = true } }
         )
     }
@@ -221,6 +269,12 @@ struct ContentView: View {
         renameCategoryText = viewModel.settings.filterTabName(for: type)
             ?? String(localized: String.LocalizationValue(defaultLabels[type] ?? "mainpanel.filter.all"))
         showRenameCategoryAlert = true
+    }
+
+    private func beginRenamePinboard(_ index: Int) {
+        renamingPinboardIndex = index
+        renamePinboardText = viewModel.settings.pinboardName(at: index)
+        showRenamePinboardAlert = true
     }
 
     // MARK: - Mac companion (below pinboards)

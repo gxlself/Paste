@@ -18,7 +18,6 @@
 "ios.keyboard.copied.hint" = "Скопировано, вставьте куда угодно";
 "ios.card.copy" = "Копировать";
 "ios.card.pin" = "Закрепить";
-"ios.card.unpin" = "Открепить";
 "ios.card.preview" = "Просмотр";
 "ios.card.edit" = "Редактировать";
 "ios.card.delete" = "Удалить";

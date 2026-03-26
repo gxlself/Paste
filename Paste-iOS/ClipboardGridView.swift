@@ -16,7 +16,6 @@ struct ClipboardGridView: View {
     let onTap: (SharedClipboardItem) -> Void
     let onDelete: (SharedClipboardItem) -> Void
     let onEdit: (SharedClipboardItem) -> Void
-    let onTogglePin: (SharedClipboardItem) -> Void
     var onPreview: ((SharedClipboardItem) -> Void)?
     var onCopyPlainText: ((SharedClipboardItem) -> Void)?
     var onRename: ((SharedClipboardItem) -> Void)?
@@ -125,15 +124,6 @@ struct ClipboardGridView: View {
 
             Divider()
 
-            Button {
-                onTogglePin(item)
-            } label: {
-                Label(
-                    String(localized: item.isPinned ? "ios.card.unpin" : "ios.card.pin"),
-                    systemImage: item.isPinned ? "pin.slash" : "pin"
-                )
-            }
-
             if settings.pinboardCount > 0 {
                 Menu {
                     ForEach(0..<settings.pinboardCount, id: \.self) { index in
@@ -145,7 +135,7 @@ struct ClipboardGridView: View {
                         }
                     }
                 } label: {
-                    Label(String(localized: "ios.card.moveToPinboard"), systemImage: "rectangle.stack")
+                    Label(String(localized: "ios.card.pin"), systemImage: "pin")
                 }
             }
 

@@ -18,7 +18,6 @@
 "ios.keyboard.copied.hint" = "복사됨, 아무 곳에나 붙여넣기";
 "ios.card.copy" = "복사";
 "ios.card.pin" = "고정";
-"ios.card.unpin" = "고정 해제";
 "ios.card.preview" = "미리보기";
 "ios.card.edit" = "편집";
 "ios.card.delete" = "삭제";

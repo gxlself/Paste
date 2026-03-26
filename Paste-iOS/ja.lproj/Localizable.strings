@@ -35,7 +35,6 @@
 "ios.card.openLink" = "リンクを開く";
 "ios.card.edit" = "編集";
 "ios.card.pin" = "固定";
-"ios.card.unpin" = "固定解除";
 "ios.card.delete" = "削除";
 "ios.toast.copied" = "コピー済み · 他のアプリに貼り付け可能";
 "ios.tab.clipboard" = "クリップボード";

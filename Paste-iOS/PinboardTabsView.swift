@@ -7,17 +7,15 @@ import SwiftUI
 
 struct PinboardTabsView: View {
 
-    @Binding var selectedFilter: ClipboardItemType?
-    @Binding var selectedCustomTypeId: String?
+    @Binding var selectedPageIndex: Int
     @ObservedObject var settings: iOSAppSettings
     var onClearType: ((ClipboardItemType?) -> Void)?
     var onRenameType: ((ClipboardItemType?) -> Void)?
-    var onDeleteCustomType: ((String) -> Void)?
-    var onRenameCustomType: ((String, String) -> Void)?
+    var onAddPinboard: (() -> Void)?
+    var onRenamePinboard: ((Int) -> Void)?
+    var onRemovePinboard: ((Int) -> Void)?
 
-    @State private var showCustomTypeRenameAlert = false
-    @State private var renamingCustomTypeId: String = ""
-    @State private var renameCustomTypeText: String = ""
+    static let filterCount = 4
 
     private let filters: [(defaultLabel: String, icon: String, type: ClipboardItemType?)] = [
         ("mainpanel.filter.all", "square.grid.2x2", nil),
@@ -27,93 +25,112 @@ struct PinboardTabsView: View {
     ]
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                // Built-in type tabs.
-                ForEach(0..<filters.count, id: \.self) { i in
-                    let f = filters[i]
-                    let isActive = selectedCustomTypeId == nil && selectedFilter == f.type
-                    let label = settings.filterTabName(for: f.type)
-                        ?? String(localized: String.LocalizationValue(f.defaultLabel))
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selectedCustomTypeId = nil
-                            selectedFilter = f.type
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(0..<filters.count, id: \.self) { i in
+                        let f = filters[i]
+                        let isActive = selectedPageIndex == i
+                        let label = settings.filterTabName(for: f.type)
+                            ?? String(localized: String.LocalizationValue(f.defaultLabel))
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                selectedPageIndex = i
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: f.icon)
+                                    .font(.system(size: 12, weight: .medium))
+                                Text(label)
+                                    .font(.subheadline.weight(isActive ? .semibold : .regular))
+                                    .lineLimit(1)
+                            }
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(isActive ? Color(UIColor.label).opacity(0.08) : Color.clear)
+                            .clipShape(Capsule())
                         }
-                    } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: f.icon)
-                                .font(.system(size: 12, weight: .medium))
-                            Text(label)
-                                .font(.subheadline.weight(isActive ? .semibold : .regular))
-                                .lineLimit(1)
+                        .buttonStyle(.plain)
+                        .foregroundStyle(isActive ? Color(UIColor.label) : Color.secondary)
+                        .contextMenu {
+                            Button { onRenameType?(f.type) } label: {
+                                Label(String(localized: "ios.pinboard.manager.rename"), systemImage: "pencil")
+                            }
+                            Divider()
+                            Button(role: .destructive) { onClearType?(f.type) } label: {
+                                Label(String(localized: "ios.pinboard.clearType"), systemImage: "trash")
+                            }
                         }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(isActive ? Color(UIColor.label).opacity(0.08) : Color.clear)
-                        .clipShape(Capsule())
+                        .id(i)
                     }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(isActive ? Color(UIColor.label) : Color.secondary)
-                    .contextMenu {
-                        Button { onRenameType?(f.type) } label: {
-                            Label(String(localized: "ios.pinboard.manager.rename"), systemImage: "pencil")
-                        }
+
+                    if settings.pinboardCount > 0 {
                         Divider()
-                        Button(role: .destructive) { onClearType?(f.type) } label: {
-                            Label(String(localized: "ios.pinboard.clearType"), systemImage: "trash")
+                            .frame(height: 20)
+                            .padding(.horizontal, 4)
+                    }
+
+                    ForEach(0..<settings.pinboardCount, id: \.self) { index in
+                        let pageIndex = Self.filterCount + index
+                        let isActive = selectedPageIndex == pageIndex
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                selectedPageIndex = pageIndex
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Circle()
+                                    .fill(Color(hex: settings.pinboardColorHex(at: index)))
+                                    .frame(width: 8, height: 8)
+                                Text(settings.pinboardName(at: index))
+                                    .font(.subheadline.weight(isActive ? .semibold : .regular))
+                                    .lineLimit(1)
+                            }
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(isActive ? Color(hex: settings.pinboardColorHex(at: index)).opacity(0.15) : Color.clear)
+                            .clipShape(Capsule())
                         }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(isActive ? Color(hex: settings.pinboardColorHex(at: index)) : Color.secondary)
+                        .contextMenu {
+                            Button { onRenamePinboard?(index) } label: {
+                                Label(String(localized: "ios.pinboard.manager.rename"), systemImage: "pencil")
+                            }
+                            Divider()
+                            if settings.pinboardCount > 1 {
+                                Button(role: .destructive) { onRemovePinboard?(index) } label: {
+                                    Label(String(localized: "ios.card.delete"), systemImage: "trash")
+                                }
+                            }
+                        }
+                        .id(pageIndex)
+                    }
+
+                    if settings.pinboardCount < iOSAppSettings.pinboardCountMax {
+                        Button {
+                            onAddPinboard?()
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.system(size: 12, weight: .medium))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 8)
+                                .background(Color(UIColor.label).opacity(0.05))
+                                .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.secondary)
                     }
                 }
-
-                // Custom type tabs.
-                ForEach(settings.customTypes) { ct in
-                    let isActive = selectedCustomTypeId == ct.id
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selectedCustomTypeId = ct.id
-                            selectedFilter = nil
-                        }
-                    } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "tag")
-                                .font(.system(size: 12, weight: .medium))
-                            Text(ct.name)
-                                .font(.subheadline.weight(isActive ? .semibold : .regular))
-                                .lineLimit(1)
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(isActive ? Color(UIColor.label).opacity(0.08) : Color.clear)
-                        .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(isActive ? Color(UIColor.label) : Color.secondary)
-                    .contextMenu {
-                        Button {
-                            renamingCustomTypeId = ct.id
-                            renameCustomTypeText = ct.name
-                            showCustomTypeRenameAlert = true
-                        } label: {
-                            Label(String(localized: "ios.pinboard.manager.rename"), systemImage: "pencil")
-                        }
-                        Divider()
-                        Button(role: .destructive) {
-                            onDeleteCustomType?(ct.id)
-                        } label: {
-                            Label(String(localized: "ios.pinboard.clearType"), systemImage: "trash")
-                        }
-                    }
+                .padding(.horizontal, 16)
+            }
+            .onChange(of: selectedPageIndex) { newValue in
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    proxy.scrollTo(newValue, anchor: .center)
                 }
             }
-            .padding(.horizontal, 16)
         }
         .padding(.vertical, 8)
-        .alert("Rename Type", isPresented: $showCustomTypeRenameAlert) {
-            TextField("Name", text: $renameCustomTypeText)
-            Button("Rename") { onRenameCustomType?(renamingCustomTypeId, renameCustomTypeText) }
-            Button("Cancel", role: .cancel) { }
-        }
     }
 }
 

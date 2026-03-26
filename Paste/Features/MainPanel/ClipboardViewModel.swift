@@ -190,6 +190,8 @@ class ClipboardViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self else { return }
+                AppSettings.loadPinboardsFromKVS()
+                self.customTypes = AppSettings.customTypes
                 self.loadItems()
                 self.restoreSelectedFilter()
                 self.selectedIndex = 0
@@ -218,11 +220,14 @@ class ClipboardViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        // Reload custom types when iCloud KV Store is updated from another device.
+        // Reload custom types and pinboards when iCloud KV Store is updated from another device.
         NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.customTypes = AppSettings.customTypes
+                AppSettings.loadPinboardsFromKVS()
+                self?.objectWillChange.send()
+                self?.loadItems()
             }
             .store(in: &cancellables)
 
@@ -589,6 +594,7 @@ class ClipboardViewModel: ObservableObject {
         let current = AppSettings.pinboardCount
         if current < AppSettings.pinboardCountMax {
             AppSettings.pinboardCount = current + 1
+            AppSettings.savePinboardsToKVS()
         }
         showPinboard(index: AppSettings.pinboardCount - 1)
     }
@@ -606,11 +612,23 @@ class ClipboardViewModel: ObservableObject {
     
     // MARK: - Filter Tab (All / Text / Image / File / Regex)
     
-    /// Advances to the next filter tab: All → Text → Image → File → Regex → All.
+    /// Advances to the next tab: All → Text → Image → File → Regex → Pinboard 0…N-1 → All.
     func selectNextFilterTab() {
-        if isRegexPresetMode {
-            selectedType = nil
+        if let pbIdx = activePinboardIndex {
+            if pbIdx + 1 < AppSettings.pinboardCount {
+                showPinboard(index: pbIdx + 1)
+            } else {
+                exitPinboard()
+                selectedType = nil
+                isRegexPresetMode = false
+            }
+        } else if isRegexPresetMode {
             isRegexPresetMode = false
+            if AppSettings.pinboardCount > 0 {
+                showPinboard(index: 0)
+            } else {
+                selectedType = nil
+            }
         } else if let t = selectedType {
             switch t {
             case .text: selectedType = .image
@@ -621,10 +639,17 @@ class ClipboardViewModel: ObservableObject {
             selectedType = .text
         }
     }
-    
-    /// Moves to the previous filter tab.
+
+    /// Moves to the previous tab: All → Pinboard N-1…0 → Regex → File → Image → Text → All.
     func selectPreviousFilterTab() {
-        if isRegexPresetMode {
+        if let pbIdx = activePinboardIndex {
+            if pbIdx > 0 {
+                showPinboard(index: pbIdx - 1)
+            } else {
+                exitPinboard()
+                isRegexPresetMode = true
+            }
+        } else if isRegexPresetMode {
             selectedType = .file
             isRegexPresetMode = false
         } else if let t = selectedType {
@@ -634,7 +659,11 @@ class ClipboardViewModel: ObservableObject {
             case .file: selectedType = .image
             }
         } else {
-            isRegexPresetMode = true
+            if AppSettings.pinboardCount > 0 {
+                showPinboard(index: AppSettings.pinboardCount - 1)
+            } else {
+                isRegexPresetMode = true
+            }
         }
     }
     

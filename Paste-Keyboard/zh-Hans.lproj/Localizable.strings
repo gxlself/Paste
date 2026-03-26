@@ -18,7 +18,6 @@
 "ios.keyboard.copied.hint" = "已复制，可粘贴到任何地方";
 "ios.card.copy" = "复制";
 "ios.card.pin" = "置顶";
-"ios.card.unpin" = "取消置顶";
 "ios.card.preview" = "预览";
 "ios.card.edit" = "编辑";
 "ios.card.delete" = "删除";

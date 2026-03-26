@@ -35,7 +35,6 @@
 "ios.card.openLink" = "링크 열기";
 "ios.card.edit" = "편집";
 "ios.card.pin" = "고정";
-"ios.card.unpin" = "고정 해제";
 "ios.card.delete" = "삭제";
 "ios.toast.copied" = "복사됨 · 다른 앱에 붙여넣기 가능";
 "ios.tab.clipboard" = "클립보드";
