@@ -151,10 +151,14 @@ struct ClipboardCardView: View {
 
         case .image:
             if let img = SharedThumbnailCache.shared.thumbnail(for: item.id) {
-                Image(uiImage: img)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity, maxHeight: 80)
+                Color.clear
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 80)
+                    .overlay(
+                        Image(uiImage: img)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    )
                     .contentShape(Rectangle())
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))

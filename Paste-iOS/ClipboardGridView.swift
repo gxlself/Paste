@@ -21,6 +21,7 @@ struct ClipboardGridView: View {
     var onCopyPlainText: ((SharedClipboardItem) -> Void)?
     var onRename: ((SharedClipboardItem) -> Void)?
     var onShare: ((SharedClipboardItem) -> Void)?
+    var onMoveToPinboard: ((SharedClipboardItem, Int) -> Void)?
     var onStartMultiSelect: (() -> Void)?
 
     @Environment(\.horizontalSizeClass) private var sizeClass
@@ -131,6 +132,21 @@ struct ClipboardGridView: View {
                     String(localized: item.isPinned ? "ios.card.unpin" : "ios.card.pin"),
                     systemImage: item.isPinned ? "pin.slash" : "pin"
                 )
+            }
+
+            if settings.pinboardCount > 0 {
+                Menu {
+                    ForEach(0..<settings.pinboardCount, id: \.self) { index in
+                        Button {
+                            onMoveToPinboard?(item, index)
+                        } label: {
+                            Label(settings.pinboardName(at: index), systemImage: "circle.fill")
+                                .foregroundStyle(Color(hex: settings.pinboardColorHex(at: index)))
+                        }
+                    }
+                } label: {
+                    Label(String(localized: "ios.card.moveToPinboard"), systemImage: "rectangle.stack")
+                }
             }
 
             Button {

@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import AppKit
+import CoreData
 
 enum DisplayItem: Identifiable {
     case history(ClipboardItemModel)
@@ -222,6 +223,15 @@ class ClipboardViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.customTypes = AppSettings.customTypes
+            }
+            .store(in: &cancellables)
+
+        // Reload items when CloudKit pushes remote changes into the local store.
+        NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange,
+                                             object: CoreDataStack.shared.persistentContainer.persistentStoreCoordinator)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.loadItems()
             }
             .store(in: &cancellables)
     }

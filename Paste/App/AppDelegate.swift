@@ -95,6 +95,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupModifierFlagsMonitor()
         applyAppearance(AppSettings.appearance)
         NSApp.setActivationPolicy(.accessory)
+        NSApp.registerForRemoteNotifications()
         NSUbiquitousKeyValueStore.default.synchronize()
     }
 

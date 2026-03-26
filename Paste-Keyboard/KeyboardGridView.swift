@@ -199,10 +199,14 @@ struct KeyboardGridView: View {
             }
         case .image:
             if let img = SharedThumbnailCache.shared.thumbnail(for: item.id) {
-                Image(uiImage: img)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxHeight: 90)
+                Color.clear
+                    .frame(maxWidth: .infinity, maxHeight: 90)
+                    .overlay(
+                        Image(uiImage: img)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    )
+                    .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             } else {
                 Image(systemName: "photo")

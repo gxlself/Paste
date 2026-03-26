@@ -14,7 +14,7 @@ enum Constants {
     
     static let appName = "Paste"
     static let bundleIdentifier = Bundle.main.bundleIdentifier ?? "com.pastetool"
-    static let iCloudContainerIdentifier = "iCloud.\(bundleIdentifier)"
+    static let iCloudContainerIdentifier = "iCloud.gxlself.paste-tool"
     
     // MARK: - Clipboard
     
