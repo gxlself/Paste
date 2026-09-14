@@ -37,6 +37,8 @@
     {"@type":"SoftwareApplication","name":"Paste","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS, iOS","url":"https://paste.gxlself.com/zh/index.html","author":{"@id":"https://gxlself.com/#org"}}
   ]}
   </script>
+  <link rel="stylesheet" href="../experience.css">
+  <script src="../experience.js" defer></script>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -65,28 +67,38 @@
           <a href="https://github.com/gxlself/paste" rel="noopener">GitHub</a>
         </div>
       </nav>
-      <div class="hero">
-        <span class="badge">MIT · Swift · SwiftUI</span>
-        <h1>macOS 与 iOS 剪贴板管理</h1>
-        <p class="lead">轻量、隐私优先。Mac 菜单栏历史记录，iPhone 浏览与置顶，自定义键盘内一键粘贴 — 可选 iCloud 跨设备同步。</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://github.com/gxlself/Paste/releases" rel="noopener">获取 macOS 版 Paste</a>
-          <a class="btn btn-primary" href="https://apps.apple.com/us/app/paste-g/id6758338373" rel="noopener">App Store（iOS）</a>
-          <a class="btn btn-ghost" href="https://github.com/gxlself/paste" rel="noopener">在 GitHub 加星</a>
-          <a class="btn btn-ghost" href="https://testflight.apple.com/join/2UKC5P27" rel="noopener">iOS TestFlight</a>
-          <a class="btn btn-ghost" href="https://gxlself.com" rel="noopener">作者站点</a>
-          <a class="btn btn-ghost" href="https://github.com/gxlself/paste/issues" rel="noopener">Issues</a>
+      <div class="hero product-hero">
+        <div class="hero-copy">
+          <span class="eyebrow"><i></i> 每一次复制，都值得留住。</span>
+          <h1>复制的瞬间，<br>灵感<em>不断线。</em></h1>
+          <p class="lead">刚才的链接、闪过的想法、常用的片段。用 Paste 随时找回，让 Mac 与 iPhone 上的剪贴板井井有条。</p>
+          <div class="cta-row"><a class="btn btn-primary" href="https://github.com/gxlself/Paste/releases">下载 Mac 版 <span>↗</span></a><a class="btn btn-ghost" href="https://apps.apple.com/us/app/paste-g/id6758338373">获取 iOS 版 ↗</a></div>
+          <div class="hero-notes"><span>macOS 15.3+ · iOS 16+</span><a href="https://github.com/gxlself/paste">MIT · 开源</a></div>
+          <a class="text-link" href="#screenshots">看看真实界面 ↓</a>
         </div>
-        <p class="lang-note">若 Paste 对你有帮助，欢迎在 GitHub 点个 Star。TestFlight 满员或无法加入时，可邮件 <a href="mailto:gxlself@gmail.com">gxlself@gmail.com</a>。</p>
+        <div class="demo-stage">
+          <div class="stage-halo" aria-hidden="true"></div>
+          <div class="floating-chip" aria-hidden="true">⌘ ⇧ V <span>随时唤回</span></div>
+          <div class="demo-window">
+            <div class="window-top"><span class="traffic" aria-hidden="true">● ● ●</span><strong>Paste</strong><span class="demo-label">交互演示</span></div>
+            <label class="demo-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="搜索想法、链接、片段…" aria-label="搜索示例剪贴板"><kbd>⌕</kbd></label>
+            <div class="demo-filters" role="group" aria-label="筛选剪贴板"></div>
+            <div class="demo-clips"></div>
+            <div class="demo-preview" aria-live="polite"></div>
+            <div class="demo-bottom"><span>示例内容 · 不会读取你的剪贴板</span><button class="demo-reset">重置 ↺</button></div>
+          </div>
+          <div class="stage-caption">试试搜索、筛选，再收藏一条内容。</div>
+        </div>
       </div>
     </div>
   </header>
 
   <main>
+    <div class="trust-strip wrap"><span>◈ 本地优先，安心留存</span><span>⇄ iCloud 同步，由你开启</span><span>⌘ Swift 与 SwiftUI 原生构建</span></div>
     <section id="platforms" aria-labelledby="platforms-heading">
       <div class="wrap">
-        <h2 id="platforms-heading">一个项目，三种形态</h2>
-        <p class="section-lead">同一个 Xcode 工程产出：Mac 菜单栏应用、iOS 伴侣应用与自定义键盘扩展。</p>
+        <h2 id="platforms-heading">从 Mac 到 iPhone，接着用。</h2>
+        <p class="section-lead">在 Mac 上找回，在 iPhone 上整理，在键盘里直接插入。熟悉的内容，顺手就能用。</p>
         <div class="grid-3">
           <article class="card">
             <h3>
@@ -97,7 +109,7 @@
               Paste (macOS)
             </h3>
             <p>菜单栏应用：剪贴板历史、全局快捷键、悬浮面板、Paste Stack、Pinboards，可选 iCloud 同步。</p>
-            <p class="meta">macOS 13+ · 默认 ⌘⇧V</p>
+            <p class="meta">macOS 15.3+ · 默认 ⌘⇧V</p>
           </article>
           <article class="card">
             <h3>
@@ -302,6 +314,7 @@
       </div>
     </div>
     <div class="wrap">
+      <a href="https://testflight.apple.com/join/2UKC5P27" rel="noopener">iOS TestFlight ↗</a>
       <p class="footer-copy">gxlself Paste · MIT · <a href="https://github.com/gxlself/paste">源代码</a></p>
     </div>
   </footer>
