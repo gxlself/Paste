@@ -297,25 +297,76 @@ class PreferencesViewModel: ObservableObject {
         ClipboardService.shared.deleteAllItems()
     }
     
-    /// Returns the size of the CoreData SQLite database file.
+    /// Returns the on-disk size of the store.
+    ///
+    /// This used to look for `PasteTool.sqlite` directly under Application Support and always
+    /// came back empty: the container actually puts it in a subdirectory. It also has to count
+    /// the write-ahead log and the external blob directory, which together outweigh the .sqlite
+    /// file itself.
     func getDatabaseSize() -> String {
+        let bytes = Self.storeSizeInBytes()
+        guard bytes > 0 else { return String(localized: "preferences.databaseSize.zero") }
+        return ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+    }
+
+    static func storeSizeInBytes() -> Int64 {
+        guard let storeURL = CoreDataStack.shared.persistentContainer
+            .persistentStoreDescriptions.first?.url else { return 0 }
+
         let fileManager = FileManager.default
-        guard let containerURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-            return String(localized: "preferences.databaseSize.unknown")
-        }
-        
-        let storeURL = containerURL.appendingPathComponent("PasteTool.sqlite")
-        
-        do {
-            let attributes = try fileManager.attributesOfItem(atPath: storeURL.path)
-            if let size = attributes[.size] as? Int64 {
-                return ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
+        let directory = storeURL.deletingLastPathComponent()
+        let stem = storeURL.deletingPathExtension().lastPathComponent
+
+        func size(of url: URL) -> Int64 {
+            guard let values = try? url.resourceValues(forKeys: [.isDirectoryKey, .fileSizeKey]) else { return 0 }
+            if values.isDirectory == true {
+                let contents = fileManager.enumerator(at: url, includingPropertiesForKeys: [.fileSizeKey])
+                var total: Int64 = 0
+                while let child = contents?.nextObject() as? URL {
+                    total += Int64((try? child.resourceValues(forKeys: [.fileSizeKey]))?.fileSize ?? 0)
+                }
+                return total
             }
-        } catch {
-            // File may not exist yet.
+            return Int64(values.fileSize ?? 0)
         }
-        
-        return String(localized: "preferences.databaseSize.zero")
+
+        var total: Int64 = 0
+        // The store plus its -wal / -shm siblings, and the external binary data directory.
+        for suffix in ["", "-wal", "-shm"] {
+            let url = directory.appendingPathComponent(storeURL.lastPathComponent + suffix)
+            total += size(of: url)
+        }
+        total += size(of: directory.appendingPathComponent(".\(stem)_SUPPORT"))
+        return total
+    }
+
+    /// Non-nil when this build talks to a CloudKit database that other installs will not share.
+    var cloudKitEnvironmentWarning: String? {
+        guard iCloudSyncEnabled else { return nil }
+        switch ICloudCapability.environment {
+        case .development:
+            return String(localized: "preferences.sync.environment.development")
+        case .unknown:
+            return String(localized: "preferences.sync.environment.unknown")
+        case .production:
+            return nil
+        }
+    }
+
+    // MARK: - Compaction
+
+    /// Rows still carrying a duplicated source-app icon.
+    func duplicatedIconCount() -> Int {
+        AppIconStore.shared.duplicatedIconCount()
+    }
+
+    /// Deduplicates stored app icons and trims persistent history.
+    /// - Returns: how many rows were compacted.
+    @discardableResult
+    func compactStorage() -> Int {
+        let cleared = AppIconStore.shared.compactDuplicatedIcons()
+        CoreDataStack.shared.purgeOldHistory()
+        return cleared
     }
     
     // MARK: - Sync

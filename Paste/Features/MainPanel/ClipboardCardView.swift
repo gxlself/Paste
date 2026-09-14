@@ -193,22 +193,7 @@ struct ClipboardCardView: View {
     }
 
     private var imageContentView: some View {
-        Group {
-            if let thumbnail = ThumbnailCache.shared.thumbnail(for: item.id) {
-                Image(nsImage: thumbnail)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
-            } else {
-                Color(nsColor: .controlBackgroundColor)
-                    .overlay(
-                        Image(systemName: "photo")
-                            .font(.system(size: 24))
-                            .foregroundColor(.secondary)
-                    )
-            }
-        }
+        StoredImagePreview(itemID: item.id)
     }
 
     private var fileContentView: some View {
@@ -257,7 +242,7 @@ struct ClipboardCardView: View {
 
     private var bottomBar: some View {
         HStack(spacing: 4) {
-            if let appIcon = item.sourceAppIcon {
+            if let appIcon = SourceAppIconCache.icon(forBundleId: item.appBundleId) {
                 Image(nsImage: appIcon)
                     .resizable()
                     .frame(width: 14, height: 14)
@@ -300,6 +285,48 @@ struct ClipboardCardView: View {
                     .font(.system(size: 9))
                     .foregroundColor(.secondary)
             }
+        }
+    }
+}
+
+// MARK: - Stored Image Preview
+
+/// Loads and downsamples an image item's stored data off the main thread.
+/// Reading it inline in the view body meant a CoreData fetch plus a full decode per visible
+/// card, which is what made scrolling a large history stutter.
+private struct StoredImagePreview: View {
+    let itemID: UUID
+
+    @State private var thumbnail: NSImage?
+    @State private var didAttemptLoad = false
+
+    var body: some View {
+        Group {
+            if let thumbnail {
+                Image(nsImage: thumbnail)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+            } else if didAttemptLoad {
+                Color(nsColor: .controlBackgroundColor)
+                    .overlay(
+                        Image(systemName: "photo")
+                            .font(.system(size: 24))
+                            .foregroundColor(.secondary)
+                    )
+            } else {
+                Color(nsColor: .controlBackgroundColor)
+            }
+        }
+        .task(id: itemID) {
+            if let cached = ThumbnailCache.shared.cachedThumbnail(for: itemID) {
+                thumbnail = cached
+                didAttemptLoad = true
+                return
+            }
+            thumbnail = await ThumbnailCache.shared.thumbnailAsync(for: itemID)
+            didAttemptLoad = true
         }
     }
 }

@@ -25,8 +25,7 @@ class ClipboardService {
         let context = coreDataStack.viewContext
         
         // Deduplicate: if this hash already exists, just update its timestamp.
-        if itemExists(hash: content.contentHash) {
-            updateTimestamp(hash: content.contentHash, sourceApp: content.sourceApp)
+        if updateTimestamp(hash: content.contentHash, sourceApp: content.sourceApp) {
             return
         }
         
@@ -36,7 +35,9 @@ class ClipboardService {
         item.type = content.type.rawValue
         item.plainText = content.plainText
         item.rtfData = content.rtfData
-        item.imageData = content.imageData
+        // `contentHash` stays keyed to the original bytes, so re-copying the same image still
+        // deduplicates even though what we persist may be a smaller re-encode.
+        item.imageData = ImageCompressor.compressedForStorage(content.imageData)
         item.appBundleId = content.sourceApp
         item.createdAt = Date()
         item.contentHash = content.contentHash
@@ -60,19 +61,7 @@ class ClipboardService {
             tags.append(ItemTag.appName(appName).rawValue)
             item.tags = try? JSONEncoder().encode(tags)
 
-            let icon = NSWorkspace.shared.icon(forFile: appURL.path)
-            let targetSize = NSSize(width: 64, height: 64)
-            let resized = NSImage(size: targetSize)
-            resized.lockFocus()
-            icon.draw(in: NSRect(origin: .zero, size: targetSize),
-                      from: NSRect(origin: .zero, size: icon.size),
-                      operation: .copy, fraction: 1.0)
-            resized.unlockFocus()
-            if let tiff = resized.tiffRepresentation,
-               let rep = NSBitmapImageRep(data: tiff),
-               let png = rep.representation(using: .png, properties: [:]) {
-                item.appIconData = png
-            }
+            AppIconStore.shared.registerIconIfNeeded(bundleId: bundleId, appURL: appURL)
         }
         
         coreDataStack.save()
@@ -86,23 +75,38 @@ class ClipboardService {
     
     // MARK: - Read
     
-    /// Fetches all items sorted by date descending. Binary data is not loaded to conserve memory.
-    func fetchAllItems() -> [ClipboardItemModel] {
+    /// Columns the panel list needs. Everything else — `imageData`, `rtfData`, `appIconData` —
+    /// stays on disk; with thousands of rows those blobs alone were tens of MB per panel open.
+    private static let listProperties = [
+        "id", "type", "plainText", "filePaths",
+        "appBundleId", "createdAt", "contentHash", "isPinned", "tags"
+    ]
+
+    /// Runs a dictionary-result fetch over `listProperties` and maps it to view models.
+    /// Dictionary fetches bypass unsaved context changes, so every mutation path in this
+    /// service saves before the view model reloads.
+    private func fetchList(predicate: NSPredicate?) -> [ClipboardItemModel] {
         let context = coreDataStack.viewContext
-        let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
+        let request = NSFetchRequest<NSDictionary>(entityName: "ClipboardItemEntity")
+        request.resultType = .dictionaryResultType
+        request.propertiesToFetch = Self.listProperties
+        request.includesPendingChanges = false
+        request.predicate = predicate
         request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: false),
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.isPinned, ascending: false)
+            NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: false)
         ]
-        request.fetchBatchSize = 50
-        
+
         do {
-            let entities = try context.fetch(request)
-            return entities.map { ClipboardItemModel(entity: $0, loadBinaryData: false) }
+            return try context.fetch(request).compactMap { ClipboardItemModel(dictionary: $0) }
         } catch {
             print("Fetch error: \(error)")
             return []
         }
+    }
+
+    /// Fetches all items sorted by date descending. Binary data is not loaded to conserve memory.
+    func fetchAllItems() -> [ClipboardItemModel] {
+        fetchList(predicate: nil)
     }
 
     /// Fetches a single item with full binary data (for paste, undo, etc.).
@@ -123,55 +127,25 @@ class ClipboardService {
     
     /// Searches items by keyword and optional type filter.
     func searchItems(keyword: String, type: ClipboardItemType? = nil) -> [ClipboardItemModel] {
-        let context = coreDataStack.viewContext
-        let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
-        
         var predicates: [NSPredicate] = []
-        
+
         if !keyword.isEmpty {
             predicates.append(NSPredicate(format: "plainText CONTAINS[cd] %@", keyword))
         }
-        
+
         if let type = type {
             predicates.append(NSPredicate(format: "type == %d", type.rawValue))
         }
-        
-        if !predicates.isEmpty {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-        }
-        
-        request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: false),
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.isPinned, ascending: false)
-        ]
-        request.fetchBatchSize = 50
-        
-        do {
-            let entities = try context.fetch(request)
-            return entities.map { ClipboardItemModel(entity: $0, loadBinaryData: false) }
-        } catch {
-            print("Search error: \(error)")
-            return []
-        }
+
+        let predicate = predicates.isEmpty
+            ? nil
+            : NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        return fetchList(predicate: predicate)
     }
     
     /// Filters items by source application bundle ID.
     func filterByApp(_ bundleId: String) -> [ClipboardItemModel] {
-        let context = coreDataStack.viewContext
-        let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "appBundleId == %@", bundleId)
-        request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: false)
-        ]
-        request.fetchBatchSize = 50
-        
-        do {
-            let entities = try context.fetch(request)
-            return entities.map { ClipboardItemModel(entity: $0, loadBinaryData: false) }
-        } catch {
-            print("Filter error: \(error)")
-            return []
-        }
+        fetchList(predicate: NSPredicate(format: "appBundleId == %@", bundleId))
     }
     
     // MARK: - Update
@@ -211,11 +185,11 @@ class ClipboardService {
     // MARK: - Pinboard
     
     func isInAnyPinboard(_ item: ClipboardItemModel) -> Bool {
-        item.tagsArray.parsedTags().contains(where: \.isPinboard)
+        item.parsedTags.contains(where: \.isPinboard)
     }
     
     func isInPinboard(_ item: ClipboardItemModel, index: Int) -> Bool {
-        item.tagsArray.parsedTags().contains(where: { $0.pinboardIndex == index })
+        item.parsedTags.contains(where: { $0.pinboardIndex == index })
     }
     
     func setPinboard(id: UUID, index: Int, enabled: Bool) {
@@ -356,49 +330,39 @@ class ClipboardService {
 
     // MARK: - Private Methods
     
-    /// Returns true if an item with the given hash already exists.
-    private func itemExists(hash: String) -> Bool {
+    /// Refreshes the timestamp (and optionally the source app) of the item with this hash.
+    /// - Returns: `true` when a matching item existed and was updated.
+    @discardableResult
+    private func updateTimestamp(hash: String, sourceApp: String? = nil) -> Bool {
         let context = coreDataStack.viewContext
         let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
         request.predicate = NSPredicate(format: "contentHash == %@", hash)
         request.fetchLimit = 1
         
         do {
-            return try context.count(for: request) > 0
-        } catch {
-            return false
-        }
-    }
-    
-    /// Updates the timestamp (and optionally the source app) of an existing item.
-    private func updateTimestamp(hash: String, sourceApp: String? = nil) {
-        let context = coreDataStack.viewContext
-        let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "contentHash == %@", hash)
-        request.fetchLimit = 1
-        
-        do {
-            if let item = try context.fetch(request).first {
-                item.createdAt = Date()
-                item.appBundleId = sourceApp ?? item.appBundleId
+            guard let item = try context.fetch(request).first else { return false }
 
-                if let bundleId = sourceApp,
-                   let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleId) {
-                    let appName = FileManager.default.displayName(atPath: appURL.path)
-                        .replacingOccurrences(of: ".app", with: "")
-                    var tags: [String] = []
-                    if let existing = item.tags {
-                        tags = (try? JSONDecoder().decode([String].self, from: existing)) ?? []
-                    }
-                    tags.removeAll { ItemTag(rawValue: $0)?.isAppName == true }
-                    tags.append(ItemTag.appName(appName).rawValue)
-                    item.tags = try? JSONEncoder().encode(tags)
+            item.createdAt = Date()
+            item.appBundleId = sourceApp ?? item.appBundleId
+
+            if let bundleId = sourceApp,
+               let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleId) {
+                let appName = FileManager.default.displayName(atPath: appURL.path)
+                    .replacingOccurrences(of: ".app", with: "")
+                var tags: [String] = []
+                if let existing = item.tags {
+                    tags = (try? JSONDecoder().decode([String].self, from: existing)) ?? []
                 }
-
-                coreDataStack.save()
+                tags.removeAll { ItemTag(rawValue: $0)?.isAppName == true }
+                tags.append(ItemTag.appName(appName).rawValue)
+                item.tags = try? JSONEncoder().encode(tags)
             }
+
+            coreDataStack.save()
+            return true
         } catch {
             print("Update timestamp error: \(error)")
+            return false
         }
     }
     
@@ -435,29 +399,59 @@ class ClipboardService {
     }
     
     /// Enforces time-based and count-based retention limits.
+    ///
+    /// This runs after *every* saved clipboard item, so it must never touch more rows than it
+    /// could possibly delete. It used to fault in the entire table (and JSON-decode every row's
+    /// tags) on each copy, which is what made the panel stutter once the history grew large.
     private func cleanupOldItems() {
         let maxItems = AppSettings.retentionMaxItems
-        let retentionPreset = AppSettings.retentionPreset
-        
+        let cutoff = retentionCutoffDate(preset: AppSettings.retentionPreset)
         let context = coreDataStack.viewContext
-        let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
-        request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: false),
-            NSSortDescriptor(keyPath: \ClipboardItemEntity.isPinned, ascending: false)
-        ]
-        request.fetchBatchSize = 100
-        
+
+        let total = getItemCount()
+        let overflow = max(0, total - maxItems)
+
+        // Fast path: no time limit and still under the cap — one indexed COUNT and we are done.
+        if cutoff == nil && overflow == 0 { return }
+
         do {
-            var items = try context.fetch(request)
-            
-            // Protect items referenced by Paste Stack (avoid orphan stack entries)
+            // Pinned items are never deleted, so exclude them in SQL rather than in memory.
+            var candidates: [ClipboardItemEntity] = []
+
+            if let cutoff {
+                let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
+                request.predicate = NSPredicate(
+                    format: "isPinned == NO AND createdAt != nil AND createdAt < %@", cutoff as NSDate
+                )
+                request.sortDescriptors = [
+                    NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: true)
+                ]
+                candidates = try context.fetch(request)
+            }
+
+            // Count-based retention: only the oldest rows can be over the cap. Ask for a few
+            // extra so protected rows in the tail do not eat into the quota.
+            var countCandidates: [ClipboardItemEntity] = []
+            if overflow > 0 {
+                let request: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "isPinned == NO")
+                request.sortDescriptors = [
+                    NSSortDescriptor(keyPath: \ClipboardItemEntity.createdAt, ascending: true)
+                ]
+                request.fetchLimit = overflow + 100
+                countCandidates = try context.fetch(request)
+            }
+
+            if candidates.isEmpty && countCandidates.isEmpty { return }
+
+            // Items referenced by the Paste Stack are protected (avoids orphan stack entries).
             let stackItemIds: Set<UUID> = {
                 let stackReq: NSFetchRequest<StackEntryEntity> = StackEntryEntity.fetchRequest()
                 stackReq.fetchBatchSize = 200
                 let entries = (try? context.fetch(stackReq)) ?? []
                 return Set(entries.compactMap { $0.itemId })
             }()
-            
+
             func isProtected(_ entity: ClipboardItemEntity) -> Bool {
                 if entity.isPinned { return true }
                 if let id = entity.id, stackItemIds.contains(id) { return true }
@@ -468,29 +462,27 @@ class ClipboardService {
                 }
                 return false
             }
-            
-            // 1) Time-based retention
-            if let cutoff = retentionCutoffDate(preset: retentionPreset) {
-                let toDelete = items.filter { entity in
-                    guard let createdAt = entity.createdAt else { return false }
-                    guard createdAt < cutoff else { return false }
-                    return !isProtected(entity)
-                }
-                if !toDelete.isEmpty {
-                    for e in toDelete {
-                        context.delete(e)
-                    }
-                    coreDataStack.save()
-                    items = try context.fetch(request)
+
+            var deleted = Set<NSManagedObjectID>()
+
+            // 1) Time-based retention.
+            for entity in candidates where !isProtected(entity) {
+                context.delete(entity)
+                deleted.insert(entity.objectID)
+            }
+
+            // 2) Count-based retention: delete the oldest non-protected rows over the limit.
+            var remaining = overflow - deleted.count
+            if remaining > 0 {
+                for entity in countCandidates where remaining > 0 {
+                    guard !deleted.contains(entity.objectID), !isProtected(entity) else { continue }
+                    context.delete(entity)
+                    deleted.insert(entity.objectID)
+                    remaining -= 1
                 }
             }
-            
-            // 2) Count-based retention: delete oldest non-protected items that exceed the limit.
-            if items.count > maxItems {
-                let itemsToDelete = items.suffix(from: maxItems).filter { !isProtected($0) }
-                for item in itemsToDelete {
-                    context.delete(item)
-                }
+
+            if !deleted.isEmpty {
                 coreDataStack.save()
             }
         } catch {

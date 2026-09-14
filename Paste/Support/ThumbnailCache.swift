@@ -34,6 +34,29 @@ final class ThumbnailCache {
         return thumb
     }
 
+    /// Cache-only lookup — safe to call from a view body.
+    func cachedThumbnail(for itemID: UUID) -> NSImage? {
+        cache.object(forKey: itemID.uuidString as NSString)
+    }
+
+    /// Reads and downsamples off the main thread. Prefer this over `thumbnail(for:)` anywhere
+    /// that runs while the panel is on screen: a single stored screenshot can be several MB and
+    /// decoding it inline blocks scrolling.
+    func thumbnailAsync(for itemID: UUID) async -> NSImage? {
+        if let cached = cachedThumbnail(for: itemID) { return cached }
+
+        let maxPixelSize = self.maxPixelSize
+        let thumb = await Task.detached(priority: .userInitiated) { () -> NSImage? in
+            guard let data = Self.loadImageDataOffMain(for: itemID) else { return nil }
+            return Self.downsample(data: data, maxPixelSize: maxPixelSize)
+        }.value
+
+        if let thumb {
+            cache.setObject(thumb, forKey: itemID.uuidString as NSString)
+        }
+        return thumb
+    }
+
     func invalidate(_ itemID: UUID) {
         cache.removeObject(forKey: itemID.uuidString as NSString)
     }
@@ -64,6 +87,24 @@ final class ThumbnailCache {
     }
 
     // MARK: - CoreData lazy data loading
+
+    /// Private-queue context so blob reads never hop onto the main queue.
+    nonisolated private static let readContext: NSManagedObjectContext = {
+        let context = CoreDataStack.shared.newBackgroundContext()
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
+
+    nonisolated static func loadImageDataOffMain(for itemID: UUID) -> Data? {
+        var result: Data?
+        readContext.performAndWait {
+            let req: NSFetchRequest<ClipboardItemEntity> = ClipboardItemEntity.fetchRequest()
+            req.predicate = NSPredicate(format: "id == %@", itemID as CVarArg)
+            req.fetchLimit = 1
+            result = (try? readContext.fetch(req))?.first?.imageData
+        }
+        return result
+    }
 
     nonisolated static func loadImageData(for itemID: UUID) -> Data? {
         let ctx = CoreDataStack.shared.viewContext

@@ -272,3 +272,10 @@
 "mainpanel.assistedPaste.help" = "开启或关闭辅助粘贴";
 "accessibility.state.on" = "已开启";
 "accessibility.state.off" = "已关闭";
+
+/* Storage compaction / CloudKit environment */
+"preferences.general.compact" = "压缩存储";
+"preferences.general.compact.hint" = "清除重复的应用图标并整理同步历史。随时可以执行，不会删除任何剪贴板记录。";
+"preferences.general.compact.done" = "已压缩 %d 条记录";
+"preferences.sync.environment.development" = "当前版本使用开发签名，同步到 CloudKit 的 Development 数据库。TestFlight 或 App Store 版本走 Production，看不到这里的记录。";
+"preferences.sync.environment.unknown" = "无法判断当前版本使用的 CloudKit 环境，跨设备同步可能不生效。";

@@ -216,3 +216,10 @@
 "mainpanel.assistedPaste.help" = "Activer ou désactiver le collage assisté";
 "accessibility.state.on" = "Activé";
 "accessibility.state.off" = "Désactivé";
+
+/* Storage compaction / CloudKit environment */
+"preferences.general.compact" = "Compacter le stockage";
+"preferences.general.compact.hint" = "Supprime les icônes d’app dupliquées et allège l’historique de synchronisation. Sans risque : vos éléments ne sont pas supprimés.";
+"preferences.general.compact.done" = "%d éléments compactés";
+"preferences.sync.environment.development" = "Cette version est signée pour le développement et se synchronise avec la base CloudKit Development. Une version TestFlight ou App Store utilise Production et ne verra pas ces éléments.";
+"preferences.sync.environment.unknown" = "Impossible de déterminer l’environnement CloudKit utilisé par cette version. La synchronisation entre appareils peut ne pas fonctionner.";

@@ -216,3 +216,10 @@
 "mainpanel.assistedPaste.help" = "Включить или выключить вставку с помощью";
 "accessibility.state.on" = "Включено";
 "accessibility.state.off" = "Выключено";
+
+/* Storage compaction / CloudKit environment */
+"preferences.general.compact" = "Сжать хранилище";
+"preferences.general.compact.hint" = "Удаляет дублирующиеся значки приложений и сокращает историю синхронизации. Можно запускать в любой момент — записи буфера обмена не удаляются.";
+"preferences.general.compact.done" = "Сжато записей: %d";
+"preferences.sync.environment.development" = "Эта сборка подписана для разработки и синхронизируется с базой CloudKit Development. Сборка из TestFlight или App Store использует Production и не увидит эти записи.";
+"preferences.sync.environment.unknown" = "Не удалось определить окружение CloudKit для этой сборки. Синхронизация между устройствами может не работать.";

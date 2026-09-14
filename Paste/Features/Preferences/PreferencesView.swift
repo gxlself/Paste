@@ -60,7 +60,26 @@ struct GeneralSettingsView: View {
     @ObservedObject var viewModel: PreferencesViewModel
     @State private var showClearConfirmation = false
     @State private var hasAccessibilityPermission = PermissionChecker.hasAccessibilityPermission
-    
+    @State private var databaseSize = ""
+    @State private var isCompacting = false
+    @State private var compactionResult: String?
+
+    /// Deduplicates stored app icons and trims persistent history, then refreshes the size read-out.
+    private func runCompaction() {
+        guard !isCompacting else { return }
+        isCompacting = true
+        compactionResult = nil
+
+        Task {
+            let cleared = viewModel.compactStorage()
+            databaseSize = viewModel.getDatabaseSize()
+            compactionResult = String(
+                format: String(localized: "preferences.general.compact.done"), cleared
+            )
+            isCompacting = false
+        }
+    }
+
     var body: some View {
         PreferencesPage {
             accessibilityStatusCard
@@ -144,7 +163,35 @@ struct GeneralSettingsView: View {
                     }
 
                     PreferenceToggleRow("preferences.general.recordImages", isOn: $viewModel.recordImages)
+
+                    Divider()
+
+                    PreferenceRow("preferences.general.databaseSize") {
+                        Text(databaseSize)
+                            .font(.system(size: 12))
+                            .foregroundStyle(.secondary)
+                    }
+
+                    HStack(spacing: 10) {
+                        Button("preferences.general.compact") {
+                            runCompaction()
+                        }
+                        .disabled(isCompacting)
+
+                        if isCompacting {
+                            ProgressView().scaleEffect(0.7)
+                        } else if let compactionResult {
+                            Text(compactionResult)
+                                .font(.system(size: 12))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    Text("preferences.general.compact.hint")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
                 }
+                .onAppear { databaseSize = viewModel.getDatabaseSize() }
             }
 
             PreferenceCard {
@@ -368,6 +415,13 @@ struct SyncSettingsView: View {
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                         .padding(.top, 6)
+                }
+
+                if let warning = viewModel.cloudKitEnvironmentWarning {
+                    Text(warning)
+                        .font(.system(size: 12))
+                        .foregroundStyle(.orange)
+                        .padding(.top, 4)
                 }
 
                 HStack(spacing: 10) {

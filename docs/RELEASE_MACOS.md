@@ -22,6 +22,35 @@ xcodebuild -version
 
 You should see the Xcode and build versions. **Command Line Tools alone are not enough** to build and sign the macOS app properly.
 
+## 1b. Signing: why it must be Developer ID
+
+The script **archives and exports with `method: developer-id`**, not a plain `xcodebuild build`.
+
+CloudKit keeps two completely separate databases per container:
+
+| Signing | CloudKit database |
+|---------|-------------------|
+| Apple Development profile | **Development** |
+| Developer ID / App Store / TestFlight | **Production** |
+
+A plain `xcodebuild build` with automatic signing picks the *Mac Team Provisioning Profile*
+(development) and rewrites the `aps-environment` entitlement to `development` — even though
+`PasteRelease.entitlements` asks for `production`. The released macOS app then syncs against the
+Development database and **can never see records from the TestFlight/App Store iOS app**.
+
+Prerequisites:
+
+1. A **Developer ID Application** certificate for team `W8L8ZJ3N2P` in your keychain
+   (Xcode → Settings → Accounts → Manage Certificates → **+** → Developer ID Application).
+   The script refuses to build without it.
+2. The CloudKit schema **deployed to Production**: <https://icloud.developer.apple.com> →
+   container `iCloud.gxlself.paste-tool` → **Schema → Deploy Schema Changes**.
+   `NSPersistentCloudKitContainer` creates record types automatically in Development only;
+   Production never gets them until you deploy. Re-deploy after any Core Data model change.
+
+After the build the script asserts the signed `aps-environment` is `production` and fails loudly
+otherwise.
+
 ## 2. One-shot build (recommended)
 
 From the repository root:

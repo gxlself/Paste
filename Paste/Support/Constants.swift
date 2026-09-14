@@ -48,6 +48,12 @@ enum Constants {
     
     /// Search debounce delay (seconds).
     static let searchDebounceDelay: TimeInterval = 0.15
+
+    // MARK: - Data reload
+
+    /// Minimum interval between full history reloads. Copy bursts and CloudKit import batches
+    /// fire many change notifications in a row; without this each one re-ran the whole fetch.
+    static let reloadCoalesceInterval: TimeInterval = 0.25
     
     // MARK: - HotKey
     

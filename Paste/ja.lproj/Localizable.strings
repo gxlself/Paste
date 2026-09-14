@@ -216,3 +216,10 @@
 "mainpanel.assistedPaste.help" = "アシストペーストのオン・オフを切り替え";
 "accessibility.state.on" = "オン";
 "accessibility.state.off" = "オフ";
+
+/* Storage compaction / CloudKit environment */
+"preferences.general.compact" = "ストレージを最適化";
+"preferences.general.compact.hint" = "重複したアプリアイコンを削除し、同期履歴を整理します。いつでも実行でき、クリップボードの項目は削除されません。";
+"preferences.general.compact.done" = "%d 件を最適化しました";
+"preferences.sync.environment.development" = "このビルドは開発用署名のため、CloudKit の Development データベースと同期します。TestFlight や App Store 版は Production を使うため、これらの項目は表示されません。";
+"preferences.sync.environment.unknown" = "このビルドが使用する CloudKit 環境を判定できません。デバイス間の同期が機能しない可能性があります。";

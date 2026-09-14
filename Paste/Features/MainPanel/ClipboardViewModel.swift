@@ -177,9 +177,15 @@ class ClipboardViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        // Reload when a new item is saved.
+        // Reload when a new item is saved. Copying in bursts (or CloudKit importing a batch)
+        // fires these back to back, so coalesce them into a single reload.
         NotificationCenter.default.publisher(for: .clipboardItemAdded)
-            .receive(on: RunLoop.main)
+            .map { _ in () }
+            .merge(with: NotificationCenter.default.publisher(
+                for: .NSPersistentStoreRemoteChange,
+                object: CoreDataStack.shared.persistentContainer.persistentStoreCoordinator
+            ).map { _ in () })
+            .throttle(for: .seconds(Constants.reloadCoalesceInterval), scheduler: RunLoop.main, latest: true)
             .sink { [weak self] _ in
                 self?.loadItems()
             }
@@ -231,14 +237,6 @@ class ClipboardViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
-        // Reload items when CloudKit pushes remote changes into the local store.
-        NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange,
-                                             object: CoreDataStack.shared.persistentContainer.persistentStoreCoordinator)
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.loadItems()
-            }
-            .store(in: &cancellables)
     }
 
     /// Persists the current filter tab selection to UserDefaults.
@@ -296,7 +294,7 @@ class ClipboardViewModel: ObservableObject {
         }
         
         if let pinboardIndex = activePinboardIndex {
-            results = results.filter { $0.tagsArray.parsedTags().contains(where: { $0.pinboardIndex == pinboardIndex }) }
+            results = results.filter { $0.parsedTags.contains(where: { $0.pinboardIndex == pinboardIndex }) }
         }
         
         if let type = selectedType {
@@ -304,7 +302,7 @@ class ClipboardViewModel: ObservableObject {
         }
 
         if let customId = selectedCustomTypeId {
-            results = results.filter { $0.tagsArray.parsedTags().contains(where: { $0.customTypeId == customId }) }
+            results = results.filter { $0.parsedTags.contains(where: { $0.customTypeId == customId }) }
         }
         
         if !keyword.isEmpty {

@@ -272,3 +272,10 @@
 "mainpanel.assistedPaste.help" = "Toggle Assisted Paste on or off";
 "accessibility.state.on" = "On";
 "accessibility.state.off" = "Off";
+
+/* Storage compaction / CloudKit environment */
+"preferences.general.compact" = "Compact storage";
+"preferences.general.compact.hint" = "Removes duplicated app icons and trims sync history. Safe to run at any time; your clipboard items are not deleted.";
+"preferences.general.compact.done" = "Compacted %d items";
+"preferences.sync.environment.development" = "This build is signed for development, so it syncs with the CloudKit Development database. A TestFlight or App Store build uses Production and will not see these items.";
+"preferences.sync.environment.unknown" = "Could not determine which CloudKit environment this build uses. Sync across devices may not work.";

@@ -216,3 +216,10 @@
 "mainpanel.assistedPaste.help" = "Unterstütztes Einfügen ein- oder ausschalten";
 "accessibility.state.on" = "Ein";
 "accessibility.state.off" = "Aus";
+
+/* Storage compaction / CloudKit environment */
+"preferences.general.compact" = "Speicher komprimieren";
+"preferences.general.compact.hint" = "Entfernt doppelte App-Symbole und kürzt den Sync-Verlauf. Jederzeit ausführbar; Ihre Verlaufseinträge werden nicht gelöscht.";
+"preferences.general.compact.done" = "%d Einträge komprimiert";
+"preferences.sync.environment.development" = "Dieser Build ist für die Entwicklung signiert und synchronisiert mit der CloudKit-Development-Datenbank. Ein TestFlight- oder App-Store-Build nutzt Production und sieht diese Einträge nicht.";
+"preferences.sync.environment.unknown" = "Die von diesem Build genutzte CloudKit-Umgebung konnte nicht ermittelt werden. Die Synchronisierung zwischen Geräten funktioniert möglicherweise nicht.";

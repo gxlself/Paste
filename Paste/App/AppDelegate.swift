@@ -60,7 +60,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Dependencies
 
-    private let viewModel            = ClipboardViewModel()
+    // Lazy on purpose: constructing this opens the CoreData stack and loads the whole history.
+    // As a stored property it ran while the delegate itself was being created, before
+    // applicationDidFinishLaunching could decide whether the app is even starting normally.
+    private lazy var viewModel        = ClipboardViewModel()
     private lazy var panelCoordinator = PanelCoordinator(viewModel: viewModel)
     private lazy var hotKeyCoordinator = HotKeyCoordinator(
         viewModel: viewModel,
@@ -85,6 +88,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Lifecycle
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        #if DEBUG
+        // Publishes the model to the CloudKit Development schema and exits. No UI is set up.
+        if CoreDataStack.shared.initializeCloudKitSchemaIfRequested() { return }
+        #endif
+
         setupMenuBar()
         panelCoordinator.setupPanel(onKeyDown: { [weak self] event in
             self?.handleKeyEvent(event) ?? false
@@ -97,6 +105,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.setActivationPolicy(.accessory)
         NSApp.registerForRemoteNotifications()
         NSUbiquitousKeyValueStore.default.synchronize()
+
+        // Trim persistent history that CloudKit has already exported; left alone it grows for
+        // the lifetime of the store and drags every read down with it.
+        CoreDataStack.shared.purgeOldHistory()
+
+        // A bundle id that had no app when we first looked may have one now (app installed or
+        // moved), so drop the memoised lookups whenever the installed app set changes.
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(installedApplicationsDidChange),
+            name: NSWorkspace.didLaunchApplicationNotification,
+            object: nil
+        )
+    }
+
+    @objc private func installedApplicationsDidChange() {
+        SourceAppIconCache.invalidate()
     }
 
     func applicationWillTerminate(_ notification: Notification) {

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="24D70a" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AppIconEntity" representedClassName="AppIconEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="bundleId" optional="YES" attributeType="String"/>
+        <attribute name="iconData" optional="YES" attributeType="Binary"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <fetchIndex name="byBundleIdIndex">
+            <fetchIndexElement property="bundleId" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
     <entity name="ClipboardItemEntity" representedClassName="ClipboardItemEntity" syncable="YES" codeGenerationType="class">
         <attribute name="appBundleId" optional="YES" attributeType="String"/>
         <attribute name="appIconData" optional="YES" attributeType="Binary"/>

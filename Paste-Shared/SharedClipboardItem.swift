@@ -109,7 +109,10 @@ struct SharedClipboardItem: Identifiable, Equatable, Hashable {
 
     #if canImport(UIKit)
     var sourceAppIcon: UIImage? {
-        guard let data = appIconData else { return nil }
+        // Items synced before icon deduplication still carry their own copy; newer ones are
+        // resolved from AppIconEntity via the bundle id.
+        if let data = appIconData { return UIImage(data: data) }
+        guard let data = SharedAppIconCache.iconData(forBundleId: appBundleId) else { return nil }
         return UIImage(data: data)
     }
     #endif

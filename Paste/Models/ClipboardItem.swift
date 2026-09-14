@@ -16,27 +16,21 @@ struct ClipboardItemModel: Identifiable, Equatable {
     let plainText: String?
     let rtfData: Data?
     let imageData: Data?
-    private let filePathsData: Data?
     let appBundleId: String?
     let appIconData: Data?
     let createdAt: Date
     let contentHash: String
     let isPinned: Bool
-    private let tagsData: Data?
-    
+
+    /// File paths, decoded once at init. Decoding lazily meant re-running JSONDecoder on
+    /// every access — several times per row per filter pass with thousands of rows.
+    let filePathsArray: [String]?
+    /// Raw tag strings, decoded once at init.
+    let tagsArray: [String]
+    /// Typed tags, parsed once at init. Use this instead of `tagsArray.parsedTags()` in hot paths.
+    let parsedTags: [ItemTag]
+
     // MARK: - Computed Properties
-    
-    /// Decodes the file paths JSON array.
-    var filePathsArray: [String]? {
-        guard let data = filePathsData else { return nil }
-        return try? JSONDecoder().decode([String].self, from: data)
-    }
-    
-    /// Decodes the tags JSON array.
-    var tagsArray: [String] {
-        guard let data = tagsData else { return [] }
-        return (try? JSONDecoder().decode([String].self, from: data)) ?? []
-    }
     
     /// Display text for list preview.
     var displayText: String {
@@ -140,13 +134,42 @@ struct ClipboardItemModel: Identifiable, Equatable {
         self.plainText = entity.plainText
         self.rtfData = loadBinaryData ? entity.rtfData : nil
         self.imageData = loadBinaryData ? entity.imageData : nil
-        self.filePathsData = entity.filePaths
+        self.filePathsArray = Self.decodeStrings(entity.filePaths)
         self.appBundleId = entity.appBundleId
-        self.appIconData = entity.appIconData
+        // macOS draws the source-app badge live from NSWorkspace; the stored PNG only exists
+        // for the iOS client. It averages ~10 KB per row, so never pull it into list fetches.
+        self.appIconData = loadBinaryData ? entity.appIconData : nil
         self.createdAt = entity.createdAt ?? Date()
         self.contentHash = entity.contentHash ?? ""
         self.isPinned = entity.isPinned
-        self.tagsData = entity.tags
+        let tags = Self.decodeStrings(entity.tags) ?? []
+        self.tagsArray = tags
+        self.parsedTags = tags.parsedTags()
+    }
+
+    /// Builds a model from a dictionary-result fetch (see `ClipboardService.listProperties`).
+    /// Dictionary fetches read only the requested columns, so the binary blobs stay on disk.
+    init?(dictionary: NSDictionary) {
+        guard let id = dictionary["id"] as? UUID else { return nil }
+        self.id = id
+        self.itemType = ClipboardItemType(rawValue: (dictionary["type"] as? NSNumber)?.int16Value ?? 0) ?? .text
+        self.plainText = dictionary["plainText"] as? String
+        self.rtfData = nil
+        self.imageData = nil
+        self.filePathsArray = Self.decodeStrings(dictionary["filePaths"] as? Data)
+        self.appBundleId = dictionary["appBundleId"] as? String
+        self.appIconData = nil
+        self.createdAt = (dictionary["createdAt"] as? Date) ?? Date()
+        self.contentHash = (dictionary["contentHash"] as? String) ?? ""
+        self.isPinned = (dictionary["isPinned"] as? NSNumber)?.boolValue ?? false
+        let tags = Self.decodeStrings(dictionary["tags"] as? Data) ?? []
+        self.tagsArray = tags
+        self.parsedTags = tags.parsedTags()
+    }
+
+    private static func decodeStrings(_ data: Data?) -> [String]? {
+        guard let data else { return nil }
+        return try? JSONDecoder().decode([String].self, from: data)
     }
     
     // Convenience initialiser for tests.
@@ -169,13 +192,14 @@ struct ClipboardItemModel: Identifiable, Equatable {
         self.plainText = plainText
         self.rtfData = rtfData
         self.imageData = imageData
-        self.filePathsData = filePaths != nil ? try? JSONEncoder().encode(filePaths) : nil
+        self.filePathsArray = filePaths
         self.appBundleId = appBundleId
         self.appIconData = appIconData
         self.createdAt = createdAt
         self.contentHash = contentHash
         self.isPinned = isPinned
-        self.tagsData = !tags.isEmpty ? try? JSONEncoder().encode(tags) : nil
+        self.tagsArray = tags
+        self.parsedTags = tags.parsedTags()
     }
     
     static func == (lhs: ClipboardItemModel, rhs: ClipboardItemModel) -> Bool {
