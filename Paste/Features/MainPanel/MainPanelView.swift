@@ -2,7 +2,7 @@
 //  MainPanelView.swift
 //  Paste
 //
-//  Main overlay panel view — slides in from the configured edge.
+//  Main overlay panel view.
 //
 
 import SwiftUI
@@ -26,7 +26,6 @@ extension EnvironmentValues {
 struct MainPanelView: View {
 
     @ObservedObject var viewModel: ClipboardViewModel
-    @State private var isVisible = false
     @State private var renameSheetText = ""
     @State private var editSheetText = ""
     @State private var newItemSheetText = ""
@@ -35,23 +34,11 @@ struct MainPanelView: View {
         let position = AppSettings.panelPosition
         GeometryReader { geo in
             let cs = PanelLayout.cardSize(position: position, screenSize: geo.size)
-            ZStack {
-                panelContent(position: position)
-                    .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
-                    .offset(x: panelOffsetX(position: position), y: panelOffsetY(position: position))
-                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isVisible)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: position)
-                    .zIndex(0)
-            }
+            panelContent(position: position)
+                .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
             .environment(\.cardSize, cs)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onReceive(NotificationCenter.default.publisher(for: AppNotification.panelWillHide)) { _ in
-            isVisible = false
-        }
-        .onReceive(NotificationCenter.default.publisher(for: AppNotification.panelDidShow)) { _ in
-            isVisible = true
-        }
         .onChange(of: viewModel.showRenameSheet) { _, show in
             if show { renameSheetText = viewModel.itemForEdit?.displayText ?? "" }
         }
@@ -114,21 +101,6 @@ struct MainPanelView: View {
         }
     }
 
-    private func panelOffsetX(position: AppSettings.PanelPosition) -> CGFloat {
-        switch position {
-        case .bottom, .top: return 0
-        case .left: return isVisible ? 0 : -PanelLayout.panelVerticalWidth
-        case .right: return isVisible ? 0 : PanelLayout.panelVerticalWidth
-        }
-    }
-
-    private func panelOffsetY(position: AppSettings.PanelPosition) -> CGFloat {
-        switch position {
-        case .bottom: return isVisible ? 0 : PanelLayout.panelBarHeight
-        case .top: return isVisible ? 0 : -PanelLayout.panelBarHeight
-        case .left, .right: return 0
-        }
-    }
 }
 
 // MARK: - Sheet Views

@@ -1,243 +1,176 @@
-//
-//  ClipboardGridView.swift
-//  Paste
-//
-//  Scrollable card grids for the clipboard panel — horizontal (top/bottom) and vertical (left/right).
-//
-
-import SwiftUI
 import AppKit
+import SwiftUI
 
-// MARK: - ClipboardGridView (horizontal, for top/bottom panels)
-
-struct ClipboardGridView: View {
-    @ObservedObject var viewModel: ClipboardViewModel
-
-    var body: some View {
-        if !viewModel.isRegexPresetMode && viewModel.filteredItems.isEmpty {
-            emptyStateView
-        } else {
-            scrollContent
+struct ClipboardDisplayRows: RandomAccessCollection {
+    struct Row: Identifiable {
+        struct ID: Hashable {
+            let itemID: UUID
+            let stackOffset: Int?
         }
+        let index: Int
+        let displayItem: DisplayItem
+        let id: ID
     }
-
-    private var scrollContent: some View {
-        HorizontalScrollWheelBridge {
-            ScrollViewReader { proxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: PanelLayout.cardSpacing) {
-                        ForEach(0..<viewModel.displayItemCount, id: \.self) { index in
-                            if let displayItem = viewModel.displayItem(at: index) {
-                                switch displayItem {
-                                case .history(let item):
-                                    ClipboardCardView(
-                                        item: item,
-                                        isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                        activePinboardIndex: viewModel.activePinboardIndex,
-                                        pinboardCount: AppSettings.pinboardCount,
-                                        onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                        onPaste: { plainTextOnly in viewModel.pasteItem(item, plainTextOnly: plainTextOnly) },
-                                        onWriteClipboard: { plainTextOnly in viewModel.writeClipboardOnly(item, plainTextOnly: plainTextOnly) },
-                                        onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
-                                        onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
-                                        onAddToPasteStack: { viewModel.addToPasteStack(item) },
-                                        onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
-                                        isPasteStackMode: viewModel.panelMode == .pasteStack,
-                                        onDelete: { viewModel.deleteItem(item) },
-                                        onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
-                                    )
-                                    .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                                    .id(displayItem.id)
-                                case .preset(let preset):
-                                    RegexPresetCardView(
-                                        preset: preset,
-                                        isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                        onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                        onPaste: { viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
-                                    )
-                                    .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                                    .id(displayItem.id)
-                                }
-                            }
-                        }
-                    }
-                    // Vertical padding is on the content layer; horizontal padding moves to contentMargins for correct viewAligned snapping.
-                    .padding(.vertical, PanelLayout.vertPadding)
-                    .scrollTargetLayout()
-                }
-                // Horizontal padding as contentMargins ensures 20pt leading space after each snap.
-                .contentMargins(.horizontal, PanelLayout.panelPadding, for: .scrollContent)
-                // Card alignment snapping: after each scroll stop, snap to the nearest card boundary.
-                .scrollTargetBehavior(.viewAligned)
-                .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.x }) { _, x in
-                    let screenW = NSScreen.main?.frame.width ?? 1920
-                    let cs = PanelLayout.cardSize(
-                        position: AppSettings.panelPosition,
-                        screenSize: CGSize(width: screenW, height: 0)
-                    )
-                    let step = cs.width + PanelLayout.cardSpacing
-                    viewModel.updateFirstVisibleIndex(max(0, Int((x / step).rounded())))
-                }
-                .onChange(of: viewModel.selectedIndex) { _, _ in
-                    guard let id = viewModel.displayItem(at: viewModel.selectedIndex)?.id else { return }
-                    var transaction = Transaction()
-                    transaction.disablesAnimations = true
-                    withTransaction(transaction) {
-                        proxy.scrollTo(id, anchor: .center)
-                    }
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func quickPasteHint(for index: Int) -> some View {
-        let offset = index - viewModel.firstVisibleIndex
-        if viewModel.isCommandHeld, offset >= 0, offset < 9 {
-            Text("\(offset + 1)")
-                .font(.system(size: 11, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
-                .frame(width: 20, height: 20)
-                .background(Color.accentColor)
-                .clipShape(RoundedRectangle(cornerRadius: 5))
-                .shadow(radius: 2)
-                .padding(4)
-                .transition(.scale.combined(with: .opacity))
-                .animation(.easeInOut(duration: 0.12), value: viewModel.isCommandHeld)
-        }
-    }
-
-    private var emptyStateView: some View {
-        HStack {
-            Spacer()
-            VStack(spacing: 8) {
-                Image(systemName: "doc.on.clipboard")
-                    .font(.system(size: 32))
-                    .foregroundColor(.secondary)
-                Text(viewModel.searchText.isEmpty
-                     ? String(localized: "mainpanel.empty.noHistory")
-                     : String(localized: "mainpanel.empty.noMatches"))
-                    .font(.system(size: 13))
-                    .foregroundColor(.secondary)
-            }
-            Spacer()
-        }
-        .frame(maxHeight: .infinity)
+    let items: [ClipboardItemModel]
+    let isRegexPresetMode: Bool
+    let isPasteStackMode: Bool
+    var startIndex: Int { 0 }
+    var endIndex: Int { isRegexPresetMode ? RegexPreset.all.count : items.count }
+    subscript(index: Int) -> Row {
+        let item: DisplayItem = isRegexPresetMode
+            ? .preset(RegexPreset.all[index]) : .history(items[index])
+        return Row(index: index, displayItem: item,
+                   id: Row.ID(itemID: item.id, stackOffset: isPasteStackMode ? index : nil))
     }
 }
 
-// MARK: - ClipboardGridVerticalView (for left/right panels)
+private struct ClipboardGridCell: View {
+    let row: ClipboardDisplayRows.Row
+    @ObservedObject var viewModel: ClipboardViewModel
+    @Environment(\.cardSize) private var cardSize
+
+    var body: some View {
+        Group {
+            switch row.displayItem {
+            case .history(let item):
+                ClipboardCardView(
+                    item: item, isSelected: isSelected,
+                    activePinboardIndex: viewModel.activePinboardIndex,
+                    pinboardCount: AppSettings.pinboardCount,
+                    onSelect: select,
+                    onPaste: { viewModel.pasteItem(item, plainTextOnly: $0) },
+                    onWriteClipboard: { viewModel.writeClipboardOnly(item, plainTextOnly: $0) },
+                    onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
+                    onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
+                    onAddToPasteStack: { viewModel.addToPasteStack(item) },
+                    onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
+                    isPasteStackMode: viewModel.isShowingPasteStack,
+                    onDelete: { viewModel.deleteItem(item) },
+                    onEdit: { select(); viewModel.showEditSheet = true }
+                )
+            case .preset(let preset):
+                RegexPresetCardView(
+                    preset: preset, isSelected: isSelected, onSelect: select,
+                    onPaste: { select(); viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
+                )
+            }
+        }
+        .frame(width: cardSize.width, height: cardSize.height)
+        .overlay(alignment: .topLeading) {
+            let offset = row.index - viewModel.firstVisibleIndex
+            if viewModel.isCommandHeld, (0..<9).contains(offset) {
+                Text("\(offset + 1)")
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundColor(.white)
+                    .frame(width: 20, height: 20)
+                    .background(Color.accentColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .padding(4)
+            }
+        }
+    }
+
+    private var isSelected: Bool {
+        row.index == viewModel.selectedIndex || viewModel.selectedIndices.contains(row.index)
+    }
+    private func select() {
+        viewModel.selectedIndices = []
+        viewModel.selectedIndex = row.index
+    }
+}
+
+struct ClipboardGridView: View {
+    @ObservedObject var viewModel: ClipboardViewModel
+    var body: some View {
+        ClipboardGridContent(viewModel: viewModel, vertical: false)
+    }
+}
 
 struct ClipboardGridVerticalView: View {
     @ObservedObject var viewModel: ClipboardViewModel
+    var body: some View {
+        ClipboardGridContent(viewModel: viewModel, vertical: true)
+    }
+}
+
+private struct ClipboardGridContent: View {
+    @ObservedObject var viewModel: ClipboardViewModel
+    @Environment(\.cardSize) private var cardSize
+    let vertical: Bool
+
+    private var rows: ClipboardDisplayRows {
+        ClipboardDisplayRows(items: viewModel.filteredItems,
+                             isRegexPresetMode: viewModel.isRegexPresetMode,
+                             isPasteStackMode: viewModel.isShowingPasteStack)
+    }
 
     var body: some View {
-        if !viewModel.isRegexPresetMode && viewModel.filteredItems.isEmpty {
-            emptyStateView
-        } else {
-            scrollContent
-        }
-    }
-
-    private var scrollContent: some View {
         ScrollViewReader { proxy in
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(spacing: PanelLayout.cardSpacing) {
-                    ForEach(0..<viewModel.displayItemCount, id: \.self) { index in
-                        if let displayItem = viewModel.displayItem(at: index) {
-                            switch displayItem {
-                            case .history(let item):
-                                ClipboardCardView(
-                                    item: item,
-                                    isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                    activePinboardIndex: viewModel.activePinboardIndex,
-                                    pinboardCount: AppSettings.pinboardCount,
-                                    onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                    onPaste: { plainTextOnly in viewModel.pasteItem(item, plainTextOnly: plainTextOnly) },
-                                    onWriteClipboard: { plainTextOnly in viewModel.writeClipboardOnly(item, plainTextOnly: plainTextOnly) },
-                                    onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
-                                    onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
-                                    onAddToPasteStack: { viewModel.addToPasteStack(item) },
-                                    onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
-                                    isPasteStackMode: viewModel.panelMode == .pasteStack,
-                                    onDelete: { viewModel.deleteItem(item) },
-                                    onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
-                                )
-                                .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                                .id(displayItem.id)
-                            case .preset(let preset):
-                                RegexPresetCardView(
-                                    preset: preset,
-                                    isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                    onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                    onPaste: { viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
-                                )
-                                .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                                .id(displayItem.id)
-                            }
-                        }
+            ScrollView(vertical ? .vertical : .horizontal, showsIndicators: false) {
+                Group {
+                    if vertical {
+                        LazyVStack(spacing: PanelLayout.cardSpacing) { cells }
+                            .padding(.horizontal, PanelLayout.panelPadding)
+                    } else {
+                        LazyHStack(spacing: PanelLayout.cardSpacing) { cells }
+                            .padding(.vertical, PanelLayout.vertPadding)
                     }
                 }
-                // Horizontal padding is on the content layer; vertical padding moves to contentMargins for correct viewAligned snapping.
-                .padding(.horizontal, PanelLayout.panelPadding)
                 .scrollTargetLayout()
             }
-            // Vertical padding as contentMargins ensures 12pt top space after each snap.
-            .contentMargins(.vertical, PanelLayout.vertPadding, for: .scrollContent)
-            // Card alignment snapping: after each scroll stop, snap to the nearest card boundary.
+            .background {
+                if !vertical { HorizontalScrollWheelBridge() }
+            }
+            .contentMargins(vertical ? .vertical : .horizontal,
+                            vertical ? PanelLayout.vertPadding : PanelLayout.panelPadding, for: .scrollContent)
             .scrollTargetBehavior(.viewAligned)
-            .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.y }) { _, y in
-                let screenH = NSScreen.main?.frame.height ?? 900
-                let cs = PanelLayout.cardSize(
-                    position: AppSettings.panelPosition,
-                    screenSize: CGSize(width: 0, height: screenH)
-                )
-                let step = cs.height + PanelLayout.cardSpacing
-                viewModel.updateFirstVisibleIndex(max(0, Int((y / step).rounded())))
+            .onScrollGeometryChange(for: Int.self, of: { geometry in
+                let offset = vertical ? geometry.contentOffset.y + geometry.contentInsets.top
+                    : geometry.contentOffset.x + geometry.contentInsets.leading
+                let stride = (vertical ? cardSize.height : cardSize.width) + PanelLayout.cardSpacing
+                return max(0, Int((offset / max(1, stride)).rounded()))
+            }) { _, index in
+                viewModel.updateFirstVisibleIndex(index)
             }
             .onChange(of: viewModel.selectedIndex) { _, _ in
-                guard let id = viewModel.displayItem(at: viewModel.selectedIndex)?.id else { return }
-                var transaction = Transaction()
-                transaction.disablesAnimations = true
-                withTransaction(transaction) {
-                    proxy.scrollTo(id, anchor: .center)
+                scrollToSelection(proxy, anchor: .center)
+            }
+            .onChange(of: viewModel.displayRevision) { _, _ in
+                if viewModel.selectedIndex != 0 {
+                    scrollToSelection(proxy, anchor: vertical ? .top : .leading)
+                }
+            }
+            .overlay {
+                if rows.isEmpty {
+                    VStack(spacing: 8) {
+                        Image(systemName: "doc.on.clipboard")
+                            .font(.system(size: 32))
+                            .foregroundColor(.secondary)
+                        Text(viewModel.searchText.isEmpty
+                             ? String(localized: "mainpanel.empty.noHistory")
+                             : String(localized: "mainpanel.empty.noMatches"))
+                            .font(.system(size: 13))
+                            .foregroundColor(.secondary)
+                    }
+                    .allowsHitTesting(false)
                 }
             }
         }
-    }
-
-    @ViewBuilder
-    private func quickPasteHint(for index: Int) -> some View {
-        let offset = index - viewModel.firstVisibleIndex
-        if viewModel.isCommandHeld, offset >= 0, offset < 9 {
-            Text("\(offset + 1)")
-                .font(.system(size: 11, weight: .bold, design: .rounded))
-                .foregroundColor(.white)
-                .frame(width: 20, height: 20)
-                .background(Color.accentColor)
-                .clipShape(RoundedRectangle(cornerRadius: 5))
-                .shadow(radius: 2)
-                .padding(4)
-                .transition(.scale.combined(with: .opacity))
-                .animation(.easeInOut(duration: 0.12), value: viewModel.isCommandHeld)
+        .id(viewModel.displayScopeID)
+        .transaction {
+            $0.animation = nil
+            $0.disablesAnimations = true
         }
     }
 
-    private var emptyStateView: some View {
-        HStack {
-            Spacer()
-            VStack(spacing: 8) {
-                Image(systemName: "doc.on.clipboard")
-                    .font(.system(size: 32))
-                    .foregroundColor(.secondary)
-                Text(viewModel.searchText.isEmpty
-                     ? String(localized: "mainpanel.empty.noHistory")
-                     : String(localized: "mainpanel.empty.noMatches"))
-                    .font(.system(size: 13))
-                    .foregroundColor(.secondary)
-            }
-            Spacer()
+    private var cells: some View {
+        ForEach(rows) { row in
+            ClipboardGridCell(row: row, viewModel: viewModel)
         }
-        .frame(maxHeight: .infinity)
+    }
+
+    private func scrollToSelection(_ proxy: ScrollViewProxy, anchor: UnitPoint) {
+        guard rows.indices.contains(viewModel.selectedIndex) else { return }
+        proxy.scrollTo(rows[viewModel.selectedIndex].id, anchor: anchor)
     }
 }

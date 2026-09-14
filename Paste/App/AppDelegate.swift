@@ -88,7 +88,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Lifecycle
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        #if PERFORMANCE_TESTING
+        Task { await PanelPerformanceHarness.run() }
+        return
+        #endif
         #if DEBUG
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+            || NSClassFromString("XCTestCase") != nil { return }
         // Publishes the model to the CloudKit Development schema and exits. No UI is set up.
         if CoreDataStack.shared.initializeCloudKitSchemaIfRequested() { return }
         #endif
@@ -162,8 +168,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func statusBarButtonClicked(_ sender: NSStatusBarButton) {
-        let event = NSApp.currentEvent!
-        if event.type == .rightMouseUp {
+        if NSApp.currentEvent?.type == .rightMouseUp {
             showStatusMenu()
         } else {
             panelCoordinator.capturePreviousFrontmostApp()
@@ -350,7 +355,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         case 53: // Esc
             if viewModel.isPreviewVisible {
                 panelCoordinator.hidePreviewWindow()
-            } else if viewModel.focusSearch || !viewModel.searchText.isEmpty {
+            } else if !viewModel.searchText.isEmpty {
                 viewModel.searchText = ""
                 viewModel.focusSearch = false
                 viewModel.selectedIndex = 0

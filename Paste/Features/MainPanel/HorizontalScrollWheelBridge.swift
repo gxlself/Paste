@@ -1,113 +1,67 @@
-import SwiftUI
 import AppKit
+import SwiftUI
 
-/// Maps vertical scroll wheel / trackpad events to horizontal scroll.
-///
-/// On macOS, scroll wheel vertical delta normally does not drive a horizontal ScrollView; this bridge fixes that.
-struct HorizontalScrollWheelBridge<Content: View>: NSViewRepresentable {
-    private let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
-
-    func makeNSView(context: Context) -> ScrollWheelBridgeContainerView {
-        let container = ScrollWheelBridgeContainerView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-
-        let hostingView = NSHostingView(rootView: content)
-        hostingView.translatesAutoresizingMaskIntoConstraints = false
-
-        container.addSubview(hostingView)
-        NSLayoutConstraint.activate([
-            hostingView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            hostingView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            hostingView.topAnchor.constraint(equalTo: container.topAnchor),
-            hostingView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-        ])
-
-        container.hostingView = hostingView
-        context.coordinator.hostingView = hostingView
-        return container
-    }
-
-    func updateNSView(_ nsView: ScrollWheelBridgeContainerView, context: Context) {
-        if let hostingView = context.coordinator.hostingView {
-            hostingView.rootView = content
-            nsView.hostingView = hostingView
-        }
-    }
-
-    final class Coordinator {
-        var hostingView: NSHostingView<Content>?
+/// Observe the existing SwiftUI scroll view without nesting a second NSHostingView.
+struct HorizontalScrollWheelBridge: NSViewRepresentable {
+    func makeNSView(context: Context) -> HorizontalWheelMonitorView { HorizontalWheelMonitorView() }
+    func updateNSView(_ nsView: HorizontalWheelMonitorView, context: Context) {}
+    static func dismantleNSView(_ nsView: HorizontalWheelMonitorView, coordinator: ()) {
+        nsView.stopMonitoring()
     }
 }
 
-final class ScrollWheelBridgeContainerView: NSView {
-    weak var hostingView: NSView?
-    weak var cachedScrollView: NSScrollView?
+final class HorizontalWheelMonitorView: NSView {
+    private weak var scrollView: NSScrollView?
+    private var monitor: Any?
 
-    override func hitTest(_ point: NSPoint) -> NSView? {
-        // SwiftUI's internal NSScrollView may consume scroll wheel events even when it does not handle vertical scroll,
-        // preventing the outer container from receiving scrollWheel. This makes the container the hit target only for scrollWheel,
-        // so deltaY can be mapped to horizontal scroll. Other events use the default hit-test to preserve click/drag behaviour.
-        if NSApp.currentEvent?.type == .scrollWheel {
-            return self
+    override func hitTest(_ point: NSPoint) -> NSView? { nil }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        stopMonitoring()
+        guard window != nil else { return }
+        monitor = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+            guard let self, let window = self.window, window.isVisible,
+                  event.window === window, !self.isHiddenOrHasHiddenAncestor,
+                  self.bounds.contains(self.convert(event.locationInWindow, from: nil)),
+                  abs(event.scrollingDeltaY) > abs(event.scrollingDeltaX) else { return event }
+            return self.scrollHorizontally(event) ? nil : event
         }
-        return super.hitTest(point)
     }
 
-    override func scrollWheel(with event: NSEvent) {
-        let scrollView = cachedScrollView ?? findNearestScrollView()
-        cachedScrollView = scrollView
-        guard let scrollView else {
-            super.scrollWheel(with: event)
-            return
-        }
-
-        // Trackpad horizontal swipe: pass deltaX directly. Vertical scroll: remap deltaY to horizontal.
-        let multiplier: CGFloat = event.hasPreciseScrollingDeltas ? 1.0 : 12.0
-        let deltaX: CGFloat
-        if abs(event.scrollingDeltaX) > abs(event.scrollingDeltaY) {
-            deltaX = event.scrollingDeltaX * multiplier
-        } else {
-            deltaX = event.scrollingDeltaY * multiplier
-        }
-
-        let clipView = scrollView.contentView
-        var newOrigin = clipView.bounds.origin
-        newOrigin.x -= deltaX
-
-        // Clamp to valid range to prevent out-of-bounds jitter.
-        let minX: CGFloat = 0
-        let maxX: CGFloat
-        if let documentView = scrollView.documentView {
-            maxX = max(0, documentView.bounds.width - clipView.bounds.width)
-        } else {
-            maxX = minX
-        }
-
-        newOrigin.x = min(max(newOrigin.x, minX), maxX)
-
-        clipView.scroll(to: newOrigin)
-        scrollView.reflectScrolledClipView(clipView)
+    func stopMonitoring() {
+        if let monitor { NSEvent.removeMonitor(monitor) }
+        monitor = nil
+        scrollView = nil
     }
 
-    private func findNearestScrollView() -> NSScrollView? {
-        // SwiftUI's ScrollView(.horizontal) typically creates an NSScrollView somewhere in the view hierarchy.
-        // Recursively search the hostingView subtree for the first NSScrollView; skip if not found.
-        let root: NSView = (hostingView as? NSView) ?? self
-        return findScrollView(in: root)
+    private func scrollHorizontally(_ event: NSEvent) -> Bool {
+        if scrollView?.window !== window { scrollView = nil }
+        if scrollView == nil {
+            var ancestor = superview
+            while let view = ancestor {
+                if let match = findScrollView(in: view) {
+                    scrollView = match
+                    break
+                }
+                ancestor = view.superview
+            }
+        }
+        guard let scrollView else { return false }
+        let clip = scrollView.contentView
+        var origin = clip.bounds.origin
+        origin.x -= event.scrollingDeltaY * (event.hasPreciseScrollingDeltas ? 1 : 12)
+        let maximum = max(0, (scrollView.documentView?.bounds.width ?? 0) - clip.bounds.width)
+        origin.x = min(maximum, max(0, origin.x))
+        clip.scroll(to: origin)
+        scrollView.reflectScrolledClipView(clip)
+        return true
     }
 
     private func findScrollView(in view: NSView) -> NSScrollView? {
-        if let scrollView = view as? NSScrollView { return scrollView }
-        for subview in view.subviews {
-            if let found = findScrollView(in: subview) { return found }
+        if let scroll = view as? NSScrollView { return scroll }
+        for child in view.subviews {
+            if let scroll = findScrollView(in: child) { return scroll }
         }
         return nil
     }

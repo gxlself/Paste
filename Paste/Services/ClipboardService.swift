@@ -378,6 +378,7 @@ class ClipboardService {
             }
 
             coreDataStack.save()
+            NotificationCenter.default.post(name: .clipboardItemAdded, object: nil)
             return true
         } catch {
             print("Update timestamp error: \(error)")

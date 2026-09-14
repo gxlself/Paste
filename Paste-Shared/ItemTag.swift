@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ItemTag: Hashable {
+enum ItemTag: Hashable, Sendable {
     case pinboard(Int)
     case alias(String)
     case appName(String)

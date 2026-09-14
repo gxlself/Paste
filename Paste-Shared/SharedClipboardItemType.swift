@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum ClipboardItemType: Int16 {
+enum ClipboardItemType: Int16, Sendable {
     case text  = 0
     case image = 1
     case file  = 2

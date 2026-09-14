@@ -31,7 +31,6 @@ final class PanelCoordinator {
     private var previousFrontmostApp: NSRunningApplication?
     private var previousFrontmostPID: pid_t = 0
     private var lastShowTime: Date?
-    private var hideWorkItem: DispatchWorkItem?
 
     private var dragGhostPanel: DragGhostPanel?
     private var dragMouseMonitor: Any?
@@ -139,8 +138,6 @@ final class PanelCoordinator {
 
     func show(updatingInputSource inputSourceCoordinator: InputSourceCoordinator) {
         guard let panel else { return }
-        hideWorkItem?.cancel()
-        hideWorkItem = nil
 
         if panel.isVisible {
             isInClosingAndPasteFlow = false
@@ -154,7 +151,8 @@ final class PanelCoordinator {
         if previousFrontmostApp == nil { capturePreviousFrontmostApp() }
         guard let targetScreen = targetScreenForFrontmostApp() ?? NSScreen.main else { return }
 
-        panel.setFrame(panelFrame(on: targetScreen), display: false)
+        let frame = panelFrame(on: targetScreen)
+        if panel.frame != frame { panel.setFrame(frame, display: false) }
         panel.level = .statusBar
         lastShowTime = Date()
         isInClosingAndPasteFlow = false
@@ -166,35 +164,30 @@ final class PanelCoordinator {
             viewModel?.currentInputSourceName = info.name
         }
 
+        NotificationCenter.default.post(name: AppNotification.panelDidShow, object: nil)
         panel.orderFrontRegardless()
         panel.makeKey()
-        NotificationCenter.default.post(name: AppNotification.panelDidShow, object: nil)
     }
 
     func hide() {
-        hideWorkItem?.cancel()
-        hideWorkItem = nil
-        panel?.orderOut(nil)
+        hideWithAnimation()
     }
 
     func hideWithAnimation(completion: (() -> Void)? = nil) {
-        hideWorkItem?.cancel()
         hidePreviewWindow()
+        // Hide first so ESC and toggle-off never wait for filter/state cleanup. The panel's
+        // transient state can be reset after it is no longer visible.
+        panel?.orderOut(nil)
         NotificationCenter.default.post(name: AppNotification.panelWillHide, object: nil)
-        let workItem = DispatchWorkItem { [weak self] in
-            self?.panel?.orderOut(nil)
-            completion?()
-        }
-        hideWorkItem = workItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: workItem)
+        completion?()
     }
 
     // MARK: - Direct Paste
 
     func performDirectPaste() {
         hidePreviewWindow()
-        NotificationCenter.default.post(name: AppNotification.panelWillHide, object: nil)
         panel?.orderOut(nil)
+        NotificationCenter.default.post(name: AppNotification.panelWillHide, object: nil)
 
         let target    = previousFrontmostApp
         let targetPID = previousFrontmostPID
@@ -330,8 +323,10 @@ final class PanelCoordinator {
     }
 
     func hidePreviewWindow() {
+        previewUpdateWorkItem?.cancel()
+        previewUpdateWorkItem = nil
         previewWindowController?.hidePreview()
-        viewModel?.isPreviewVisible = false
+        if viewModel?.isPreviewVisible == true { viewModel?.isPreviewVisible = false }
     }
 
     // MARK: - Helpers
@@ -363,6 +358,7 @@ final class PanelCoordinator {
 
     /// Returns the screen that contains the largest visible window of the frontmost app.
     private func targetScreenForFrontmostApp() -> NSScreen? {
+        if NSScreen.screens.count == 1 { return NSScreen.screens.first }
         let pid = (previousFrontmostApp ?? NSWorkspace.shared.frontmostApplication)?.processIdentifier
         guard let pid else { return NSScreen.main }
 

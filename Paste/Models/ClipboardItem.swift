@@ -28,7 +28,7 @@ private enum ClipboardFileIconCache {
 }
 
 /// View-layer snapshot of a clipboard item.
-struct ClipboardItemModel: Identifiable, Equatable {
+struct ClipboardItemModel: Identifiable, Equatable, Sendable {
     let id: UUID
     let itemType: ClipboardItemType
     let plainText: String?
@@ -63,6 +63,11 @@ struct ClipboardItemModel: Identifiable, Equatable {
             }
             return String(localized: "clipboard.item.placeholder.file")
         }
+    }
+
+    /// Only the compact card is truncated; editing, copying and full previews keep the original.
+    var cardPreviewText: String {
+        String(displayText.prefix(512))
     }
     
     /// Thumbnail image (image items only).

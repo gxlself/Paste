@@ -15,7 +15,7 @@ func clipboardCardAccessibilityLabel(for item: ClipboardItemModel) -> String {
     let time = item.formattedTime
     switch item.itemType {
     case .text:
-        if let raw = item.plainText?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if let raw = item.plainText, raw.utf8.count <= 128,
            !raw.contains("\n"),
            ColorCodeHelper.color(from: raw) != nil {
             return String(format: String(localized: "accessibility.mainpanel.card.colorFormat"), raw, time)
@@ -56,6 +56,9 @@ struct ClipboardCardView: View {
     @Environment(\.cardSize) private var cardSize
 
     var body: some View {
+        #if PERFORMANCE_TESTING
+        let _ = { PanelPerformanceMetrics.cardBodyCount += 1 }()
+        #endif
         VStack(alignment: .leading, spacing: 0) {
             contentView
                 .frame(height: cardSize.height - 32)
@@ -169,8 +172,9 @@ struct ClipboardCardView: View {
 
     private var textContentView: some View {
         Group {
-            if let nsColor = ColorCodeHelper.color(from: item.plainText ?? "") {
-                Text(item.displayText)
+            if let text = item.plainText, text.utf8.count <= 128,
+               let nsColor = ColorCodeHelper.color(from: text) {
+                Text(item.cardPreviewText)
                     .font(.system(size: 12, weight: .medium))
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
@@ -180,7 +184,7 @@ struct ClipboardCardView: View {
                     .background(Color(nsColor: nsColor))
             } else {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(item.displayText)
+                    Text(item.cardPreviewText)
                         .font(.system(size: 11))
                         .lineLimit(4)
                         .foregroundColor(.primary)
