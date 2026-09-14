@@ -217,9 +217,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupModifierFlagsMonitor() {
         modifierFlagsMonitor = NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) { [weak self] event in
             guard let self, self.panelCoordinator.isVisible else { return event }
-            let flags = event.modifierFlags
-            self.viewModel.isCommandHeld = flags.contains(.command)
-            self.viewModel.isShiftHeld = flags.contains(.shift)
+            self.viewModel.updateModifierState(event.modifierFlags)
             return event
         }
     }
@@ -406,9 +404,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Quick-paste via configured modifier + digit keys.
         let quickMod = AppSettings.quickPasteModifier
         if flags.contains(quickMod), let offset = quickPasteIndex(for: keyCode) {
-            let list = viewModel.effectiveDisplayItems
+            let count = viewModel.displayItemCount
             let actualIndex = viewModel.firstVisibleIndex + offset
-            if actualIndex < list.count {
+            if actualIndex < count {
                 viewModel.selectedIndex = actualIndex
                 let plainTextOnly = AppSettings.pastePlainTextByDefault
                     || flags.contains(AppSettings.plainTextModifier)

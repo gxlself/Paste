@@ -31,6 +31,7 @@ final class PanelCoordinator {
     private var previousFrontmostApp: NSRunningApplication?
     private var previousFrontmostPID: pid_t = 0
     private var lastShowTime: Date?
+    private var hideWorkItem: DispatchWorkItem?
 
     private var dragGhostPanel: DragGhostPanel?
     private var dragMouseMonitor: Any?
@@ -138,6 +139,8 @@ final class PanelCoordinator {
 
     func show(updatingInputSource inputSourceCoordinator: InputSourceCoordinator) {
         guard let panel else { return }
+        hideWorkItem?.cancel()
+        hideWorkItem = nil
 
         if panel.isVisible {
             isInClosingAndPasteFlow = false
@@ -169,16 +172,21 @@ final class PanelCoordinator {
     }
 
     func hide() {
+        hideWorkItem?.cancel()
+        hideWorkItem = nil
         panel?.orderOut(nil)
     }
 
     func hideWithAnimation(completion: (() -> Void)? = nil) {
+        hideWorkItem?.cancel()
         hidePreviewWindow()
         NotificationCenter.default.post(name: AppNotification.panelWillHide, object: nil)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+        let workItem = DispatchWorkItem { [weak self] in
             self?.panel?.orderOut(nil)
             completion?()
         }
+        hideWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: workItem)
     }
 
     // MARK: - Direct Paste

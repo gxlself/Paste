@@ -49,6 +49,7 @@ struct HorizontalScrollWheelBridge<Content: View>: NSViewRepresentable {
 
 final class ScrollWheelBridgeContainerView: NSView {
     weak var hostingView: NSView?
+    weak var cachedScrollView: NSScrollView?
 
     override func hitTest(_ point: NSPoint) -> NSView? {
         // SwiftUI's internal NSScrollView may consume scroll wheel events even when it does not handle vertical scroll,
@@ -61,7 +62,9 @@ final class ScrollWheelBridgeContainerView: NSView {
     }
 
     override func scrollWheel(with event: NSEvent) {
-        guard let scrollView = findNearestScrollView() else {
+        let scrollView = cachedScrollView ?? findNearestScrollView()
+        cachedScrollView = scrollView
+        guard let scrollView else {
             super.scrollWheel(with: event)
             return
         }

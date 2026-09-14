@@ -26,36 +26,38 @@ struct ClipboardGridView: View {
             ScrollViewReader { proxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: PanelLayout.cardSpacing) {
-                        ForEach(Array(viewModel.effectiveDisplayItems.enumerated()), id: \.element.id) { index, displayItem in
-                            switch displayItem {
-                            case .history(let item):
-                                ClipboardCardView(
-                                    item: item,
-                                    isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                    activePinboardIndex: viewModel.activePinboardIndex,
-                                    pinboardCount: AppSettings.pinboardCount,
-                                    onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                    onPaste: { plainTextOnly in viewModel.pasteItem(item, plainTextOnly: plainTextOnly) },
-                                    onWriteClipboard: { plainTextOnly in viewModel.writeClipboardOnly(item, plainTextOnly: plainTextOnly) },
-                                    onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
-                                    onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
-                                    onAddToPasteStack: { viewModel.addToPasteStack(item) },
-                                    onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
-                                    isPasteStackMode: viewModel.panelMode == .pasteStack,
-                                    onDelete: { viewModel.deleteItem(item) },
-                                    onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
-                                )
-                                .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                                .id(displayItem.id)
-                            case .preset(let preset):
-                                RegexPresetCardView(
-                                    preset: preset,
-                                    isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                    onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                    onPaste: { viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
-                                )
-                                .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                                .id(displayItem.id)
+                        ForEach(0..<viewModel.displayItemCount, id: \.self) { index in
+                            if let displayItem = viewModel.displayItem(at: index) {
+                                switch displayItem {
+                                case .history(let item):
+                                    ClipboardCardView(
+                                        item: item,
+                                        isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
+                                        activePinboardIndex: viewModel.activePinboardIndex,
+                                        pinboardCount: AppSettings.pinboardCount,
+                                        onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
+                                        onPaste: { plainTextOnly in viewModel.pasteItem(item, plainTextOnly: plainTextOnly) },
+                                        onWriteClipboard: { plainTextOnly in viewModel.writeClipboardOnly(item, plainTextOnly: plainTextOnly) },
+                                        onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
+                                        onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
+                                        onAddToPasteStack: { viewModel.addToPasteStack(item) },
+                                        onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
+                                        isPasteStackMode: viewModel.panelMode == .pasteStack,
+                                        onDelete: { viewModel.deleteItem(item) },
+                                        onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
+                                    )
+                                    .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
+                                    .id(displayItem.id)
+                                case .preset(let preset):
+                                    RegexPresetCardView(
+                                        preset: preset,
+                                        isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
+                                        onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
+                                        onPaste: { viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
+                                    )
+                                    .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
+                                    .id(displayItem.id)
+                                }
                             }
                         }
                     }
@@ -74,13 +76,14 @@ struct ClipboardGridView: View {
                         screenSize: CGSize(width: screenW, height: 0)
                     )
                     let step = cs.width + PanelLayout.cardSpacing
-                    viewModel.firstVisibleIndex = max(0, Int((x / step).rounded()))
+                    viewModel.updateFirstVisibleIndex(max(0, Int((x / step).rounded())))
                 }
                 .onChange(of: viewModel.selectedIndex) { _, _ in
-                    let list = viewModel.effectiveDisplayItems
-                    guard viewModel.selectedIndex < list.count else { return }
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        proxy.scrollTo(list[viewModel.selectedIndex].id, anchor: .center)
+                    guard let id = viewModel.displayItem(at: viewModel.selectedIndex)?.id else { return }
+                    var transaction = Transaction()
+                    transaction.disablesAnimations = true
+                    withTransaction(transaction) {
+                        proxy.scrollTo(id, anchor: .center)
                     }
                 }
             }
@@ -140,36 +143,38 @@ struct ClipboardGridVerticalView: View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: PanelLayout.cardSpacing) {
-                    ForEach(Array(viewModel.effectiveDisplayItems.enumerated()), id: \.element.id) { index, displayItem in
-                        switch displayItem {
-                        case .history(let item):
-                            ClipboardCardView(
-                                item: item,
-                                isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                activePinboardIndex: viewModel.activePinboardIndex,
-                                pinboardCount: AppSettings.pinboardCount,
-                                onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                onPaste: { plainTextOnly in viewModel.pasteItem(item, plainTextOnly: plainTextOnly) },
-                                onWriteClipboard: { plainTextOnly in viewModel.writeClipboardOnly(item, plainTextOnly: plainTextOnly) },
-                                onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
-                                onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
-                                onAddToPasteStack: { viewModel.addToPasteStack(item) },
-                                onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
-                                isPasteStackMode: viewModel.panelMode == .pasteStack,
-                                onDelete: { viewModel.deleteItem(item) },
-                                onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
-                            )
-                            .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                            .id(displayItem.id)
-                        case .preset(let preset):
-                            RegexPresetCardView(
-                                preset: preset,
-                                isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
-                                onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
-                                onPaste: { viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
-                            )
-                            .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
-                            .id(displayItem.id)
+                    ForEach(0..<viewModel.displayItemCount, id: \.self) { index in
+                        if let displayItem = viewModel.displayItem(at: index) {
+                            switch displayItem {
+                            case .history(let item):
+                                ClipboardCardView(
+                                    item: item,
+                                    isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
+                                    activePinboardIndex: viewModel.activePinboardIndex,
+                                    pinboardCount: AppSettings.pinboardCount,
+                                    onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
+                                    onPaste: { plainTextOnly in viewModel.pasteItem(item, plainTextOnly: plainTextOnly) },
+                                    onWriteClipboard: { plainTextOnly in viewModel.writeClipboardOnly(item, plainTextOnly: plainTextOnly) },
+                                    onTogglePinboard: { viewModel.toggleInPinboard(item, index: $0) },
+                                    onMoveToPinboard: { viewModel.moveToPinboard(item, index: $0) },
+                                    onAddToPasteStack: { viewModel.addToPasteStack(item) },
+                                    onRemoveFromPasteStack: { viewModel.removeFromPasteStack(item) },
+                                    isPasteStackMode: viewModel.panelMode == .pasteStack,
+                                    onDelete: { viewModel.deleteItem(item) },
+                                    onEdit: { viewModel.selectedIndex = index; viewModel.showEditSheet = true }
+                                )
+                                .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
+                                .id(displayItem.id)
+                            case .preset(let preset):
+                                RegexPresetCardView(
+                                    preset: preset,
+                                    isSelected: index == viewModel.selectedIndex || viewModel.selectedIndices.contains(index),
+                                    onSelect: { viewModel.selectedIndices = []; viewModel.selectedIndex = index },
+                                    onPaste: { viewModel.pasteSelectedDisplayItem(plainTextOnly: $0) }
+                                )
+                                .overlay(alignment: .topLeading) { quickPasteHint(for: index) }
+                                .id(displayItem.id)
+                            }
                         }
                     }
                 }
@@ -188,13 +193,14 @@ struct ClipboardGridVerticalView: View {
                     screenSize: CGSize(width: 0, height: screenH)
                 )
                 let step = cs.height + PanelLayout.cardSpacing
-                viewModel.firstVisibleIndex = max(0, Int((y / step).rounded()))
+                viewModel.updateFirstVisibleIndex(max(0, Int((y / step).rounded())))
             }
             .onChange(of: viewModel.selectedIndex) { _, _ in
-                let list = viewModel.effectiveDisplayItems
-                guard viewModel.selectedIndex < list.count else { return }
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    proxy.scrollTo(list[viewModel.selectedIndex].id, anchor: .center)
+                guard let id = viewModel.displayItem(at: viewModel.selectedIndex)?.id else { return }
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
+                    proxy.scrollTo(id, anchor: .center)
                 }
             }
         }

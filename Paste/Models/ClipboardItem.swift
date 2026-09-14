@@ -9,6 +9,24 @@ import Foundation
 import AppKit
 import UniformTypeIdentifiers
 
+private enum ClipboardFileIconCache {
+    static let cache: NSCache<NSString, NSImage> = {
+        let cache = NSCache<NSString, NSImage>()
+        cache.countLimit = 128
+        return cache
+    }()
+
+    static func icon(for path: String) -> NSImage? {
+        let key = path as NSString
+        if let cached = cache.object(forKey: key) {
+            return cached
+        }
+        let icon = NSWorkspace.shared.icon(forFile: path)
+        cache.setObject(icon, forKey: key)
+        return icon
+    }
+}
+
 /// View-layer snapshot of a clipboard item.
 struct ClipboardItemModel: Identifiable, Equatable {
     let id: UUID
@@ -66,7 +84,7 @@ struct ClipboardItemModel: Identifiable, Equatable {
     /// File icon (file items only).
     var fileIcon: NSImage? {
         guard itemType == .file, let paths = filePathsArray, let firstPath = paths.first else { return nil }
-        return NSWorkspace.shared.icon(forFile: firstPath)
+        return ClipboardFileIconCache.icon(for: firstPath)
     }
     
     /// Icon of the source application.

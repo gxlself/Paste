@@ -98,11 +98,11 @@ final class CardMouseView: NSView {
     }
 
     override func mouseEntered(with event: NSEvent) {
-        DispatchQueue.main.async { [weak self] in self?.coordinator?.isHovered = true }
+        coordinator?.isHovered = true
     }
 
     override func mouseExited(with event: NSEvent) {
-        DispatchQueue.main.async { [weak self] in self?.coordinator?.isHovered = false }
+        coordinator?.isHovered = false
     }
 
     // MARK: Mouse events
@@ -119,24 +119,18 @@ final class CardMouseView: NSView {
 
         if !activeDrag, distance > dragThreshold {
             activeDrag = true
-            DispatchQueue.main.async { [weak self] in
-                self?.coordinator?.isDragging = true
-                self?.coordinator?.onDragBegan()
-            }
+            coordinator?.isDragging = true
+            coordinator?.onDragBegan()
         }
     }
 
     override func mouseUp(with event: NSEvent) {
         if activeDrag {
             let releaseLocation = NSEvent.mouseLocation
-            DispatchQueue.main.async { [weak self] in
-                self?.coordinator?.isDragging = false
-                self?.coordinator?.onDragEnded(releaseLocation)
-            }
+            coordinator?.isDragging = false
+            coordinator?.onDragEnded(releaseLocation)
         } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.coordinator?.onTap()
-            }
+            coordinator?.onTap()
         }
         mouseDownScreenLocation = nil
         activeDrag = false

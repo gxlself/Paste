@@ -29,29 +29,41 @@ class ClipboardViewModel: ObservableObject {
     
     @Published var items: [ClipboardItemModel] = []
     @Published var filteredItems: [ClipboardItemModel] = []
-    @Published var groupedItems: [(TimeGroup, [ClipboardItemModel])] = []
     
     @Published var searchText: String = ""
     @Published var selectedType: ClipboardItemType? {
         didSet {
-            if selectedType != nil { isRegexPresetMode = false; selectedCustomTypeId = nil; isAboutMode = false }
-            persistSelectedFilter()
-            applyFilters()
+            guard oldValue != selectedType else { return }
+            withFilterMutation {
+                if selectedType != nil {
+                    isRegexPresetMode = false
+                    selectedCustomTypeId = nil
+                    isAboutMode = false
+                }
+                persistSelectedFilter()
+            }
         }
     }
     /// When true, main list shows regex presets instead of history.
     @Published var isRegexPresetMode: Bool = false {
         didSet {
-            if isRegexPresetMode { selectedType = nil; selectedCustomTypeId = nil; isAboutMode = false }
-            persistSelectedFilter()
-            applyFilters()
-            if selectedIndex >= effectiveDisplayItems.count {
-                selectedIndex = max(0, effectiveDisplayItems.count - 1)
+            guard oldValue != isRegexPresetMode else { return }
+            withFilterMutation {
+                if isRegexPresetMode {
+                    selectedType = nil
+                    selectedCustomTypeId = nil
+                    isAboutMode = false
+                }
+                persistSelectedFilter()
+            }
+            if selectedIndex >= displayItemCount {
+                selectedIndex = max(0, displayItemCount - 1)
             }
         }
     }
     @Published var selectedIndex: Int = 0 {
         didSet {
+            guard oldValue != selectedIndex, isPreviewVisible else { return }
             if isPreviewVisible {
                 NotificationCenter.default.post(name: AppNotification.selectedIndexChanged, object: nil)
             }
@@ -65,10 +77,11 @@ class ClipboardViewModel: ObservableObject {
     /// nil = normal history; otherwise show items tagged with `pinboard:<index>`
     @Published var activePinboardIndex: Int? {
         didSet {
+            guard oldValue != activePinboardIndex else { return }
             if let idx = activePinboardIndex {
                 AppSettings.lastPinboardIndex = idx
             }
-            applyFilters()
+            requestApplyFilters()
         }
     }
     
@@ -79,13 +92,13 @@ class ClipboardViewModel: ObservableObject {
     
     @Published var panelMode: PanelMode = .history {
         didSet {
-            if panelMode == .history {
-                // Keep activePinboardIndex as-is; user can still be in pinboard while in history mode.
-            } else {
-                // PasteStack is independent from pinboards.
-                activePinboardIndex = nil
+            guard oldValue != panelMode else { return }
+            withFilterMutation {
+                if panelMode != .history {
+                    // PasteStack is independent from pinboards.
+                    activePinboardIndex = nil
+                }
             }
-            applyFilters()
         }
     }
 
@@ -97,12 +110,14 @@ class ClipboardViewModel: ObservableObject {
     /// When set, only items tagged with this custom type id are shown; clears selectedType and isRegexPresetMode.
     @Published var selectedCustomTypeId: String? {
         didSet {
-            if selectedCustomTypeId != nil {
-                selectedType = nil
-                isRegexPresetMode = false
-                isAboutMode = false
+            guard oldValue != selectedCustomTypeId else { return }
+            withFilterMutation {
+                if selectedCustomTypeId != nil {
+                    selectedType = nil
+                    isRegexPresetMode = false
+                    isAboutMode = false
+                }
             }
-            applyFilters()
         }
     }
 
@@ -114,10 +129,13 @@ class ClipboardViewModel: ObservableObject {
     /// When true the panel shows the fixed "About" cards instead of clipboard history.
     @Published var isAboutMode: Bool = false {
         didSet {
+            guard oldValue != isAboutMode else { return }
             if isAboutMode {
-                selectedType = nil
-                isRegexPresetMode = false
-                selectedCustomTypeId = nil
+                withFilterMutation {
+                    selectedType = nil
+                    isRegexPresetMode = false
+                    selectedCustomTypeId = nil
+                }
             }
         }
     }
@@ -157,6 +175,9 @@ class ClipboardViewModel: ObservableObject {
     private let clipboardService = ClipboardService.shared
     private let pasteStackService = PasteStackService.shared
     private var cancellables = Set<AnyCancellable>()
+    private var reloadTask: Task<Void, Never>?
+    private var reloadRequested = false
+    private var filterMutationDepth = 0
     
     // MARK: - Initialization
     
@@ -191,17 +212,17 @@ class ClipboardViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        // On panel show: reload data and restore the last selected filter tab.
+        // On panel show: restore the last selected filter tab. Data reloads are driven by
+        // clipboard/CloudKit notifications and never block the hotkey path.
         NotificationCenter.default.publisher(for: AppNotification.panelDidShow)
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self else { return }
                 AppSettings.loadPinboardsFromKVS()
                 self.customTypes = AppSettings.customTypes
-                self.loadItems()
                 self.restoreSelectedFilter()
                 self.selectedIndex = 0
-                self.firstVisibleIndex = 0
+                self.updateFirstVisibleIndex(0)
             }
             .store(in: &cancellables)
 
@@ -214,11 +235,13 @@ class ClipboardViewModel: ObservableObject {
                 self.selectedIndex = 0
                 self.selectedIndices = []
                 self.selectionAnchor = nil
-                self.panelMode = .history
-                self.activePinboardIndex = nil
+                self.withFilterMutation {
+                    self.panelMode = .history
+                    self.activePinboardIndex = nil
+                }
                 self.isCommandHeld = false
                 self.isShiftHeld = false
-                self.firstVisibleIndex = 0
+                self.updateFirstVisibleIndex(0)
                 self.pasteTargetAppName = ""
                 self.pasteTargetAppIcon = nil
                 self.showCustomTypeInput = false
@@ -259,26 +282,54 @@ class ClipboardViewModel: ObservableObject {
     /// Restores the last filter tab selection from UserDefaults (called on panelDidShow).
     private func restoreSelectedFilter() {
         let raw = AppSettings.lastSelectedFilterType
-        switch raw {
-        case 1:
-            selectedType = .text
-        case 2:
-            selectedType = .image
-        case 3:
-            selectedType = .file
-        case 4:
-            isRegexPresetMode = true
-        default:
-            selectedType = nil
-            isRegexPresetMode = false
+        withFilterMutation {
+            switch raw {
+            case 1:
+                selectedType = .text
+                isRegexPresetMode = false
+            case 2:
+                selectedType = .image
+                isRegexPresetMode = false
+            case 3:
+                selectedType = .file
+                isRegexPresetMode = false
+            case 4:
+                selectedType = nil
+                isRegexPresetMode = true
+            default:
+                selectedType = nil
+                isRegexPresetMode = false
+            }
         }
     }
     
     // MARK: - Data Loading
     
     func loadItems() {
-        items = clipboardService.fetchAllItems()
-        applyFilters()
+        if reloadTask != nil {
+            reloadRequested = true
+            return
+        }
+        isLoading = true
+
+        reloadTask = Task { [weak self] in
+            guard let self else { return }
+            while !Task.isCancelled {
+                let loaded = await self.clipboardService.fetchAllItemsAsync()
+                guard !Task.isCancelled else { return }
+
+                self.items = loaded
+                self.applyFilters()
+
+                guard self.reloadRequested else {
+                    self.isLoading = false
+                    self.reloadTask = nil
+                    return
+                }
+                self.reloadRequested = false
+            }
+            self.reloadTask = nil
+        }
     }
     
     private func applyFilters() {
@@ -306,11 +357,11 @@ class ClipboardViewModel: ObservableObject {
         }
         
         if !keyword.isEmpty {
-            results = results.filter { matchesKeyword(item: $0, keyword: keyword) }
+            let normalizedKeyword = keyword.lowercased()
+            results = results.filter { matchesKeyword(item: $0, normalizedKeyword: normalizedKeyword) }
         }
         
         filteredItems = results
-        groupItems()
         
         // When filter/search changes, keep the same item selected if possible; fall back to index 0.
         if let previousSelectedId,
@@ -321,18 +372,16 @@ class ClipboardViewModel: ObservableObject {
         }
     }
     
-    private func matchesKeyword(item: ClipboardItemModel, keyword: String) -> Bool {
-        let lowerKeyword = keyword.lowercased()
-        
+    private func matchesKeyword(item: ClipboardItemModel, normalizedKeyword: String) -> Bool {
         switch item.itemType {
         case .text:
-            return (item.plainText ?? "").lowercased().contains(lowerKeyword)
+            return (item.plainText ?? "").lowercased().contains(normalizedKeyword)
             
         case .file:
             let paths = item.filePathsArray ?? []
             for path in paths {
-                if path.lowercased().contains(lowerKeyword) { return true }
-                if URL(fileURLWithPath: path).lastPathComponent.lowercased().contains(lowerKeyword) { return true }
+                if path.lowercased().contains(normalizedKeyword) { return true }
+                if URL(fileURLWithPath: path).lastPathComponent.lowercased().contains(normalizedKeyword) { return true }
             }
             return false
             
@@ -341,20 +390,68 @@ class ClipboardViewModel: ObservableObject {
             return false
         }
     }
-    
-    private func groupItems() {
-        var groups: [TimeGroup: [ClipboardItemModel]] = [:]
-        
-        for item in filteredItems {
-            let group = TimeGroup.group(for: item.createdAt, isPinned: item.isPinned)
-            groups[group, default: []].append(item)
+
+    // MARK: - Filter state
+
+    /// Coalesces cascaded property changes into one filter pass.
+    private func withFilterMutation(_ body: () -> Void) {
+        filterMutationDepth += 1
+        body()
+        filterMutationDepth -= 1
+
+        guard filterMutationDepth == 0 else { return }
+        applyFilters()
+    }
+
+    private func requestApplyFilters() {
+        if filterMutationDepth > 0 {
+            return
+        } else {
+            applyFilters()
         }
-        
-        // Emit groups in the canonical TimeGroup.allCases order.
-        groupedItems = TimeGroup.allCases.compactMap { group in
-            guard let items = groups[group], !items.isEmpty else { return nil }
-            return (group, items)
+    }
+
+    func selectFilter(_ type: ClipboardItemType?) {
+        withFilterMutation {
+            selectedType = type
+            isRegexPresetMode = false
+            selectedCustomTypeId = nil
+            activePinboardIndex = nil
+            isAboutMode = false
         }
+    }
+
+    func selectRegexPresetFilter() {
+        withFilterMutation {
+            selectedType = nil
+            isRegexPresetMode = true
+            selectedCustomTypeId = nil
+            activePinboardIndex = nil
+            isAboutMode = false
+        }
+    }
+
+    func selectPinboardFilter(index: Int) {
+        withFilterMutation {
+            selectedType = nil
+            isRegexPresetMode = false
+            selectedCustomTypeId = nil
+            activePinboardIndex = max(0, min(index, AppSettings.pinboardCount - 1))
+            isAboutMode = false
+        }
+    }
+
+    func updateFirstVisibleIndex(_ index: Int) {
+        let clamped = max(0, index)
+        guard firstVisibleIndex != clamped else { return }
+        firstVisibleIndex = clamped
+    }
+
+    func updateModifierState(_ flags: NSEvent.ModifierFlags) {
+        let commandHeld = flags.contains(.command)
+        let shiftHeld = flags.contains(.shift)
+        if isCommandHeld != commandHeld { isCommandHeld = commandHeld }
+        if isShiftHeld != shiftHeld { isShiftHeld = shiftHeld }
     }
     
     // MARK: - Actions
@@ -365,12 +462,12 @@ class ClipboardViewModel: ObservableObject {
             pasteSelectedDisplayItem(plainTextOnly: plainTextOnly)
             return
         }
-        let list = effectiveDisplayItems
+        let count = displayItemCount
         let indices = selectedIndices.count > 1 ? Array(selectedIndices).sorted() : [selectedIndex]
         guard !indices.isEmpty else { return }
         if indices.count == 1 {
-            guard indices[0] < list.count else { return }
-            if case .history(let item) = list[indices[0]] {
+            guard indices[0] < count else { return }
+            if case .history(let item)? = displayItem(at: indices[0]) {
                 pasteItem(item, plainTextOnly: plainTextOnly)
                 if panelMode == .pasteStack {
                     pasteStackService.removeTopEntry(for: item.id)
@@ -380,8 +477,9 @@ class ClipboardViewModel: ObservableObject {
             return
         }
         var parts: [String] = []
-        for i in indices where i < list.count {
-            switch list[i] {
+        for i in indices where i < count {
+            guard let displayItem = displayItem(at: i) else { continue }
+            switch displayItem {
             case .history(let item):
                 if let t = item.plainText { parts.append(t) }
             case .preset(let p):
@@ -432,20 +530,21 @@ class ClipboardViewModel: ObservableObject {
 
     /// Copies the selected item(s) to the clipboard, joining multi-selections with newlines.
     func copySelectedDisplayItem() {
-        let list = effectiveDisplayItems
-        let indices = selectedIndices.count > 1 ? Array(selectedIndices).sorted() : (selectedIndex < list.count ? [selectedIndex] : [])
+        let count = displayItemCount
+        let indices = selectedIndices.count > 1 ? Array(selectedIndices).sorted() : (selectedIndex < count ? [selectedIndex] : [])
         guard !indices.isEmpty else { return }
-        if indices.count == 1, case .history(let item) = list[indices[0]] {
+        if indices.count == 1, case .history(let item)? = displayItem(at: indices[0]) {
             copyItem(item)
             return
         }
-        if indices.count == 1, case .preset(let p) = list[indices[0]] {
+        if indices.count == 1, case .preset(let p) = displayItem(at: indices[0]) {
             clipboardService.copyPlainTextToClipboard(p.pattern)
             return
         }
         var parts: [String] = []
-        for i in indices where i < list.count {
-            switch list[i] {
+        for i in indices where i < count {
+            guard let displayItem = displayItem(at: i) else { continue }
+            switch displayItem {
             case .history(let item): if let t = item.plainText { parts.append(t) }
             case .preset(let p): parts.append(p.pattern)
             }
@@ -612,55 +711,54 @@ class ClipboardViewModel: ObservableObject {
     
     /// Advances to the next tab: All → Text → Image → File → Regex → Pinboard 0…N-1 → All.
     func selectNextFilterTab() {
-        if let pbIdx = activePinboardIndex {
-            if pbIdx + 1 < AppSettings.pinboardCount {
-                showPinboard(index: pbIdx + 1)
+        withFilterMutation {
+            if let pbIdx = activePinboardIndex {
+                if pbIdx + 1 < AppSettings.pinboardCount {
+                    selectPinboardFilter(index: pbIdx + 1)
+                } else {
+                    selectFilter(nil)
+                }
+            } else if isRegexPresetMode {
+                if AppSettings.pinboardCount > 0 {
+                    selectPinboardFilter(index: 0)
+                } else {
+                    selectFilter(nil)
+                }
+            } else if let t = selectedType {
+                switch t {
+                case .text: selectFilter(.image)
+                case .image: selectFilter(.file)
+                case .file: selectRegexPresetFilter()
+                }
             } else {
-                exitPinboard()
-                selectedType = nil
-                isRegexPresetMode = false
+                selectFilter(.text)
             }
-        } else if isRegexPresetMode {
-            isRegexPresetMode = false
-            if AppSettings.pinboardCount > 0 {
-                showPinboard(index: 0)
-            } else {
-                selectedType = nil
-            }
-        } else if let t = selectedType {
-            switch t {
-            case .text: selectedType = .image
-            case .image: selectedType = .file
-            case .file: isRegexPresetMode = true
-            }
-        } else {
-            selectedType = .text
         }
     }
 
     /// Moves to the previous tab: All → Pinboard N-1…0 → Regex → File → Image → Text → All.
     func selectPreviousFilterTab() {
-        if let pbIdx = activePinboardIndex {
-            if pbIdx > 0 {
-                showPinboard(index: pbIdx - 1)
+        withFilterMutation {
+            if let pbIdx = activePinboardIndex {
+                if pbIdx > 0 {
+                    selectPinboardFilter(index: pbIdx - 1)
+                } else {
+                    selectRegexPresetFilter()
+                }
+            } else if isRegexPresetMode {
+                selectFilter(.file)
+            } else if let t = selectedType {
+                switch t {
+                case .text: selectFilter(nil)
+                case .image: selectFilter(.text)
+                case .file: selectFilter(.image)
+                }
             } else {
-                exitPinboard()
-                isRegexPresetMode = true
-            }
-        } else if isRegexPresetMode {
-            selectedType = .file
-            isRegexPresetMode = false
-        } else if let t = selectedType {
-            switch t {
-            case .text: selectedType = nil
-            case .image: selectedType = .text
-            case .file: selectedType = .image
-            }
-        } else {
-            if AppSettings.pinboardCount > 0 {
-                showPinboard(index: AppSettings.pinboardCount - 1)
-            } else {
-                isRegexPresetMode = true
+                if AppSettings.pinboardCount > 0 {
+                    selectPinboardFilter(index: AppSettings.pinboardCount - 1)
+                } else {
+                    selectRegexPresetFilter()
+                }
             }
         }
     }
@@ -705,7 +803,7 @@ class ClipboardViewModel: ObservableObject {
     func selectNext() {
         selectedIndices = []
         selectionAnchor = nil
-        let count = effectiveDisplayItems.count
+        let count = displayItemCount
         if selectedIndex < count - 1 {
             selectedIndex += 1
         }
@@ -722,12 +820,12 @@ class ClipboardViewModel: ObservableObject {
     func selectLast() {
         selectedIndices = []
         selectionAnchor = nil
-        selectedIndex = max(0, effectiveDisplayItems.count - 1)
+        selectedIndex = max(0, displayItemCount - 1)
         selectionAnchor = selectedIndex
     }
 
     func selectAll() {
-        let count = effectiveDisplayItems.count
+        let count = displayItemCount
         guard count > 0 else { return }
         selectedIndices = Set(0..<count)
         selectionAnchor = 0
@@ -740,7 +838,7 @@ class ClipboardViewModel: ObservableObject {
     }
 
     func extendSelection(left: Bool) {
-        let count = effectiveDisplayItems.count
+        let count = displayItemCount
         guard count > 0 else { return }
         let anchor = selectionAnchor ?? selectedIndex
         if left {
@@ -784,6 +882,21 @@ class ClipboardViewModel: ObservableObject {
 
     // MARK: - Display Items (history or regex presets)
 
+    var displayItemCount: Int {
+        isRegexPresetMode ? RegexPreset.all.count : filteredItems.count
+    }
+
+    func displayItem(at index: Int) -> DisplayItem? {
+        guard index >= 0 else { return nil }
+        if isRegexPresetMode {
+            let presets = RegexPreset.all
+            guard index < presets.count else { return nil }
+            return .preset(presets[index])
+        }
+        guard index < filteredItems.count else { return nil }
+        return .history(filteredItems[index])
+    }
+
     var effectiveDisplayItems: [DisplayItem] {
         if isRegexPresetMode {
             return RegexPreset.all.map { .preset($0) }
@@ -792,9 +905,7 @@ class ClipboardViewModel: ObservableObject {
     }
 
     var selectedDisplayItem: DisplayItem? {
-        let list = effectiveDisplayItems
-        guard selectedIndex < list.count else { return nil }
-        return list[selectedIndex]
+        displayItem(at: selectedIndex)
     }
 
     func renameSelectedItem(to newText: String) {

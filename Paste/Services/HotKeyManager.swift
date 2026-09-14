@@ -144,8 +144,12 @@ class HotKeyManager {
             guard status == noErr, hotKeyID.signature == manager.signature else { return OSStatus(eventNotHandledErr) }
             guard let action = HotKeyAction(rawValue: hotKeyID.id) else { return OSStatus(eventNotHandledErr) }
             
-            DispatchQueue.main.async {
+            if Thread.isMainThread {
                 manager.handlers[action]?()
+            } else {
+                DispatchQueue.main.async {
+                    manager.handlers[action]?()
+                }
             }
             return noErr
         }

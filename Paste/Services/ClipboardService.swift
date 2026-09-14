@@ -85,8 +85,10 @@ class ClipboardService {
     /// Runs a dictionary-result fetch over `listProperties` and maps it to view models.
     /// Dictionary fetches bypass unsaved context changes, so every mutation path in this
     /// service saves before the view model reloads.
-    private func fetchList(predicate: NSPredicate?) -> [ClipboardItemModel] {
-        let context = coreDataStack.viewContext
+    private static func fetchList(
+        in context: NSManagedObjectContext,
+        predicate: NSPredicate?
+    ) -> [ClipboardItemModel] {
         let request = NSFetchRequest<NSDictionary>(entityName: "ClipboardItemEntity")
         request.resultType = .dictionaryResultType
         request.propertiesToFetch = Self.listProperties
@@ -104,9 +106,26 @@ class ClipboardService {
         }
     }
 
+    private func fetchList(predicate: NSPredicate?) -> [ClipboardItemModel] {
+        Self.fetchList(in: coreDataStack.viewContext, predicate: predicate)
+    }
+
     /// Fetches all items sorted by date descending. Binary data is not loaded to conserve memory.
     func fetchAllItems() -> [ClipboardItemModel] {
         fetchList(predicate: nil)
+    }
+
+    /// Fetches the list snapshot on a private Core Data queue.
+    ///
+    /// The returned models are value types and contain no managed objects, so the main actor
+    /// never has to wait for SQLite while the panel is being shown.
+    func fetchAllItemsAsync() async -> [ClipboardItemModel] {
+        let context = coreDataStack.newBackgroundContext()
+        return await withCheckedContinuation { continuation in
+            context.perform {
+                continuation.resume(returning: Self.fetchList(in: context, predicate: nil))
+            }
+        }
     }
 
     /// Fetches a single item with full binary data (for paste, undo, etc.).

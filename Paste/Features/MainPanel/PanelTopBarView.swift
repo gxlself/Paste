@@ -111,25 +111,19 @@ struct PanelTopBarView: View {
             // Type filter buttons.
             HStack(spacing: 8) {
                 FilterButton(title: "mainpanel.filter.all", titleKeyForAccessibility: "mainpanel.filter.all", icon: "square.grid.2x2", isSelected: viewModel.selectedType == nil && !viewModel.isRegexPresetMode && viewModel.activePinboardIndex == nil, customTitle: AppSettings.filterTabName(for: nil)) {
-                    viewModel.selectedType = nil
-                    viewModel.isRegexPresetMode = false
-                    viewModel.exitPinboard()
+                    viewModel.selectFilter(nil)
                 }
                 FilterButton(title: "mainpanel.filter.text", titleKeyForAccessibility: "mainpanel.filter.text", icon: "doc.text", isSelected: viewModel.selectedType == .text, customTitle: AppSettings.filterTabName(for: .text)) {
-                    viewModel.selectedType = .text
-                    viewModel.exitPinboard()
+                    viewModel.selectFilter(.text)
                 }
                 FilterButton(title: "mainpanel.filter.image", titleKeyForAccessibility: "mainpanel.filter.image", icon: "photo", isSelected: viewModel.selectedType == .image, customTitle: AppSettings.filterTabName(for: .image)) {
-                    viewModel.selectedType = .image
-                    viewModel.exitPinboard()
+                    viewModel.selectFilter(.image)
                 }
                 FilterButton(title: "mainpanel.filter.file", titleKeyForAccessibility: "mainpanel.filter.file", icon: "folder", isSelected: viewModel.selectedType == .file, customTitle: AppSettings.filterTabName(for: .file)) {
-                    viewModel.selectedType = .file
-                    viewModel.exitPinboard()
+                    viewModel.selectFilter(.file)
                 }
                 FilterButton(title: "mainpanel.filter.regex", titleKeyForAccessibility: "mainpanel.filter.regex", icon: "curlybraces", isSelected: viewModel.isRegexPresetMode) {
-                    viewModel.isRegexPresetMode = true
-                    viewModel.exitPinboard()
+                    viewModel.selectRegexPresetFilter()
                 }
 
                 ForEach(0..<AppSettings.pinboardCount, id: \.self) { index in
@@ -139,9 +133,7 @@ struct PanelTopBarView: View {
                         icon: "pin",
                         isSelected: viewModel.activePinboardIndex == index
                     ) {
-                        viewModel.selectedType = nil
-                        viewModel.isRegexPresetMode = false
-                        viewModel.showPinboard(index: index)
+                        viewModel.selectPinboardFilter(index: index)
                     }
                 }
 
@@ -167,7 +159,7 @@ struct PanelTopBarView: View {
 
             // Item count (hidden in About mode).
             if !viewModel.isAboutMode {
-                Text(String(format: String(localized: "mainpanel.itemCountFormat"), viewModel.effectiveDisplayItems.count))
+                Text(String(format: String(localized: "mainpanel.itemCountFormat"), viewModel.displayItemCount))
                     .font(.system(size: 11))
                     .foregroundColor(.secondary)
             }
@@ -275,25 +267,19 @@ struct PanelTopBarVerticalView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     FilterButton(title: "mainpanel.filter.all", titleKeyForAccessibility: "mainpanel.filter.all", icon: "square.grid.2x2", isSelected: viewModel.selectedType == nil && !viewModel.isRegexPresetMode && viewModel.activePinboardIndex == nil, customTitle: AppSettings.filterTabName(for: nil)) {
-                        viewModel.selectedType = nil
-                        viewModel.isRegexPresetMode = false
-                        viewModel.exitPinboard()
+                        viewModel.selectFilter(nil)
                     }
                     FilterButton(title: "mainpanel.filter.text", titleKeyForAccessibility: "mainpanel.filter.text", icon: "doc.text", isSelected: viewModel.selectedType == .text, customTitle: AppSettings.filterTabName(for: .text)) {
-                        viewModel.selectedType = .text
-                        viewModel.exitPinboard()
+                        viewModel.selectFilter(.text)
                     }
                     FilterButton(title: "mainpanel.filter.image", titleKeyForAccessibility: "mainpanel.filter.image", icon: "photo", isSelected: viewModel.selectedType == .image, customTitle: AppSettings.filterTabName(for: .image)) {
-                        viewModel.selectedType = .image
-                        viewModel.exitPinboard()
+                        viewModel.selectFilter(.image)
                     }
                     FilterButton(title: "mainpanel.filter.file", titleKeyForAccessibility: "mainpanel.filter.file", icon: "folder", isSelected: viewModel.selectedType == .file, customTitle: AppSettings.filterTabName(for: .file)) {
-                        viewModel.selectedType = .file
-                        viewModel.exitPinboard()
+                        viewModel.selectFilter(.file)
                     }
                     FilterButton(title: "mainpanel.filter.regex", titleKeyForAccessibility: "mainpanel.filter.regex", icon: "curlybraces", isSelected: viewModel.isRegexPresetMode) {
-                        viewModel.isRegexPresetMode = true
-                        viewModel.exitPinboard()
+                        viewModel.selectRegexPresetFilter()
                     }
 
                     ForEach(0..<AppSettings.pinboardCount, id: \.self) { index in
@@ -303,9 +289,7 @@ struct PanelTopBarVerticalView: View {
                             icon: "pin",
                             isSelected: viewModel.activePinboardIndex == index
                         ) {
-                            viewModel.selectedType = nil
-                            viewModel.isRegexPresetMode = false
-                            viewModel.showPinboard(index: index)
+                            viewModel.selectPinboardFilter(index: index)
                         }
                     }
 
@@ -328,7 +312,7 @@ struct PanelTopBarVerticalView: View {
                     Spacer()
 
                     if !viewModel.isAboutMode {
-                        Text(String(format: String(localized: "mainpanel.itemCountFormat"), viewModel.effectiveDisplayItems.count))
+                        Text(String(format: String(localized: "mainpanel.itemCountFormat"), viewModel.displayItemCount))
                             .font(.system(size: 10))
                             .foregroundColor(.secondary)
                     }
