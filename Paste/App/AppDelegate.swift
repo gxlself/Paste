@@ -83,6 +83,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var modifierFlagsMonitor: Any?
     private var lastConfirmAt: CFAbsoluteTime = 0
+    /// Set once the panel and its observers exist.
+    private var isReady = false
+    private var hasPendingPanelRequest = false
     private var aboutWindowController: AboutWindowController?
 
     // MARK: - Lifecycle
@@ -110,6 +113,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         applyAppearance(AppSettings.appearance)
         NSApp.setActivationPolicy(.accessory)
         NSApp.registerForRemoteNotifications()
+
+        isReady = true
+        if hasPendingPanelRequest {
+            hasPendingPanelRequest = false
+            showPanelForExternalRequest()
+        }
         NSUbiquitousKeyValueStore.default.synchronize()
 
         // Trim persistent history that CloudKit has already exported; left alone it grows for
@@ -232,6 +241,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /// without stealing the paste target.
     func application(_ application: NSApplication, open urls: [URL]) {
         guard urls.contains(where: { $0.scheme == "pasteg" }) else { return }
+        // A cold launch delivers the URL before the panel exists.
+        guard isReady else {
+            hasPendingPanelRequest = true
+            return
+        }
+        showPanelForExternalRequest()
+    }
+
+    private func showPanelForExternalRequest() {
         panelCoordinator.capturePreviousFrontmostApp()
         viewModel.exitPasteStack()
         toggleMainPanel()
