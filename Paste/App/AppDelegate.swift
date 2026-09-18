@@ -227,6 +227,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /// External entry point: `pasteg://panel` toggles the panel the same way
+    /// the global shortcut does, so another app can bring up the clipboard
+    /// without stealing the paste target.
+    func application(_ application: NSApplication, open urls: [URL]) {
+        guard urls.contains(where: { $0.scheme == "pasteg" }) else { return }
+        panelCoordinator.capturePreviousFrontmostApp()
+        viewModel.exitPasteStack()
+        toggleMainPanel()
+    }
+
     // MARK: - Show / Hide
 
     @objc func showMainPanel() {
