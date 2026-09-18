@@ -90,6 +90,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Lifecycle
 
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        // With the SwiftUI lifecycle the URL that launches the app never reaches
+        // `application(_:open:)`, so claim the Apple Event before AppKit does.
+        NSAppleEventManager.shared().setEventHandler(
+            self,
+            andSelector: #selector(handleURLEvent(_:withReplyEvent:)),
+            forEventClass: AEEventClass(kInternetEventClass),
+            andEventID: AEEventID(kAEGetURL)
+        )
+    }
+
+    @objc private func handleURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) {
+        guard let string = event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue,
+              let url = URL(string: string) else { return }
+        application(NSApp, open: [url])
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         #if PERFORMANCE_TESTING
         Task { await PanelPerformanceHarness.run() }
