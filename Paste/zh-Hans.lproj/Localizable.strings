@@ -279,3 +279,7 @@
 "preferences.general.compact.done" = "已压缩 %d 条记录";
 "preferences.sync.environment.development" = "当前版本使用开发签名，同步到 CloudKit 的 Development 数据库。TestFlight 或 App Store 版本走 Production，看不到这里的记录。";
 "preferences.sync.environment.unknown" = "无法判断当前版本使用的 CloudKit 环境，跨设备同步可能不生效。";
+
+// MARK: - Store
+"store.degraded.title" = "剪贴板历史不可用";
+"store.degraded.message" = "历史数据库无法打开,此后复制的内容在退出 Paste 后不会被保存。请尝试重启 Mac;若问题持续,请重新安装应用。";

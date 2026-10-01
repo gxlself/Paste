@@ -137,6 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             showPanelForExternalRequest()
         }
         NSUbiquitousKeyValueStore.default.synchronize()
+        warnIfStoreIsDegraded()
 
         // Trim persistent history that CloudKit has already exported; left alone it grows for
         // the lifetime of the store and drags every read down with it.
@@ -150,6 +151,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             name: NSWorkspace.didLaunchApplicationNotification,
             object: nil
         )
+    }
+
+    /// Surfaces the CoreData fallback (see `CoreDataStack.isRunningDegraded`) instead of silently
+    /// losing history.
+    private func warnIfStoreIsDegraded() {
+        _ = CoreDataStack.shared.persistentContainer
+        guard CoreDataStack.isRunningDegraded else { return }
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = String(localized: "store.degraded.title", defaultValue: "Clipboard history is unavailable")
+        alert.informativeText = String(
+            localized: "store.degraded.message",
+            defaultValue: "The history database could not be opened, so items copied from now on will not be saved after you quit Paste. Restart your Mac; if this persists, reinstall the app."
+        )
+        alert.runModal()
     }
 
     @objc private func installedApplicationsDidChange() {

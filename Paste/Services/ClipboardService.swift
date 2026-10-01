@@ -101,7 +101,7 @@ class ClipboardService {
         do {
             return try context.fetch(request).compactMap { ClipboardItemModel(dictionary: $0) }
         } catch {
-            print("Fetch error: \(error)")
+            AppLog.error("Fetch error: \(error)")
             return []
         }
     }
@@ -139,7 +139,7 @@ class ClipboardService {
                 return ClipboardItemModel(entity: entity, loadBinaryData: true)
             }
         } catch {
-            print("Fetch full data error: \(error)")
+            AppLog.error("Fetch full data error: \(error)")
         }
         return nil
     }
@@ -181,7 +181,7 @@ class ClipboardService {
                 coreDataStack.save()
             }
         } catch {
-            print("Toggle pin error: \(error)")
+            AppLog.error("Toggle pin error: \(error)")
         }
     }
     
@@ -197,7 +197,7 @@ class ClipboardService {
                 coreDataStack.save()
             }
         } catch {
-            print("Update tags error: \(error)")
+            AppLog.error("Update tags error: \(error)")
         }
     }
 
@@ -228,7 +228,7 @@ class ClipboardService {
             entity.tags = try? JSONEncoder().encode(updated)
             coreDataStack.save()
         } catch {
-            print("Set pinboard error: \(error)")
+            AppLog.error("Set pinboard error: \(error)")
         }
     }
     
@@ -246,7 +246,7 @@ class ClipboardService {
             entity.tags = try? JSONEncoder().encode(updated)
             coreDataStack.save()
         } catch {
-            print("Move pinboard error: \(error)")
+            AppLog.error("Move pinboard error: \(error)")
         }
     }
     
@@ -264,7 +264,7 @@ class ClipboardService {
                 coreDataStack.save()
             }
         } catch {
-            print("Delete error: \(error)")
+            AppLog.error("Delete error: \(error)")
         }
     }
 
@@ -282,7 +282,7 @@ class ClipboardService {
                 NotificationCenter.default.post(name: .clipboardItemAdded, object: nil)
             }
         } catch {
-            print("Update plain text error: \(error)")
+            AppLog.error("Update plain text error: \(error)")
         }
     }
 
@@ -309,7 +309,7 @@ class ClipboardService {
             try context.execute(deleteRequest)
             coreDataStack.save()
         } catch {
-            print("Delete all error: \(error)")
+            AppLog.error("Delete all error: \(error)")
         }
     }
 
@@ -323,7 +323,7 @@ class ClipboardService {
             try context.execute(deleteRequest)
             coreDataStack.save()
         } catch {
-            print("Delete all(\(type)) error: \(error)")
+            AppLog.error("Delete all(\(type)) error: \(error)")
         }
     }
     
@@ -381,7 +381,7 @@ class ClipboardService {
             NotificationCenter.default.post(name: .clipboardItemAdded, object: nil)
             return true
         } catch {
-            print("Update timestamp error: \(error)")
+            AppLog.error("Update timestamp error: \(error)")
             return false
         }
     }
@@ -414,7 +414,7 @@ class ClipboardService {
                 coreDataStack.save()
             }
         } catch {
-            print("Delete oldest item error: \(error)")
+            AppLog.error("Delete oldest item error: \(error)")
         }
     }
     
@@ -506,7 +506,7 @@ class ClipboardService {
                 coreDataStack.save()
             }
         } catch {
-            print("Cleanup error: \(error)")
+            AppLog.error("Cleanup error: \(error)")
         }
     }
     

@@ -165,3 +165,7 @@
 "ios.pastePermission.openSettings" = "Открыть Настройки";
 "ios.pastePermission.settingsToggle" = "Разрешить вставку из других приложений";
 "ios.pastePermission.settingsToggle.desc" = "Избежать системного запроса на вставку";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "Показывать в Dynamic Island";
+"ios.settings.liveActivityHidePreview" = "Скрывать содержимое в Dynamic Island и на экране блокировки";

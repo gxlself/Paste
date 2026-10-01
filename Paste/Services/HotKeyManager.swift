@@ -63,10 +63,10 @@ class HotKeyManager {
         
         // Check whether registration succeeded.
         if status != noErr {
-            print("⚠️ Hotkey registration failed, error code: \(status)")
-            print("   Accessibility permission may be required. Grant it in System Settings → Privacy & Security → Accessibility.")
+            AppLog.warning("Hotkey registration failed, error code: \(status)")
+            AppLog.warning("Accessibility permission may be required. Grant it in System Settings → Privacy & Security → Accessibility.")
         } else {
-            print("✅ Hotkey registered: \(displayString(keyCode: keyCode, modifiers: modifiers))")
+            AppLog.info("Hotkey registered: \(displayString(keyCode: keyCode, modifiers: modifiers))")
             if let hotKeyRef {
                 hotKeyRefs[action] = hotKeyRef
             }

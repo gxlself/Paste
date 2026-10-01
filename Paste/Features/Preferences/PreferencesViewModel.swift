@@ -247,7 +247,7 @@ class PreferencesViewModel: ObservableObject {
                 }
                 AppSettings.launchAtLogin = enabled
             } catch {
-                print("Failed to set launch-at-login: \(error)")
+                AppLog.error("Failed to set launch-at-login: \(error)")
             }
         }
     }

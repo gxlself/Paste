@@ -263,7 +263,7 @@ class PasteboardHelper {
     @discardableResult
     func simulatePaste() -> Bool {
         guard AXIsProcessTrusted() else {
-            print("⚠️ simulatePaste: Accessibility not granted — cannot simulate keystrokes")
+            AppLog.warning("simulatePaste: Accessibility not granted — cannot simulate keystrokes")
             return false
         }
         

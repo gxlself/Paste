@@ -96,6 +96,7 @@ final class iOSClipboardViewModel: ObservableObject {
 
     func fetchItems() {
         items = repository.fetchAll()
+        PasteLiveActivityManager.shared.refresh(with: items)
     }
 
     func copyToClipboard(_ item: SharedClipboardItem) {

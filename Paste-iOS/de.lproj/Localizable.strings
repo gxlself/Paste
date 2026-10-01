@@ -165,3 +165,7 @@
 "ios.pastePermission.openSettings" = "Einstellungen öffnen";
 "ios.pastePermission.settingsToggle" = "Einfügen aus anderen Apps erlauben";
 "ios.pastePermission.settingsToggle.desc" = "Systemabfrage beim Einfügen vermeiden";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "In der Dynamic Island anzeigen";
+"ios.settings.liveActivityHidePreview" = "Inhalt in Dynamic Island & Sperrbildschirm ausblenden";

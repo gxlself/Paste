@@ -32,7 +32,7 @@ final class PasteStackService {
                 return Entry(id: id, itemId: itemId, createdAt: createdAt)
             }
         } catch {
-            print("PasteStack fetch error: \(error)")
+            AppLog.error("PasteStack fetch error: \(error)")
             return []
         }
     }
@@ -58,7 +58,7 @@ final class PasteStackService {
                 coreDataStack.save()
             }
         } catch {
-            print("PasteStack remove error: \(error)")
+            AppLog.error("PasteStack remove error: \(error)")
         }
     }
     
@@ -76,7 +76,7 @@ final class PasteStackService {
                 coreDataStack.save()
             }
         } catch {
-            print("PasteStack removeTopEntry error: \(error)")
+            AppLog.error("PasteStack removeTopEntry error: \(error)")
         }
     }
     
@@ -89,7 +89,7 @@ final class PasteStackService {
             try context.execute(deleteRequest)
             coreDataStack.save()
         } catch {
-            print("PasteStack clear error: \(error)")
+            AppLog.error("PasteStack clear error: \(error)")
         }
     }
 }
