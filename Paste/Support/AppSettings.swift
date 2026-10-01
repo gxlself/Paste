@@ -79,7 +79,7 @@ enum AppSettings {
         get {
             PanelPosition(rawValue: int(Key.panelPosition, default: PanelPosition.bottom.rawValue)) ?? .bottom
         }
-        set { defaults.set(newValue.rawValue, forKey: Key.panelPosition) }
+        set { write(newValue.rawValue, forKey: Key.panelPosition) }
     }
 
     // MARK: - Appearance
@@ -93,6 +93,21 @@ enum AppSettings {
     // MARK: - Helpers
 
     private static let defaults = UserDefaults.standard
+
+    /// Posted (on the main thread) after any setting is written; `userInfo["key"]` is the key.
+    static let didChange = Notification.Name("AppSettings.didChange")
+
+    /// Single write path for all settings so observers get one consistent change signal.
+    private static func write(_ value: Any?, forKey key: String) {
+        defaults.set(value, forKey: key)
+        if Thread.isMainThread {
+            NotificationCenter.default.post(name: didChange, object: nil, userInfo: ["key": key])
+        } else {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: didChange, object: nil, userInfo: ["key": key])
+            }
+        }
+    }
 
     private static func bool(_ key: String, default defaultValue: Bool) -> Bool {
         if defaults.object(forKey: key) == nil { return defaultValue }
@@ -116,66 +131,66 @@ enum AppSettings {
 
     static var maxItems: Int {
         get { int(Key.maxItems, default: Constants.defaultMaxItems) }
-        set { defaults.set(newValue, forKey: Key.maxItems) }
+        set { write(newValue, forKey: Key.maxItems) }
     }
 
     static var excludedApps: [String] {
         get { defaults.stringArray(forKey: Key.excludedApps) ?? [] }
-        set { defaults.set(newValue, forKey: Key.excludedApps) }
+        set { write(newValue, forKey: Key.excludedApps) }
     }
 
     static var recordImages: Bool {
         get { bool(Key.recordImages, default: true) }
-        set { defaults.set(newValue, forKey: Key.recordImages) }
+        set { write(newValue, forKey: Key.recordImages) }
     }
 
     static var launchAtLogin: Bool {
         get { bool(Key.launchAtLogin, default: false) }
-        set { defaults.set(newValue, forKey: Key.launchAtLogin) }
+        set { write(newValue, forKey: Key.launchAtLogin) }
     }
 
     /// Legacy single hotkey (kept for compatibility; will be superseded by multi-hotkey).
     static var legacyHotKeyKeyCode: UInt32 {
         get { uint32(Key.hotKeyKeyCode, default: Constants.defaultHotKeyKeyCode) }
-        set { defaults.set(newValue, forKey: Key.hotKeyKeyCode) }
+        set { write(newValue, forKey: Key.hotKeyKeyCode) }
     }
 
     /// Legacy single hotkey (kept for compatibility; will be superseded by multi-hotkey).
     static var legacyHotKeyModifiers: UInt32 {
         get { uint32(Key.hotKeyModifiers, default: Constants.defaultHotKeyModifiers) }
-        set { defaults.set(newValue, forKey: Key.hotKeyModifiers) }
+        set { write(newValue, forKey: Key.hotKeyModifiers) }
     }
 
     // MARK: - General
 
     static var directPasteEnabled: Bool {
         get { bool(Key.directPasteEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.directPasteEnabled) }
+        set { write(newValue, forKey: Key.directPasteEnabled) }
     }
 
     static var pastePlainTextByDefault: Bool {
         get { bool(Key.pastePlainTextByDefault, default: false) }
-        set { defaults.set(newValue, forKey: Key.pastePlainTextByDefault) }
+        set { write(newValue, forKey: Key.pastePlainTextByDefault) }
     }
 
     static var linkPreviewEnabled: Bool {
         get { bool(Key.linkPreviewEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.linkPreviewEnabled) }
+        set { write(newValue, forKey: Key.linkPreviewEnabled) }
     }
 
     static var soundEnabled: Bool {
         get { bool(Key.soundEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.soundEnabled) }
+        set { write(newValue, forKey: Key.soundEnabled) }
     }
 
     static var showMenuBarIcon: Bool {
         get { bool(Key.showMenuBarIcon, default: true) }
-        set { defaults.set(newValue, forKey: Key.showMenuBarIcon) }
+        set { write(newValue, forKey: Key.showMenuBarIcon) }
     }
 
     static var voiceOverAnnounceEnabled: Bool {
         get { bool(Key.voiceOverAnnounceEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.voiceOverAnnounceEnabled) }
+        set { write(newValue, forKey: Key.voiceOverAnnounceEnabled) }
     }
 
     // MARK: - Retention
@@ -190,44 +205,44 @@ enum AppSettings {
 
     static var retentionPreset: RetentionPreset {
         get { RetentionPreset(rawValue: int(Key.retentionPreset, default: RetentionPreset.month.rawValue)) ?? .month }
-        set { defaults.set(newValue.rawValue, forKey: Key.retentionPreset) }
+        set { write(newValue.rawValue, forKey: Key.retentionPreset) }
     }
 
     /// Upper bound by count, independent from time-based retention.
     static var retentionMaxItems: Int {
         get { int(Key.retentionMaxItems, default: Constants.defaultMaxItems) }
-        set { defaults.set(newValue, forKey: Key.retentionMaxItems) }
+        set { write(newValue, forKey: Key.retentionMaxItems) }
     }
 
     // MARK: - In-panel modifiers
 
     static var quickPasteModifier: NSEvent.ModifierFlags {
         get { modifierFlags(Key.quickPasteModifier, default: .command) }
-        set { defaults.set(newValue.rawValue, forKey: Key.quickPasteModifier) }
+        set { write(newValue.rawValue, forKey: Key.quickPasteModifier) }
     }
 
     static var plainTextModifier: NSEvent.ModifierFlags {
         get { modifierFlags(Key.plainTextModifier, default: .shift) }
-        set { defaults.set(newValue.rawValue, forKey: Key.plainTextModifier) }
+        set { write(newValue.rawValue, forKey: Key.plainTextModifier) }
     }
 
     // MARK: - Rules
 
     static var ignoreSensitiveContent: Bool {
         get { bool(Key.ignoreSensitiveContent, default: true) }
-        set { defaults.set(newValue, forKey: Key.ignoreSensitiveContent) }
+        set { write(newValue, forKey: Key.ignoreSensitiveContent) }
     }
 
     static var ignoreAutoGeneratedContent: Bool {
         get { bool(Key.ignoreAutoGeneratedContent, default: true) }
-        set { defaults.set(newValue, forKey: Key.ignoreAutoGeneratedContent) }
+        set { write(newValue, forKey: Key.ignoreAutoGeneratedContent) }
     }
 
     // MARK: - Sync
 
     static var iCloudSyncEnabled: Bool {
         get { bool(Key.iCloudSyncEnabled, default: false) }
-        set { defaults.set(newValue, forKey: Key.iCloudSyncEnabled) }
+        set { write(newValue, forKey: Key.iCloudSyncEnabled) }
     }
 
     // MARK: - Filter Tab Names
@@ -260,7 +275,7 @@ enum AppSettings {
         if trimmed.isEmpty {
             defaults.removeObject(forKey: key)
         } else {
-            defaults.set(trimmed, forKey: key)
+            write(trimmed, forKey: key)
         }
     }
 
@@ -272,7 +287,7 @@ enum AppSettings {
     static var pinboardCount: Int {
         get { max(pinboardCountDefault, min(int(Key.pinboardCount, default: pinboardCountDefault), pinboardCountMax)) }
         set {
-            defaults.set(max(pinboardCountDefault, min(newValue, pinboardCountMax)), forKey: Key.pinboardCount)
+            write(max(pinboardCountDefault, min(newValue, pinboardCountMax)), forKey: Key.pinboardCount)
             savePinboardsToKVS()
         }
     }
@@ -287,7 +302,7 @@ enum AppSettings {
         if trimmed.isEmpty {
             defaults.removeObject(forKey: "pinboardName_\(index)")
         } else {
-            defaults.set(trimmed, forKey: "pinboardName_\(index)")
+            write(trimmed, forKey: "pinboardName_\(index)")
         }
         savePinboardsToKVS()
     }
@@ -298,26 +313,26 @@ enum AppSettings {
             return max(0, min(value, pinboardCount - 1))
         }
         set {
-            defaults.set(max(0, min(newValue, pinboardCount - 1)), forKey: Key.lastPinboardIndex)
+            write(max(0, min(newValue, pinboardCount - 1)), forKey: Key.lastPinboardIndex)
         }
     }
 
     /// Whether the Accessibility permission dialog has been shown (prompted once per install).
     static var hasRequestedAccessibilityPermission: Bool {
         get { bool(Key.hasRequestedAccessibilityPermission, default: false) }
-        set { defaults.set(newValue, forKey: Key.hasRequestedAccessibilityPermission) }
+        set { write(newValue, forKey: Key.hasRequestedAccessibilityPermission) }
     }
 
     /// Last selected filter tab index: 0=All, 1=Text, 2=Image, 3=File, 4=Regex.
     static var lastSelectedFilterType: Int {
         get { max(0, min(4, int(Key.lastSelectedFilterType, default: 0))) }
-        set { defaults.set(max(0, min(4, newValue)), forKey: Key.lastSelectedFilterType) }
+        set { write(max(0, min(4, newValue)), forKey: Key.lastSelectedFilterType) }
     }
 
     static var appearance: Appearance {
         get { Appearance(rawValue: int(Key.appearance, default: Appearance.system.rawValue)) ?? .system }
         set {
-            defaults.set(newValue.rawValue, forKey: Key.appearance)
+            write(newValue.rawValue, forKey: Key.appearance)
             DispatchQueue.main.async {
                 switch newValue {
                 case .system: NSApp.appearance = nil
@@ -332,62 +347,62 @@ enum AppSettings {
 
     static var hotKeyPasteKeyCode: UInt32 {
         get { uint32(Key.hotKeyPasteKeyCode, default: Constants.defaultHotKeyKeyCode) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPasteKeyCode) }
+        set { write(newValue, forKey: Key.hotKeyPasteKeyCode) }
     }
 
     static var hotKeyPasteModifiers: UInt32 {
         get { uint32(Key.hotKeyPasteModifiers, default: Constants.defaultHotKeyModifiers) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPasteModifiers) }
+        set { write(newValue, forKey: Key.hotKeyPasteModifiers) }
     }
 
     static var hotKeyPasteEnabled: Bool {
         get { bool(Key.hotKeyPasteEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPasteEnabled) }
+        set { write(newValue, forKey: Key.hotKeyPasteEnabled) }
     }
 
     static var hotKeyPasteStackKeyCode: UInt32 {
         get { uint32(Key.hotKeyPasteStackKeyCode, default: 8 /* C */) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPasteStackKeyCode) }
+        set { write(newValue, forKey: Key.hotKeyPasteStackKeyCode) }
     }
 
     static var hotKeyPasteStackModifiers: UInt32 {
         get { uint32(Key.hotKeyPasteStackModifiers, default: Constants.defaultHotKeyModifiers) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPasteStackModifiers) }
+        set { write(newValue, forKey: Key.hotKeyPasteStackModifiers) }
     }
 
     static var hotKeyPasteStackEnabled: Bool {
         get { bool(Key.hotKeyPasteStackEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPasteStackEnabled) }
+        set { write(newValue, forKey: Key.hotKeyPasteStackEnabled) }
     }
 
     static var hotKeyNextPinboardKeyCode: UInt32 {
         get { uint32(Key.hotKeyNextPinboardKeyCode, default: 30 /* ] */) }
-        set { defaults.set(newValue, forKey: Key.hotKeyNextPinboardKeyCode) }
+        set { write(newValue, forKey: Key.hotKeyNextPinboardKeyCode) }
     }
 
     static var hotKeyNextPinboardModifiers: UInt32 {
         get { uint32(Key.hotKeyNextPinboardModifiers, default: UInt32(NSEvent.ModifierFlags.command.rawValue)) }
-        set { defaults.set(newValue, forKey: Key.hotKeyNextPinboardModifiers) }
+        set { write(newValue, forKey: Key.hotKeyNextPinboardModifiers) }
     }
 
     static var hotKeyNextPinboardEnabled: Bool {
         get { bool(Key.hotKeyNextPinboardEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.hotKeyNextPinboardEnabled) }
+        set { write(newValue, forKey: Key.hotKeyNextPinboardEnabled) }
     }
 
     static var hotKeyPrevPinboardKeyCode: UInt32 {
         get { uint32(Key.hotKeyPrevPinboardKeyCode, default: 33 /* [ */) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPrevPinboardKeyCode) }
+        set { write(newValue, forKey: Key.hotKeyPrevPinboardKeyCode) }
     }
 
     static var hotKeyPrevPinboardModifiers: UInt32 {
         get { uint32(Key.hotKeyPrevPinboardModifiers, default: UInt32(NSEvent.ModifierFlags.command.rawValue)) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPrevPinboardModifiers) }
+        set { write(newValue, forKey: Key.hotKeyPrevPinboardModifiers) }
     }
 
     static var hotKeyPrevPinboardEnabled: Bool {
         get { bool(Key.hotKeyPrevPinboardEnabled, default: true) }
-        set { defaults.set(newValue, forKey: Key.hotKeyPrevPinboardEnabled) }
+        set { write(newValue, forKey: Key.hotKeyPrevPinboardEnabled) }
     }
 
     // MARK: - Pinboard Sync (iCloud KV Store)
@@ -415,13 +430,13 @@ enum AppSettings {
         let names = dict["names"] as? [String] ?? []
         let colors = dict["colors"] as? [String] ?? []
         let newCount = max(pinboardCountDefault, min(count, pinboardCountMax))
-        defaults.set(newCount, forKey: Key.pinboardCount)
+        write(newCount, forKey: Key.pinboardCount)
         for i in 0..<newCount {
             if i < names.count && !names[i].isEmpty {
-                defaults.set(names[i], forKey: "pinboardName_\(i)")
+                write(names[i], forKey: "pinboardName_\(i)")
             }
             if i < colors.count && !colors[i].isEmpty {
-                defaults.set(colors[i], forKey: "pinboardColor_\(i)")
+                write(colors[i], forKey: "pinboardColor_\(i)")
             }
         }
     }

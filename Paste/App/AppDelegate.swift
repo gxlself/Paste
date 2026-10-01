@@ -203,7 +203,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(refreshStatusItem),
-            name: UserDefaults.didChangeNotification,
+            name: AppSettings.didChange,
             object: nil
         )
     }
