@@ -292,3 +292,17 @@
 // MARK: - Store
 "store.degraded.title" = "Zwischenablage-Verlauf nicht verfügbar";
 "store.degraded.message" = "Die Verlaufsdatenbank konnte nicht geöffnet werden. Ab jetzt kopierte Einträge werden nach dem Beenden von Paste nicht gespeichert. Starten Sie Ihren Mac neu; besteht das Problem weiterhin, installieren Sie die App erneut.";
+
+// MARK: - Updates
+"update.check" = "Nach Updates suchen";
+"update.checking" = "Suche läuft …";
+"update.upToDate" = "Paste ist aktuell (%@)";
+"update.available" = "Version %@ ist verfügbar";
+"update.install" = "Laden und installieren";
+"update.downloading" = "Wird geladen … %d %%";
+"update.installerOpened" = "Installationsprogramm geöffnet. Schließe die Installation ab und öffne Paste danach erneut.";
+"update.failed" = "Update fehlgeschlagen: %@";
+"update.error.badResponse" = "Der Update-Server ist nicht erreichbar.";
+"update.error.noPackage" = "Dieses Release enthält kein Installationspaket.";
+"update.error.cannotOpenInstaller" = "Das Installationsprogramm konnte nicht geöffnet werden.";
+"status.menu.checkForUpdates" = "Nach Updates suchen …";

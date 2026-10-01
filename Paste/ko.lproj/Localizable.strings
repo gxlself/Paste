@@ -292,3 +292,17 @@
 // MARK: - Store
 "store.degraded.title" = "클립보드 기록을 사용할 수 없음";
 "store.degraded.message" = "기록 데이터베이스를 열 수 없어 지금부터 복사한 항목은 Paste를 종료하면 저장되지 않습니다. Mac을 다시 시작하세요. 문제가 계속되면 앱을 다시 설치하세요.";
+
+// MARK: - Updates
+"update.check" = "업데이트 확인";
+"update.checking" = "확인 중…";
+"update.upToDate" = "최신 버전입니다(%@)";
+"update.available" = "버전 %@ 사용 가능";
+"update.install" = "다운로드 및 설치";
+"update.downloading" = "다운로드 중… %d%%";
+"update.installerOpened" = "설치 프로그램이 열렸습니다. 설치를 마친 후 Paste를 다시 여세요.";
+"update.failed" = "업데이트 실패: %@";
+"update.error.badResponse" = "업데이트 서버에 연결할 수 없습니다.";
+"update.error.noPackage" = "이 릴리스에는 설치 패키지가 없습니다.";
+"update.error.cannotOpenInstaller" = "설치 프로그램을 열 수 없습니다.";
+"status.menu.checkForUpdates" = "업데이트 확인…";

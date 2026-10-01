@@ -283,3 +283,17 @@
 // MARK: - Store
 "store.degraded.title" = "Clipboard history is unavailable";
 "store.degraded.message" = "The history database could not be opened, so items copied from now on will not be saved after you quit Paste. Restart your Mac; if this persists, reinstall the app.";
+
+// MARK: - Updates
+"update.check" = "Check for Updates";
+"update.checking" = "Checking…";
+"update.upToDate" = "You're up to date (%@)";
+"update.available" = "Version %@ is available";
+"update.install" = "Download and Install";
+"update.downloading" = "Downloading… %d%%";
+"update.installerOpened" = "Installer opened. Finish installing, then reopen Paste.";
+"update.failed" = "Update failed: %@";
+"update.error.badResponse" = "Could not reach the update server.";
+"update.error.noPackage" = "This release has no installer package.";
+"update.error.cannotOpenInstaller" = "Could not open the installer.";
+"status.menu.checkForUpdates" = "Check for Updates…";

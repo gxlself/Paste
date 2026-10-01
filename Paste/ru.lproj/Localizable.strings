@@ -292,3 +292,17 @@
 // MARK: - Store
 "store.degraded.title" = "История буфера обмена недоступна";
 "store.degraded.message" = "Не удалось открыть базу данных истории, поэтому элементы, скопированные с этого момента, не будут сохранены после выхода из Paste. Перезагрузите Mac; если проблема не исчезнет, переустановите приложение.";
+
+// MARK: - Updates
+"update.check" = "Проверить обновления";
+"update.checking" = "Проверка…";
+"update.upToDate" = "Установлена последняя версия (%@)";
+"update.available" = "Доступна версия %@";
+"update.install" = "Скачать и установить";
+"update.downloading" = "Загрузка… %d%%";
+"update.installerOpened" = "Установщик открыт. Завершите установку и снова откройте Paste.";
+"update.failed" = "Не удалось обновить: %@";
+"update.error.badResponse" = "Не удалось связаться с сервером обновлений.";
+"update.error.noPackage" = "В этом релизе нет установочного пакета.";
+"update.error.cannotOpenInstaller" = "Не удалось открыть установщик.";
+"status.menu.checkForUpdates" = "Проверить обновления…";

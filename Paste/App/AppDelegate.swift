@@ -238,6 +238,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         aboutItem.target = self
         menu.addItem(aboutItem)
 
+        if UpdateChecker.isSupported {
+            let updateItem = NSMenuItem(title: String(localized: "status.menu.checkForUpdates"), action: #selector(checkForUpdates), keyEquivalent: "")
+            updateItem.target = self
+            menu.addItem(updateItem)
+        }
+
         menu.addItem(NSMenuItem.separator())
 
         let openItem = NSMenuItem(title: String(localized: "status.menu.openClipboard"), action: #selector(showMainPanel), keyEquivalent: "")
@@ -315,6 +321,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func openPreferences() {
         PreferencesWindowController.shared.show()
+    }
+
+    @objc private func checkForUpdates() {
+        openAbout()
+        UpdateChecker.shared.check()
     }
 
     @objc private func openAbout() {

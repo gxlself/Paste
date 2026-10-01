@@ -292,3 +292,17 @@
 // MARK: - Store
 "store.degraded.title" = "Cronologia degli appunti non disponibile";
 "store.degraded.message" = "Impossibile aprire il database della cronologia, quindi gli elementi copiati da ora in poi non verranno salvati dopo l’uscita da Paste. Riavvia il Mac; se il problema persiste, reinstalla l’app.";
+
+// MARK: - Updates
+"update.check" = "Verifica aggiornamenti";
+"update.checking" = "Verifica in corso…";
+"update.upToDate" = "Paste è aggiornato (%@)";
+"update.available" = "È disponibile la versione %@";
+"update.install" = "Scarica e installa";
+"update.downloading" = "Download in corso… %d%%";
+"update.installerOpened" = "Programma di installazione aperto. Completa l’installazione, poi riapri Paste.";
+"update.failed" = "Aggiornamento non riuscito: %@";
+"update.error.badResponse" = "Impossibile raggiungere il server degli aggiornamenti.";
+"update.error.noPackage" = "Questa versione non include un pacchetto di installazione.";
+"update.error.cannotOpenInstaller" = "Impossibile aprire il programma di installazione.";
+"status.menu.checkForUpdates" = "Verifica aggiornamenti…";

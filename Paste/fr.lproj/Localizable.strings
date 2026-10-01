@@ -292,3 +292,17 @@
 // MARK: - Store
 "store.degraded.title" = "Historique du presse-papiers indisponible";
 "store.degraded.message" = "La base de données de l’historique n’a pas pu être ouverte ; les éléments copiés à partir de maintenant ne seront pas conservés après la fermeture de Paste. Redémarrez votre Mac ; si le problème persiste, réinstallez l’app.";
+
+// MARK: - Updates
+"update.check" = "Rechercher les mises à jour";
+"update.checking" = "Recherche…";
+"update.upToDate" = "Paste est à jour (%@)";
+"update.available" = "La version %@ est disponible";
+"update.install" = "Télécharger et installer";
+"update.downloading" = "Téléchargement… %d %%";
+"update.installerOpened" = "Programme d’installation ouvert. Terminez l’installation, puis rouvrez Paste.";
+"update.failed" = "Échec de la mise à jour : %@";
+"update.error.badResponse" = "Impossible de joindre le serveur de mises à jour.";
+"update.error.noPackage" = "Cette version ne contient pas de paquet d’installation.";
+"update.error.cannotOpenInstaller" = "Impossible d’ouvrir le programme d’installation.";
+"status.menu.checkForUpdates" = "Rechercher les mises à jour…";

@@ -292,3 +292,17 @@
 // MARK: - Store
 "store.degraded.title" = "クリップボード履歴を利用できません";
 "store.degraded.message" = "履歴データベースを開けなかったため、これ以降にコピーした項目は Paste を終了すると保存されません。Mac を再起動してください。問題が続く場合は、アプリを再インストールしてください。";
+
+// MARK: - Updates
+"update.check" = "アップデートを確認";
+"update.checking" = "確認中…";
+"update.upToDate" = "最新バージョンです（%@）";
+"update.available" = "バージョン %@ が利用できます";
+"update.install" = "ダウンロードしてインストール";
+"update.downloading" = "ダウンロード中… %d%%";
+"update.installerOpened" = "インストーラを開きました。インストール完了後、Paste を開き直してください。";
+"update.failed" = "アップデートに失敗しました：%@";
+"update.error.badResponse" = "アップデートサーバに接続できませんでした。";
+"update.error.noPackage" = "このリリースにはインストーラパッケージがありません。";
+"update.error.cannotOpenInstaller" = "インストーラを開けませんでした。";
+"status.menu.checkForUpdates" = "アップデートを確認…";

@@ -13,6 +13,8 @@ struct AboutView: View {
     
     private let developerName = "Gxlself"
     private let supportEmail = "gxlself@gmail.com"
+
+    @ObservedObject private var updater = UpdateChecker.shared
     
     var body: some View {
         VStack(spacing: 0) {
@@ -49,6 +51,11 @@ struct AboutView: View {
             
             actionButtons
             
+            if UpdateChecker.isSupported {
+                Spacer(minLength: 12)
+                updateSection
+            }
+            
             Spacer(minLength: 12)
             
             policyLinks
@@ -76,6 +83,59 @@ struct AboutView: View {
             ) {
                 contactSupport()
             }
+        }
+    }
+    
+    @ViewBuilder
+    private var updateSection: some View {
+        VStack(spacing: 6) {
+            switch updater.state {
+            case .idle, .upToDate, .failed:
+                actionButton(
+                    title: String(localized: "update.check", defaultValue: "Check for Updates"),
+                    icon: "arrow.triangle.2.circlepath"
+                ) {
+                    updater.check()
+                }
+            case .checking:
+                ProgressView().controlSize(.small)
+            case .available:
+                actionButton(
+                    title: String(localized: "update.install", defaultValue: "Download and Install"),
+                    icon: "arrow.down.circle.fill"
+                ) {
+                    updater.downloadAndInstall()
+                }
+            case .downloading(let progress):
+                ProgressView(value: progress)
+                    .frame(width: 180)
+            case .installerOpened:
+                EmptyView()
+            }
+            
+            if let message = updateMessage {
+                Text(message)
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 24)
+            }
+        }
+    }
+    
+    private var updateMessage: String? {
+        switch updater.state {
+        case .idle, .checking:
+            return nil
+        case .upToDate:
+            return String(format: String(localized: "update.upToDate", defaultValue: "You're up to date (%@)"), UpdateChecker.currentVersion)
+        case .available(let version):
+            return String(format: String(localized: "update.available", defaultValue: "Version %@ is available"), version)
+        case .downloading(let progress):
+            return String(format: String(localized: "update.downloading", defaultValue: "Downloading… %d%%"), Int(progress * 100))
+        case .installerOpened:
+            return String(localized: "update.installerOpened", defaultValue: "Installer opened. Finish installing, then reopen Paste.")
+        case .failed(let reason):
+            return String(format: String(localized: "update.failed", defaultValue: "Update failed: %@"), reason)
         }
     }
     

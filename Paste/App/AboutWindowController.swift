@@ -13,7 +13,7 @@ final class AboutWindowController: NSWindowController, NSWindowDelegate {
     
     static func create() -> AboutWindowController {
         let hostingView = NSHostingView(rootView: AboutView())
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 420, height: 420),
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 420, height: 480),
                               styleMask: [.titled, .closable, .miniaturizable],
                               backing: .buffered,
                               defer: false)

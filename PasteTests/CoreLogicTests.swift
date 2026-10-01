@@ -70,3 +70,17 @@ struct MenuBarIconTests {
         #expect(normal.size == NSSize(width: 18, height: 18))
     }
 }
+
+struct UpdateVersionTests {
+    @Test func comparesDottedVersionsNumerically() {
+        #expect(UpdateChecker.isNewer("v1.11.0", than: "1.10.2"))
+        #expect(UpdateChecker.isNewer("1.10.10", than: "1.10.9"))
+        #expect(UpdateChecker.isNewer("2.0", than: "1.99.99"))
+    }
+
+    @Test func equalOrOlderIsNotNewer() {
+        #expect(!UpdateChecker.isNewer("1.10.2", than: "1.10.2"))
+        #expect(!UpdateChecker.isNewer("v1.10", than: "1.10.0"))
+        #expect(!UpdateChecker.isNewer("1.9.0", than: "1.10.0"))
+    }
+}
