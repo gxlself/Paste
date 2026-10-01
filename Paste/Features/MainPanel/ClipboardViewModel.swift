@@ -220,26 +220,26 @@ class ClipboardViewModel: ObservableObject {
         return filteredItems[selectedIndex]
     }
     /// Last deleted item for Cmd+Z undo (session-only).
-    private(set) var lastDeletedItem: ClipboardItemModel?
+    var lastDeletedItem: ClipboardItemModel?
 
     // MARK: - Private Properties
     
-    private let clipboardService = ClipboardService.shared
-    private let pasteStackService = PasteStackService.shared
-    private var cancellables = Set<AnyCancellable>()
-    private var reloadTask: Task<Void, Never>?
-    private var reloadRequested = false
-    private var filterTask: Task<Void, Never>?
-    private var filterGeneration = 0
-    private var filterMutationDepth = 0
-    private var filterUpdatesSuspended = false
-    private let observesStore: Bool
-    private var typeCache: [ClipboardItemType: [ClipboardItemModel]] = [:]
-    private var appliedFilter: FilterKey?
-    private var displayedFilter: FilterKey?
-    private var pendingFilter: FilterKey?
+    let clipboardService = ClipboardService.shared
+    let pasteStackService = PasteStackService.shared
+    var cancellables = Set<AnyCancellable>()
+    var reloadTask: Task<Void, Never>?
+    var reloadRequested = false
+    var filterTask: Task<Void, Never>?
+    var filterGeneration = 0
+    var filterMutationDepth = 0
+    var filterUpdatesSuspended = false
+    let observesStore: Bool
+    var typeCache: [ClipboardItemType: [ClipboardItemModel]] = [:]
+    var appliedFilter: FilterKey?
+    var displayedFilter: FilterKey?
+    var pendingFilter: FilterKey?
 
-    private struct FilterKey: Equatable {
+    struct FilterKey: Equatable {
         let mode: PanelMode
         let pinboard: Int?
         let type: ClipboardItemType?
@@ -266,7 +266,7 @@ class ClipboardViewModel: ObservableObject {
     
     // MARK: - Setup
     
-    private func setupBindings() {
+    func setupBindings() {
         // Debounce search input.
         $searchText
             .removeDuplicates()
@@ -349,7 +349,7 @@ class ClipboardViewModel: ObservableObject {
     }
 
     /// Persists the current filter tab selection to UserDefaults.
-    private func persistSelectedFilter() {
+    func persistSelectedFilter() {
         guard observesStore else { return }
         let raw: Int
         if isRegexPresetMode {
@@ -367,7 +367,7 @@ class ClipboardViewModel: ObservableObject {
     }
 
     /// Restores the last filter tab selection from UserDefaults (called on panelDidShow).
-    private func restoreSelectedFilter() {
+    func restoreSelectedFilter() {
         let raw = AppSettings.lastSelectedFilterType
         withFilterMutation {
             switch raw {
@@ -429,7 +429,7 @@ class ClipboardViewModel: ObservableObject {
         }
     }
     
-    private func applyFilters() {
+    func applyFilters() {
         guard !filterUpdatesSuspended else { return }
 
         let keyword = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -489,7 +489,7 @@ class ClipboardViewModel: ObservableObject {
         }
     }
 
-    private func applyFilterResults(_ results: [ClipboardItemModel], key: FilterKey) {
+    func applyFilterResults(_ results: [ClipboardItemModel], key: FilterKey) {
         // A pinboard can point thousands of rows into All. Carrying that selection across tabs
         // makes ScrollViewReader lay out the entire intervening history just to locate the ID.
         let scopeChanged = displayedFilter != nil && displayedFilter != key
@@ -514,7 +514,7 @@ class ClipboardViewModel: ObservableObject {
     // MARK: - Filter state
 
     /// Coalesces cascaded property changes into one filter pass.
-    private func withFilterMutation(apply: Bool = true, _ body: () -> Void) {
+    func withFilterMutation(apply: Bool = true, _ body: () -> Void) {
         filterMutationDepth += 1
         body()
         filterMutationDepth -= 1
@@ -523,7 +523,7 @@ class ClipboardViewModel: ObservableObject {
         requestApplyFilters()
     }
 
-    private func requestApplyFilters() {
+    func requestApplyFilters() {
         if filterMutationDepth > 0 {
             return
         } else {
@@ -740,416 +740,4 @@ class ClipboardViewModel: ObservableObject {
         loadItems()
     }
 
-    // MARK: - Custom Types
-
-    /// Confirms the inline input, creating a new custom type.
-    func confirmAddCustomType() {
-        let trimmed = customTypeInputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { cancelAddCustomType(); return }
-        AppSettings.addCustomType(name: trimmed)
-        customTypes = AppSettings.customTypes
-        customTypeInputText = ""
-        showCustomTypeInput = false
-    }
-
-    func cancelAddCustomType() {
-        customTypeInputText = ""
-        showCustomTypeInput = false
-    }
-
-    func removeCustomType(id: String) {
-        // Strip the tag from all items that carry it.
-        let tagRaw = ItemTag.customType(id).rawValue
-        for item in items where item.tagsArray.contains(tagRaw) {
-            let updated = item.tagsArray.filter { $0 != tagRaw }
-            clipboardService.updateTags(id: item.id, tags: updated)
-        }
-        AppSettings.removeCustomType(id: id)
-        customTypes = AppSettings.customTypes
-        if selectedCustomTypeId == id { selectedCustomTypeId = nil }
-        loadItems()
-    }
-
-    func renameCustomType(id: String, name: String) {
-        AppSettings.renameCustomType(id: id, name: name)
-        customTypes = AppSettings.customTypes
-    }
-
-    /// Assigns item to a custom type (or removes it if already assigned — toggling).
-    func toggleCustomType(id: String, for item: ClipboardItemModel) {
-        let tagRaw = ItemTag.customType(id).rawValue
-        var tags = item.tagsArray
-        if tags.contains(tagRaw) {
-            tags.removeAll { $0 == tagRaw }
-        } else {
-            tags.append(tagRaw)
-        }
-        clipboardService.updateTags(id: item.id, tags: tags)
-        loadItems()
-    }
-
-    // MARK: - Pinboard
-
-    var isShowingPinboard: Bool { activePinboardIndex != nil }
-    
-    func showPinboard(index: Int) {
-        let clamped = max(0, min(index, AppSettings.pinboardCount - 1))
-        activePinboardIndex = clamped
-    }
-    
-    func exitPinboard() {
-        activePinboardIndex = nil
-    }
-    
-    func nextPinboard() {
-        let current = activePinboardIndex ?? AppSettings.lastPinboardIndex
-        let next = (current + 1) % AppSettings.pinboardCount
-        activePinboardIndex = next
-    }
-    
-    func previousPinboard() {
-        let current = activePinboardIndex ?? AppSettings.lastPinboardIndex
-        let prev = (current - 1 + AppSettings.pinboardCount) % AppSettings.pinboardCount
-        activePinboardIndex = prev
-    }
-
-    func createNewPinboard() {
-        let current = AppSettings.pinboardCount
-        if current < AppSettings.pinboardCountMax {
-            AppSettings.pinboardCount = current + 1
-            AppSettings.savePinboardsToKVS()
-        }
-        showPinboard(index: AppSettings.pinboardCount - 1)
-    }
-    
-    func toggleInPinboard(_ item: ClipboardItemModel, index: Int) {
-        let enabled = !clipboardService.isInPinboard(item, index: index)
-        clipboardService.setPinboard(id: item.id, index: index, enabled: enabled)
-        loadItems()
-    }
-    
-    func moveToPinboard(_ item: ClipboardItemModel, index: Int) {
-        clipboardService.moveToPinboard(id: item.id, index: index)
-        loadItems()
-    }
-    
-    // MARK: - Filter Tab (All / Text / Image / File / Regex)
-    
-    /// Advances to the next tab: All → Text → Image → File → Regex → Pinboard 0…N-1 → All.
-    func selectNextFilterTab() {
-        withFilterMutation {
-            if let pbIdx = activePinboardIndex {
-                if pbIdx + 1 < AppSettings.pinboardCount {
-                    selectPinboardFilter(index: pbIdx + 1)
-                } else {
-                    selectFilter(nil)
-                }
-            } else if isRegexPresetMode {
-                if AppSettings.pinboardCount > 0 {
-                    selectPinboardFilter(index: 0)
-                } else {
-                    selectFilter(nil)
-                }
-            } else if let t = selectedType {
-                switch t {
-                case .text: selectFilter(.image)
-                case .image: selectFilter(.file)
-                case .file: selectRegexPresetFilter()
-                }
-            } else {
-                selectFilter(.text)
-            }
-        }
-    }
-
-    /// Moves to the previous tab: All → Pinboard N-1…0 → Regex → File → Image → Text → All.
-    func selectPreviousFilterTab() {
-        withFilterMutation {
-            if let pbIdx = activePinboardIndex {
-                if pbIdx > 0 {
-                    selectPinboardFilter(index: pbIdx - 1)
-                } else {
-                    selectRegexPresetFilter()
-                }
-            } else if isRegexPresetMode {
-                selectFilter(.file)
-            } else if let t = selectedType {
-                switch t {
-                case .text: selectFilter(nil)
-                case .image: selectFilter(.text)
-                case .file: selectFilter(.image)
-                }
-            } else {
-                if AppSettings.pinboardCount > 0 {
-                    selectPinboardFilter(index: AppSettings.pinboardCount - 1)
-                } else {
-                    selectRegexPresetFilter()
-                }
-            }
-        }
-    }
-    
-    // MARK: - Paste Stack
-    
-    var isShowingPasteStack: Bool { panelMode == .pasteStack }
-    
-    func enterPasteStack() {
-        panelMode = .pasteStack
-    }
-    
-    func exitPasteStack() {
-        panelMode = .history
-    }
-    
-    func addToPasteStack(_ item: ClipboardItemModel) {
-        pasteStackService.push(itemId: item.id)
-        if panelMode == .pasteStack {
-            loadItems()
-        }
-    }
-    
-    func removeFromPasteStack(_ item: ClipboardItemModel) {
-        pasteStackService.removeTopEntry(for: item.id)
-        if panelMode == .pasteStack {
-            loadItems()
-        }
-    }
-    
-    // MARK: - Navigation
-    
-    func selectPrevious() {
-        selectedIndices = []
-        selectionAnchor = nil
-        if selectedIndex > 0 {
-            selectedIndex -= 1
-        }
-        selectionAnchor = selectedIndex
-    }
-
-    func selectNext() {
-        selectedIndices = []
-        selectionAnchor = nil
-        let count = displayItemCount
-        if selectedIndex < count - 1 {
-            selectedIndex += 1
-        }
-        selectionAnchor = selectedIndex
-    }
-
-    func selectFirst() {
-        selectedIndices = []
-        selectionAnchor = nil
-        selectedIndex = 0
-        selectionAnchor = 0
-    }
-
-    func selectLast() {
-        selectedIndices = []
-        selectionAnchor = nil
-        selectedIndex = max(0, displayItemCount - 1)
-        selectionAnchor = selectedIndex
-    }
-
-    func selectAll() {
-        let count = displayItemCount
-        guard count > 0 else { return }
-        selectedIndices = Set(0..<count)
-        selectionAnchor = 0
-        selectedIndex = 0
-    }
-
-    /// Closed range from a to b that is always valid (lowerBound <= upperBound).
-    private func selectionRange(from a: Int, to b: Int) -> ClosedRange<Int> {
-        min(a, b)...max(a, b)
-    }
-
-    func extendSelection(left: Bool) {
-        let count = displayItemCount
-        guard count > 0 else { return }
-        let anchor = selectionAnchor ?? selectedIndex
-        if left {
-            if selectedIndices.count > 1 {
-                guard let rightmost = selectedIndices.max() else { return }
-                selectedIndices.remove(rightmost)
-                selectedIndex = selectedIndices.max() ?? max(0, rightmost - 1)
-                if selectedIndices.isEmpty {
-                    selectionAnchor = selectedIndex
-                } else if selectedIndices.count == 1, selectedIndex > 0 {
-                    selectedIndex -= 1
-                    selectedIndices.insert(selectedIndex)
-                }
-            } else if selectedIndex > 0 {
-                selectedIndex -= 1
-                selectedIndices = selectedIndices.union(Set(selectionRange(from: selectedIndex, to: anchor)))
-            }
-        } else {
-            if selectedIndex < count - 1 {
-                selectedIndex += 1
-                selectedIndices = selectedIndices.union(Set(selectionRange(from: anchor, to: selectedIndex)))
-            } else if selectedIndices.count > 1 {
-                guard let leftmost = selectedIndices.min() else { return }
-                selectedIndices.remove(leftmost)
-                selectedIndex = selectedIndices.min() ?? selectedIndex
-                if selectedIndices.isEmpty {
-                    selectionAnchor = selectedIndex
-                } else if selectedIndices.count == 1, selectedIndex < count - 1 {
-                    selectedIndex += 1
-                    selectedIndices.insert(selectedIndex)
-                }
-            }
-        }
-    }
-    
-    /// Returns the currently selected item (valid only in history mode).
-    var selectedItem: ClipboardItemModel? {
-        guard filteredItems.indices.contains(selectedIndex) else { return nil }
-        return filteredItems[selectedIndex]
-    }
-
-    // MARK: - Display Items (history or regex presets)
-
-    var displayItemCount: Int {
-        isRegexPresetMode ? RegexPreset.all.count : filteredItems.count
-    }
-
-    func displayItem(at index: Int) -> DisplayItem? {
-        guard index >= 0 else { return nil }
-        if isRegexPresetMode {
-            let presets = RegexPreset.all
-            guard index < presets.count else { return nil }
-            return .preset(presets[index])
-        }
-        guard index < filteredItems.count else { return nil }
-        return .history(filteredItems[index])
-    }
-
-    var effectiveDisplayItems: [DisplayItem] {
-        if isRegexPresetMode {
-            return RegexPreset.all.map { .preset($0) }
-        }
-        return filteredItems.map { .history($0) }
-    }
-
-    var selectedDisplayItem: DisplayItem? {
-        guard !isFiltering else { return nil }
-        return displayItem(at: selectedIndex)
-    }
-
-    func renameSelectedItem(to newText: String) {
-        guard let item = itemForEdit, item.itemType == .text else { return }
-        let t = newText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !t.isEmpty else { return }
-        clipboardService.updatePlainText(id: item.id, newText: t)
-        loadItems()
-        showRenameSheet = false
-    }
-
-    func editSelectedItem(to newText: String) {
-        guard let item = itemForEdit, item.itemType == .text else { return }
-        clipboardService.updatePlainText(id: item.id, newText: newText)
-        loadItems()
-        showEditSheet = false
-    }
-
-    func createNewTextItem(text: String) {
-        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !t.isEmpty else { return }
-        let content = ClipboardContent(
-            type: .text,
-            plainText: t,
-            rtfData: nil,
-            imageData: nil,
-            filePaths: nil,
-            sourceApp: nil,
-            contentHash: HashUtil.sha256(t)
-        )
-        clipboardService.saveItem(content)
-        loadItems()
-        showNewItemSheet = false
-    }
-
-    func undoLastDelete() {
-        guard let item = lastDeletedItem else { return }
-        clipboardService.restoreItem(item)
-        lastDeletedItem = nil
-        loadItems()
-    }
-
-    var canUndo: Bool { lastDeletedItem != nil }
-
-    func openSelectedItem() {
-        guard let display = selectedDisplayItem else { return }
-        switch display {
-        case .history(let item):
-            if item.itemType == .text, let text = item.plainText?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty {
-                if text.hasPrefix("http://") || text.hasPrefix("https://"), let url = URL(string: text) {
-                    NSWorkspace.shared.open(url)
-                    return
-                }
-                if text.hasPrefix("/") || text.hasPrefix("~") || (text.count <= 1024 && FileManager.default.fileExists(atPath: (text as NSString).expandingTildeInPath)) {
-                    let path = (text as NSString).expandingTildeInPath
-                    let url = URL(fileURLWithPath: path)
-                    NSWorkspace.shared.open(url)
-                    return
-                }
-            }
-            if item.itemType == .file, let paths = item.filePathsArray, let first = paths.first {
-                NSWorkspace.shared.open(URL(fileURLWithPath: first))
-            }
-        case .preset:
-            break
-        }
-    }
-
-    /// Paste selected: for preset writes pattern to clipboard and closes; for history pastes item.
-    func pasteSelectedDisplayItem(plainTextOnly: Bool = false) {
-        guard let display = selectedDisplayItem else { return }
-        switch display {
-        case .preset(let p):
-            clipboardService.copyPlainTextToClipboard(p.pattern)
-            announceToVoiceOver(String(localized: "voiceover.announce.copied.text \(String(p.pattern.prefix(50)))"))
-            if AppSettings.directPasteEnabled {
-                NotificationCenter.default.post(name: AppNotification.requestCloseAndPaste, object: nil)
-            } else {
-                NotificationCenter.default.post(name: AppNotification.requestClosePanel, object: nil)
-            }
-        case .history(let item):
-            pasteItem(item, plainTextOnly: plainTextOnly)
-            if panelMode == .pasteStack {
-                pasteStackService.removeTopEntry(for: item.id)
-                loadItems()
-            }
-        }
-    }
-
-    // MARK: - VoiceOver Announcement
-
-    private func announceToVoiceOver(_ message: String) {
-        guard AppSettings.voiceOverAnnounceEnabled,
-              NSWorkspace.shared.isVoiceOverEnabled else { return }
-        let element = NSApp.mainWindow as Any
-        NSAccessibility.post(
-            element: element,
-            notification: .announcementRequested,
-            userInfo: [
-                .announcement: message,
-                .priority: NSAccessibilityPriorityLevel.high.rawValue
-            ]
-        )
-    }
-
-    private func voiceOverSummary(for item: ClipboardItemModel) -> String {
-        switch item.itemType {
-        case .text:
-            let preview = (item.plainText ?? "").prefix(50)
-            return String(localized: "voiceover.announce.copied.text \(String(preview))")
-        case .image:
-            return String(localized: "voiceover.announce.copied.image")
-        case .file:
-            let count = item.filePathsArray?.count ?? 1
-            return String(localized: "voiceover.announce.copied.file \(count)")
-        }
-    }
-
-    // MARK: - Private Methods
 }

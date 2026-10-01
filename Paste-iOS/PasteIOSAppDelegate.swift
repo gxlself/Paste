@@ -15,6 +15,7 @@ final class PasteIOSAppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         application.registerForRemoteNotifications()
+        PasteLiveActivityManager.installCopyHandler()
         return true
     }
 

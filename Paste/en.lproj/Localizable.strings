@@ -279,3 +279,7 @@
 "preferences.general.compact.done" = "Compacted %d items";
 "preferences.sync.environment.development" = "This build is signed for development, so it syncs with the CloudKit Development database. A TestFlight or App Store build uses Production and will not see these items.";
 "preferences.sync.environment.unknown" = "Could not determine which CloudKit environment this build uses. Sync across devices may not work.";
+
+// MARK: - Store
+"store.degraded.title" = "Clipboard history is unavailable";
+"store.degraded.message" = "The history database could not be opened, so items copied from now on will not be saved after you quit Paste. Restart your Mac; if this persists, reinstall the app.";

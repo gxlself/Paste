@@ -87,7 +87,7 @@ final class SharedCoreDataStack {
         container.loadPersistentStores { _, error in
             if let error {
                 Self.log.error("loadPersistentStores failed: \(String(describing: error), privacy: .public)")
-                print("SharedCoreDataStack load failed: \(error)")
+                SharedLog.error("SharedCoreDataStack load failed: \(error)")
             } else if useCloudKit {
                 Self.log.debug("loadPersistentStores ok (CloudKit enabled)")
             } else {
@@ -112,7 +112,7 @@ final class SharedCoreDataStack {
         let ctx = viewContext
         guard ctx.hasChanges else { return }
         do { try ctx.save() }
-        catch { print("SharedCoreDataStack save error: \(error)") }
+        catch { SharedLog.error("SharedCoreDataStack save error: \(error)") }
     }
 
     /// Best-effort: save pending changes so CloudKit can schedule a push (mirrors macOS `CoreDataStack.requestSyncNow`).
@@ -126,7 +126,7 @@ final class SharedCoreDataStack {
                 }
             } catch {
                 Self.log.error("requestSyncNow save failed: \(String(describing: error), privacy: .public)")
-                print("SharedCoreDataStack requestSyncNow save failed: \(error)")
+                SharedLog.error("SharedCoreDataStack requestSyncNow save failed: \(error)")
                 saveError = error
             }
             if let completion {

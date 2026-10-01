@@ -189,6 +189,10 @@ struct SettingsView: View {
             Toggle(String(localized: "ios.settings.collectFromKeyboard"), isOn: $settings.collectFromKeyboard)
             Toggle(String(localized: "preferences.general.recordImages"), isOn: $settings.recordImages)
             Toggle(String(localized: "preferences.general.linkPreview"), isOn: $settings.linkPreviewEnabled)
+            Toggle(String(localized: "ios.settings.liveActivity"), isOn: $settings.liveActivityEnabled)
+            if settings.liveActivityEnabled {
+                Toggle(String(localized: "ios.settings.liveActivityHidePreview"), isOn: $settings.liveActivityHidePreview)
+            }
 
             Button {
                 showPastePermissionGuide = true

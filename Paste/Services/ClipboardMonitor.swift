@@ -52,6 +52,7 @@ class ClipboardMonitor {
         if let timer = timer {
             RunLoop.main.add(timer, forMode: .common)
         }
+        observePowerState()
     }
     
     /// Stops clipboard polling.
@@ -59,6 +60,29 @@ class ClipboardMonitor {
         isMonitoring = false
         timer?.invalidate()
         timer = nil
+        powerObservers.forEach { NSWorkspace.shared.notificationCenter.removeObserver($0) }
+        powerObservers.removeAll()
+    }
+
+    // MARK: - Power-aware polling
+
+    private var powerObservers: [NSObjectProtocol] = []
+
+    /// Nobody copies while the screen is asleep, so pause polling then and resume on wake.
+    private func observePowerState() {
+        guard powerObservers.isEmpty else { return }
+        let center = NSWorkspace.shared.notificationCenter
+        powerObservers = [
+            center.addObserver(forName: NSWorkspace.screensDidSleepNotification, object: nil, queue: .main) { [weak self] _ in
+                self?.timer?.invalidate()
+                self?.timer = nil
+            },
+            center.addObserver(forName: NSWorkspace.screensDidWakeNotification, object: nil, queue: .main) { [weak self] _ in
+                guard let self, self.isMonitoring, self.timer == nil else { return }
+                self.isMonitoring = false
+                self.startMonitoring()
+            }
+        ]
     }
     
     /// Marks the hash of content this app is about to write, preventing it from being re-recorded.

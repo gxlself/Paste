@@ -52,7 +52,7 @@ final class ClipboardRepository: ClipboardRepositoryProtocol {
         do {
             return try ctx.fetch(request).map { SharedClipboardItem(entity: $0, loadBinaryData: false) }
         } catch {
-            print("ClipboardRepository fetchAll error: \(error)")
+            SharedLog.error("ClipboardRepository fetchAll error: \(error)")
             return []
         }
     }
@@ -97,7 +97,7 @@ final class ClipboardRepository: ClipboardRepositoryProtocol {
             try ctx.execute(batch)
             stack.save()
         } catch {
-            print("ClipboardRepository deleteAll error: \(error)")
+            SharedLog.error("ClipboardRepository deleteAll error: \(error)")
         }
     }
 

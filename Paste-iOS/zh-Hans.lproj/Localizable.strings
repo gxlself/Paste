@@ -209,3 +209,7 @@
 "ios.pastePermission.openSettings" = "前往设置";
 "ios.pastePermission.settingsToggle" = "允许从其他应用程序粘贴";
 "ios.pastePermission.settingsToggle.desc" = "避免系统「允许粘贴」弹窗提示";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "在灵动岛显示最近复制";
+"ios.settings.liveActivityHidePreview" = "在灵动岛和锁屏隐藏内容";

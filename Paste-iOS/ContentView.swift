@@ -493,6 +493,8 @@ struct ContentView: View {
               let item = viewModel.itemByID(id) else { return }
 
         switch url.host {
+        case "copy":
+            viewModel.copyToClipboard(item)
         case "preview":
             previewingItem = item
         case "edit":

@@ -165,3 +165,7 @@
 "ios.pastePermission.openSettings" = "設定を開く";
 "ios.pastePermission.settingsToggle" = "他のアプリからのペーストを許可";
 "ios.pastePermission.settingsToggle.desc" = "システムのペースト許可プロンプトを回避";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "ダイナミックアイランドに表示";
+"ios.settings.liveActivityHidePreview" = "ダイナミックアイランドとロック画面で内容を隠す";

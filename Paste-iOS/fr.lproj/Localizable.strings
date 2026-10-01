@@ -165,3 +165,7 @@
 "ios.pastePermission.openSettings" = "Ouvrir les Réglages";
 "ios.pastePermission.settingsToggle" = "Autoriser le collage depuis d'autres apps";
 "ios.pastePermission.settingsToggle.desc" = "Éviter l'invite système de collage";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "Afficher dans la Dynamic Island";
+"ios.settings.liveActivityHidePreview" = "Masquer le contenu dans la Dynamic Island et l’écran verrouillé";

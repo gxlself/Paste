@@ -43,12 +43,7 @@ class CoreDataStack {
             description?.cloudKitContainerOptions = nil
         }
         
-        container.loadPersistentStores { _, error in
-            if let error = error as NSError? {
-                // In production a more graceful recovery should be attempted.
-                fatalError("CoreData failed to load: \(error), \(error.userInfo)")
-            }
-        }
+        Self.loadStores(of: container)
         
         // Automatically merge changes from the persistent store.
         container.viewContext.automaticallyMergesChangesFromParent = true
@@ -57,6 +52,46 @@ class CoreDataStack {
         return container
     }()
     
+    // MARK: - Store loading
+
+    /// Set when the on-disk store could not be opened and the app is running on a temporary
+    /// in-memory store instead; the UI should warn that nothing will be kept.
+    private(set) static var isRunningDegraded = false
+
+    /// Loads the persistent store, degrading instead of crashing when it fails:
+    /// 1. as configured (CloudKit mirroring if enabled);
+    /// 2. local-only (CloudKit options dropped), which keeps the user's history readable;
+    /// 3. an in-memory store, so the app stays usable and never terminates on a bad store.
+    private static func loadStores(of container: NSPersistentCloudKitContainer) {
+        func attempt() -> NSError? {
+            var failure: NSError?
+            container.loadPersistentStores { _, error in failure = error as NSError? }
+            return failure
+        }
+
+        guard let first = attempt() else { return }
+        AppLog.error("CoreData failed to load: \(first), \(first.userInfo)")
+
+        if let description = container.persistentStoreDescriptions.first {
+            if description.cloudKitContainerOptions != nil {
+                description.cloudKitContainerOptions = nil
+                if attempt() == nil {
+                    AppLog.warning("CoreData loaded without CloudKit after a failed first attempt")
+                    return
+                }
+            }
+            description.url = URL(fileURLWithPath: "/dev/null")
+            description.type = NSInMemoryStoreType
+            if attempt() == nil {
+                isRunningDegraded = true
+                AppLog.error("CoreData is running on an in-memory store; changes will not persist")
+                return
+            }
+        }
+        AppLog.error("CoreData could not load any store; continuing without persistence")
+        isRunningDegraded = true
+    }
+
     // MARK: - Context
     
     var viewContext: NSManagedObjectContext {
@@ -78,7 +113,7 @@ class CoreDataStack {
         do {
             try context.save()
         } catch {
-            print("CoreData save failed: \(error)")
+            AppLog.error("CoreData save failed: \(error)")
         }
     }
     
@@ -92,7 +127,7 @@ class CoreDataStack {
                 do {
                     try context.save()
                 } catch {
-                    print("CoreData background save failed: \(error)")
+                    AppLog.error("CoreData background save failed: \(error)")
                 }
             }
         }
@@ -184,7 +219,7 @@ class CoreDataStack {
             do {
                 try context.execute(request)
             } catch {
-                print("CoreData history purge failed: \(error)")
+                AppLog.error("CoreData history purge failed: \(error)")
             }
         }
     }
@@ -202,7 +237,7 @@ class CoreDataStack {
                     try context.save()
                 }
             } catch {
-                print("CoreData syncNow save failed: \(error)")
+                AppLog.error("CoreData syncNow save failed: \(error)")
                 saveError = error
             }
             if let completion {

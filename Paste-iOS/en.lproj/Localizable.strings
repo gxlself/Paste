@@ -209,3 +209,7 @@
 "ios.pastePermission.openSettings" = "Open Settings";
 "ios.pastePermission.settingsToggle" = "Allow paste from other apps";
 "ios.pastePermission.settingsToggle.desc" = "Avoid the system \"Allow Paste\" prompt";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "Show in Dynamic Island";
+"ios.settings.liveActivityHidePreview" = "Hide content in Dynamic Island & Lock Screen";

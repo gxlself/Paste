@@ -165,3 +165,7 @@
 "ios.pastePermission.openSettings" = "설정 열기";
 "ios.pastePermission.settingsToggle" = "다른 앱에서 붙여넣기 허용";
 "ios.pastePermission.settingsToggle.desc" = "시스템 붙여넣기 허용 프롬프트 방지";
+
+// MARK: - Live Activity
+"ios.settings.liveActivity" = "다이나믹 아일랜드에 표시";
+"ios.settings.liveActivityHidePreview" = "다이나믹 아일랜드 및 잠금 화면에서 내용 숨기기";
