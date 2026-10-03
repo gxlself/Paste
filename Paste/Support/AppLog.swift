@@ -6,6 +6,7 @@
 //  unlike `print`, which is discarded.
 //
 
+import Foundation
 import os
 
 enum AppLog {

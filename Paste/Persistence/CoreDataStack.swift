@@ -43,7 +43,7 @@ class CoreDataStack {
             description?.cloudKitContainerOptions = nil
         }
         
-        Self.loadStores(of: container)
+        CoreDataStack.loadStores(of: container)
         
         // Automatically merge changes from the persistent store.
         container.viewContext.automaticallyMergesChangesFromParent = true

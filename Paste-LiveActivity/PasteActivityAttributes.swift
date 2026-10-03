@@ -9,11 +9,11 @@ import ActivityKit
 import Foundation
 
 @available(iOS 16.1, *)
-struct PasteActivityAttributes: ActivityAttributes {
+nonisolated struct PasteActivityAttributes: ActivityAttributes {
 
-    struct ContentState: Codable, Hashable {
+    nonisolated struct ContentState: Codable, Hashable {
 
-        enum Kind: String, Codable, Hashable {
+        nonisolated enum Kind: String, Codable, Hashable {
             case text, link, image, file
 
             var symbol: String {
@@ -26,7 +26,7 @@ struct PasteActivityAttributes: ActivityAttributes {
             }
         }
 
-        struct Entry: Codable, Hashable, Identifiable {
+        nonisolated struct Entry: Codable, Hashable, Identifiable {
             /// `ClipboardItem` id (UUID string).
             var id: String
             /// Already truncated; empty when the user chose to hide previews.

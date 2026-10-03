@@ -10,13 +10,13 @@
 import AppIntents
 import Foundation
 
-enum LiveActivityBridge {
+nonisolated enum LiveActivityBridge {
     /// Set by the app; receives the `ClipboardItem` id string.
     nonisolated(unsafe) static var copyHandler: (@Sendable (String) -> Void)?
 }
 
 @available(iOS 17.0, *)
-struct CopyClipboardItemIntent: LiveActivityIntent {
+nonisolated struct CopyClipboardItemIntent: LiveActivityIntent {
     static var title: LocalizedStringResource = "Copy"
     static var openAppWhenRun = false
 

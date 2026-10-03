@@ -97,8 +97,10 @@ private struct EntryList: View {
                         EntryRow(entry: entry)
                     }
                     .buttonStyle(.plain)
-                } else if let url = URL(string: "pasteg://copy?id=\(entry.id)") {
-                    Link(destination: url) { EntryRow(entry: entry) }
+                } else {
+                    Link(destination: URL(string: "pasteg://copy?id=\(entry.id)")!) {
+                        EntryRow(entry: entry)
+                    }
                 }
             }
         }
